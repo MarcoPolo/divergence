@@ -1,4 +1,4 @@
-divergence
-==========
+# Divergence
+
 
 travel. A game about time
