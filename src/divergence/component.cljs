@@ -74,7 +74,7 @@
   (component :fps-counter true))
 
 (def collidable
-  (component :collidable :true))
+  (component :collidable true))
 
 (def accelerates
   (component :acceleration [0 0 0]))
@@ -88,4 +88,12 @@
 (def climbing
   (component :climbing 0))
 
+(def time-based-state
+  "Anything whose state (e.g. position, velocity...) changes based of time"
+  (component :time-base-state true))
 
+(defn gravity
+  "Gravity settings should be:
+   [x-acceleration y-acceleration rot-acceleration]"
+  [gravity-settings]
+  (component :gravity gravity-settings))
