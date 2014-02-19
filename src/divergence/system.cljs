@@ -236,6 +236,18 @@
 
 
 
+
+(defn jump-caps [entities]
+  (doseq [e entities]
+    (let [actions (@e :actions)
+          {[vx vy vr] :velocity
+           [x y rot] :position
+           } @e
+          ]
+      (when (and (< y -50)) (swap! e assoc-in [:position] [x -40 rot]))
+    ))
+);;Chelsea
+
 (defn create-text [entities]
   (doseq [e entities]
     (let [style (get-in @e [:text :style])

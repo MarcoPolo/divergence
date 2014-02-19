@@ -61,6 +61,7 @@
     (reset! component->entities {})
     (reset! entity->components {})
     (reset! entity-count 0)
+<<<<<<< HEAD
     (reset! stage (js/PIXI.Stage. 0x66FF99))
     (setup (entities @stage))
     )
@@ -73,7 +74,9 @@
 (defn loadgame []
   (let [c->e @component->entities]
   (s/deserialize (c->e :position)))
-  )
+    (reset! animate-ref nil)
+    (setup entities)
+    )
 
 (defn animate []
   (let [c->e @component->entities]
@@ -90,6 +93,7 @@
     (s/collide (c->e :collidable))
     (s/move (c->e :velocity))
     (s/position (c->e :position))
+    (s/jump-caps (c->e :position))
     (s/fps-counter (c->e :fps-counter))
     (js/requestAnimationFrame @animate-ref)))
 
