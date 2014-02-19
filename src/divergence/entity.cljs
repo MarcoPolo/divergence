@@ -134,3 +134,6 @@
            c/create-ref
            c/gravity
            ]))
+
+(defn timestream []
+  (entity [(c/timestream)]))

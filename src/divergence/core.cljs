@@ -3,7 +3,8 @@
             [divergence.entity :as e]
             [divergence.system :as s]
             [divergence.leveleditor :as le]
-            [goog.dom :as dom]))
+            [goog.dom :as dom]
+            [divergence.system.time-travel :as tt]))
 
 (enable-console-print!)
 
@@ -62,6 +63,11 @@
    (e/goal 1300 485 stage)
 
    (e/background stage)
+
+   #_(e/vertical-full-block 0 -40 stage)
+   #_(e/vertical-full-block 760 -40 stage)
+   #_(e/horizontal-full-block 0 560 stage)
+   #_(e/timestream)
    ])
 
 (comment
@@ -84,7 +90,14 @@
 
     (s/position (c->e :position))
     (s/anchor (c->e :anchor))
-    (s/scale (c->e :scale))))
+    (s/scale (c->e :scale))
+
+    ;; Setup the time travel
+    (let [timestream (first (c->e :timestream))]
+      (tt/save-entities-to-timestream! timestream [(@entity->components 0)])
+      (swap! timestream assoc-in [:timestream :prev-node] [0 0]))
+
+    ))
 
 ;;MASTER FEATURES=================================================
 
@@ -113,7 +126,15 @@
 
 (defn animate []
   (let [c->e @component->entities]
-    (.render renderer @stage)
+    (.render renderer stage)
+
+    ;; Time travel
+    (let [timestream (first (c->e :timestream))]
+      ;; TODO fix this so it works for all entities, I'm just being lazy here
+      (tt/time-tick timestream [(@entity->components 0)])
+
+      )
+
     (s/player-input (c->e :player-input))
     (s/climbing (c->e :position))
     (s/execute-actions (c->e :actions))
@@ -127,14 +148,30 @@
     (s/collide (c->e :collidable))
     (s/move (c->e :velocity))
     (s/position (c->e :position))
+
+    ;; FPS counter
     (s/fps-counter (c->e :fps-counter))
+
     (s/update-camera container (c->e :position))
     (s/pick-drop-item (c->e :position))
-    (reset! globalID (js/requestAnimationFrame @animate-ref))
-    ))
+    (reset! globalID (js/requestAnimationFrame @animate-ref))))
 
 (reset! animate-ref animate)
 
 (setup (entities @stage))
 
 (js/requestAnimationFrame @animate-ref)
+
+
+(comment
+  (@entity->components 0)
+
+  (def timestream (get-in @(first (@component->entities :timestream)) [:timestream :timestream]))
+
+  (get-in timestream [0 1598])
+  (tt/reverse-time timestream 0 1598 1)
+
+
+  (count (get-in @(first (@component->entities :timestream)) [:timestream :timestream 0]))
+  (map :prev-node (get-in @(first (@component->entities :timestream)) [:timestream :timestream 536]))
+ )

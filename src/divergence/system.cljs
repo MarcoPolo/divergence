@@ -217,7 +217,9 @@
    39 :right
    40 :down
    77 :item
-   80 :p})
+   80 :p
+   16 :shift
+   69 :run})
 
 (def key-inputs (atom #{}))
 
