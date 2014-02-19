@@ -62,6 +62,7 @@
     (reset! entity->components {})
     (reset! entity-count 0)
 <<<<<<< HEAD
+<<<<<<< HEAD
     (reset! stage (js/PIXI.Stage. 0x66FF99))
     (setup (entities @stage))
     )
@@ -76,6 +77,8 @@
   (s/deserialize (c->e :position)))
     (reset! animate-ref nil)
     (setup entities)
+    (reset! stage (js/PIXI.Stage. 0x66FF99))
+    (setup (entities @stage))
     )
 
 (defn animate []

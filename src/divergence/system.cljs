@@ -248,6 +248,7 @@
     ))
 );;Chelsea
 
+
 (defn create-text [entities]
   (doseq [e entities]
     (let [style (get-in @e [:text :style])
