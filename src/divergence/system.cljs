@@ -16,7 +16,6 @@
 
 (def can-climb (atom 0))
 
-<<<<<<< HEAD
 (def serial-data (atom ""))
 
 (defn save-to-local-db []
@@ -64,7 +63,6 @@
           (reset! on-ground 1) ;when character hits ground, can jump - Chelsea
           (swap! e assoc-in [:velocity 1] 0)
           )))))
-<<<<<<< HEAD
 
 
 (defn push [entities player]

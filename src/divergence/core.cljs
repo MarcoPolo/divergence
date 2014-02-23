@@ -61,8 +61,6 @@
     (reset! component->entities {})
     (reset! entity->components {})
     (reset! entity-count 0)
-<<<<<<< HEAD
-<<<<<<< HEAD
     (reset! stage (js/PIXI.Stage. 0x66FF99))
     (setup (entities @stage))
     )
