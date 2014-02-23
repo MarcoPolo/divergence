@@ -2,7 +2,8 @@
   (:require [divergence.component :as c]
             [divergence.entity :as e]
             [divergence.system :as s]
-            [divergence.leveleditor :as le]))
+            [divergence.leveleditor :as le]
+            [goog.dom :as dom]))
 
 (enable-console-print!)
 
@@ -64,6 +65,15 @@
     (setup (entities @stage))
     )
 
+(defn savegame []
+  (let [c->e @component->entities]
+  (s/serialize (c->e :position)))
+  )
+
+(defn loadgame []
+  (let [c->e @component->entities]
+  (s/deserialize (c->e :position)))
+  )
 
 (defn animate []
   (let [c->e @component->entities]
