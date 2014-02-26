@@ -47,6 +47,16 @@
             (when (phys/colliding? x-future @e)
               (swap! e assoc-in [:velocity 0] (* (compare x-v 0) 2)))))))))
 
+(defn goal? [entities player]
+  (doseq [p player]
+    (when (not= (@p :velocity) [0 0 0])
+      (let [{[x-v y-v rot-speed] :velocity} @p]
+        (let [x-future (move-entity @p [x-v 0 0])
+                y-future (move-entity @p [y-v 0 0])]
+          (doseq [e entities]
+            (when (and (phys/colliding? x-future @e) (= (@e :name) :goal))
+              (. js/console (log "Win")))))))))
+
 (defn friction
   [entities]
   (doseq [e entities]

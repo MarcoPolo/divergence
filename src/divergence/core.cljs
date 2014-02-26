@@ -37,6 +37,7 @@
    (e/vertical-full-block 760 -40 stage)
    (e/horizontal-full-block 0 560 stage)
    (e/box 300 300 stage)
+   (e/goal 700 40 stage)
    ])
 
 (defn setup [entities]
@@ -62,6 +63,7 @@
     (s/friction (c->e :acceleration))
     (s/accelerate (c->e :acceleration))
     (s/push (c->e :pushable) (c->e :player-input))
+    (s/goal? (c->e :collidable) (c->e :player-input))
     (s/collide (c->e :collidable))
     (s/move (c->e :velocity))
     (s/position (c->e :position))

@@ -4,6 +4,7 @@
 (def bunnyTexture (js/PIXI.Texture.fromImage "assets/img/bunny.png"))
 (def blockTexture (js/PIXI.Texture.fromImage "assets/img/Brick_Block.png"))
 (def boxTexture (js/PIXI.Texture.fromImage "assets/img/box.png"))
+(def goalTexture (js/PIXI.Texture.fromImage "assets/img/door.png"))
 
 (defn entity [components]
   (reduce
@@ -26,6 +27,17 @@
            c/collidable
            (c/scale 2 2)
            c/accelerates
+           (c/gravity [0 .2 0])
+           ]))
+
+(defn goal [x y stage]
+  (entity [(c/named :goal)
+           (c/sprite goalTexture)
+           c/create-ref
+           (c/position x y 0)
+           (c/on-stage stage)
+           c/collidable
+           (c/scale 2 2)
            (c/gravity [0 .2 0])
            ]))
 
