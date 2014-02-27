@@ -178,26 +178,22 @@
         (actions :left)
         (swap! e assoc-in [:acceleration] [-3 0 0])
         (reset! can-climb 0) ;when pressing left, turn gravity back on and climb mode off
-        (swap! e assoc-in [:gravity] [0 0.2 0])
-        )
+        (swap! e assoc-in [:gravity] [0 0.2 0]))
       (when
         (actions :right)
         (swap! e assoc-in [:acceleration] [3 0 0])
         (reset! can-climb 0) ;when pressing right, turn gravity back on and climb mode off
-        (swap! e assoc-in [:gravity] [0 0.2 0])
-        )
+        (swap! e assoc-in [:gravity] [0 0.2 0]))
       (when
         (actions :down) (swap! e assoc-in [:acceleration] [0 1 0]))
       (when
         (and (= @on-ground 1) (actions :up))
         (swap! e assoc-in [:acceleration] [0 -2 0])
-        (reset! on-ground 0) ;caps the jump - Chelsea
-        )
+        (reset! on-ground 0)) ;caps the jump
       (when
         (and (= @can-climb 1) (actions :up)) ;climb function
         (swap! e assoc-in [:acceleration] [0 -2 0])
-        (swap! e assoc-in [:gravity] [0 0 0]) ;turns off the gravity
-        )
+        (swap! e assoc-in [:gravity] [0 0 0])) ;turns off the gravity
       (when (not-any? actions [:up :left :right :down])
         (swap! e assoc-in [:acceleration] [0 0 0])))))
 
@@ -210,9 +206,7 @@
           ]
       (when (> vx 4) (swap! e assoc-in [:velocity] [5 vy vr]))
       (when (< vx -4) (swap! e assoc-in [:velocity] [-5 vy vr]))
-      (when (and (< vy -4) (swap! e assoc-in [:velocity] [vx -4 vr])))
-    ))
-)
+      (when (and (< vy -4) (swap! e assoc-in [:velocity] [vx -4 vr]))))))
 
 (defn move-background [entities]
   (doseq [e entities
@@ -231,8 +225,7 @@
                 :let [actions (@e :actions)
                      [x y r] (@e :position)
                 ]]
-          (when  (= (@e :name) :bg) (swap! e assoc-in [:position] [(- x 5) y r]))))
-      )))
+          (when  (= (@e :name) :bg) (swap! e assoc-in [:position] [(- x 5) y r])))))))
 
 
 

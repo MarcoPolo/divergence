@@ -62,13 +62,11 @@
     (reset! entity->components {})
     (reset! entity-count 0)
     (reset! stage (js/PIXI.Stage. 0x66FF99))
-    (setup (entities @stage))
-    )
+    (setup (entities @stage)))
 
 (defn savegame []
   (let [c->e @component->entities]
-  (s/serialize (c->e :position)))
-  )
+  (s/serialize (c->e :position))))
 
 (defn loadgame []
   (let [c->e @component->entities]
