@@ -38,7 +38,7 @@
    (e/regular-block 380 520 stage)
    (e/horizontal-full-block 0 560 stage)
    (e/box 300 300 stage)
-   (e/goal 700 40 stage)
+   (e/goal 700 485 stage)
    (e/background stage)
    ])
 
