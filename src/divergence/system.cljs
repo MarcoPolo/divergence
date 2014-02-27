@@ -18,23 +18,21 @@
 
 (def serial-data (atom ""))
 
-(defn save-to-local-db []
+(defn save-to-local-db [data]
   ;(js/alert @serial-data)
-  (.setItem js/localStorage "dm" @serial-data)
+  (.setItem js/localStorage "dm" data)
   )
 
 (defn serialize [entities]
   (doseq [e entities]
-    (if (= ":bunny" (pr-str(@e :name)))
-      (do(reset! serial-data @e)
-         (save-to-local-db @e)))))
+    (if (= ":bunny" (pr-str (@e :name)))
+      (save-to-local-db (dissoc @e :ref :sprite :stage)))))
 
 (defn deserialize [entities]
-  ;(reset! serial-data (.getItem js/localStorage "dm")) <-- This is for loading from local storage. Not working.
   ;(js/alert @serial-data)
-   (doseq [e entities]
-     (if (= ":bunny" (pr-str(@e :name)))
-      (reset! e @serial-data))))
+   (doseq [e entities
+           :when (= :bunny (@e :name))]
+     (reset! e (read-string (.getItem js/localStorage "dm")))))
 
 (defn as [entity k]
   (@entity k))
@@ -226,7 +224,6 @@
                      [x y r] (@e :position)
                 ]]
           (when  (= (@e :name) :bg) (swap! e assoc-in [:position] [(- x 5) y r])))))))
-
 
 
 
