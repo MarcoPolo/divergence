@@ -5,6 +5,7 @@
 (def blockTexture (js/PIXI.Texture.fromImage "assets/img/Brick_Block.png"))
 (def boxTexture (js/PIXI.Texture.fromImage "assets/img/box.png"))
 (def goalTexture (js/PIXI.Texture.fromImage "assets/img/door.png"))
+(def bgTexture (js/PIXI.Texture.fromImage "assets/img/background.png"))
 
 (defn entity [components]
   (reduce
@@ -38,7 +39,18 @@
            (c/on-stage stage)
            c/collidable
            (c/scale 2 2)
-           (c/gravity [0 .2 0])
+           (c/gravity [0 .2 0])]))
+
+(defn background [stage]
+  (entity [(c/named :bg)
+           (c/sprite bgTexture)
+           (c/on-stage stage)
+           c/has-actions
+           c/player-input
+           c/create-ref
+           c/movable
+           (c/position -500 -200 0)
+           (c/scale 1 1)
            ]))
 
 (defn block [scale-x scale-y x y stage]
@@ -73,6 +85,9 @@
 
 (def vertical-full-block
   (partial block .1 1.5))
+
+(def regular-block
+  (partial block .1 .1))
 
 (defn some-text [stage]
   (entity [(c/named :fps-counter)

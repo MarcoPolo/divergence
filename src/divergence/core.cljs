@@ -33,11 +33,13 @@
 (def entities
   [(e/bunny stage)
    (e/some-text stage)
-   (e/vertical-full-block 0 -40 stage)
-   (e/vertical-full-block 760 -40 stage)
+   ;(e/vertical-full-block 0 -40 stage)
+   ;(e/vertical-full-block 760 -40 stage)
+   (e/regular-block 380 520 stage)
    (e/horizontal-full-block 0 560 stage)
    (e/box 300 300 stage)
    (e/goal 700 40 stage)
+   (e/background stage)
    ])
 
 (defn setup [entities]
@@ -58,6 +60,7 @@
     (.render renderer stage)
     (s/player-input (c->e :player-input))
     (s/execute-actions (c->e :actions))
+    (s/move-background (c->e :actions))
     (s/gravity (c->e :gravity))
     (s/movement-caps (c->e :velocity))
     (s/friction (c->e :acceleration))
