@@ -33,6 +33,7 @@
 
 
 ;;GAME SETUP====================================================
+
 (defn register-entity! [entity]
   (let [entity-atom (atom entity)]
     (swap! entity->components assoc @entity-count entity-atom)

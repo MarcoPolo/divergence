@@ -3,11 +3,10 @@
              [divergence.audio :as a]
              [divergence.physics :as phys]
              [divergence.entity :as ent]
-             ))
+             [divergence.textures :as textures]
+             [divergence.camera :as camera]))
 
 ;;GLOBAL VALUES-----------------------------------
-(def camera-width 900)
-(def camera-height 506)
 (def level-width 3200)
 (def level-height 506)
 
@@ -166,7 +165,9 @@
 ;;RENDERING---------------------------------------------
 (defn create-ref [entities]
   (doseq [e entities]
-    (swap! e assoc :ref (js/PIXI.MovieClip. (cljs-to-js (-> @e :sprite :texture))))))
+    (swap! e assoc :ref (js/PIXI.MovieClip. (cljs-to-js (map textures/textures
+                                                             (-> @e :sprite :texture)))))))
+    ;(swap! e assoc :ref (js/PIXI.Sprite. (-> @e :sprite :texture textures/textures)))))
 
 (defn create-tiling-ref [entities]
   (doseq [e entities]
@@ -339,7 +340,7 @@
 
 (defn update-camera-coords [camera x y]
   (set! (.-x (.-position @camera)) (if (camera-x-check x)
-                                     (* -1 (- x (/ camera-width 3)))
+                                     (* -1 (- x (/ camera/camera-width 3)))
                                      (- x 0)))
   ;(set! (.-y (.-position @camera)) (- (@camera-coords :y) 50))
 )
@@ -378,7 +379,7 @@
              (if (not= nil (get-in @load-data [:acceleration])) (swap! e assoc-in [:acceleration] (get-in @load-data [:acceleration])))
              (if (not= nil (get-in @load-data [:collidable])) (swap! e assoc-in [:collidable] (get-in @load-data [:collidable])))
              (if (not= nil (get-in @load-data [:create-ref])) (swap! e assoc-in [:create-ref] (get-in @load-data [:create-ref])))
-             (if (not= nil (get-in @load-data [:scale])) (swap! e assoc-in [:scale] (get-in @load-data [:scale])))
+             ;(if (not= nil (get-in @load-data [:scale])) (swap! e assoc-in [:scale] (get-in @load-data [:scale])))
              (if (not= nil (get-in @load-data [:can-jump])) (swap! e assoc-in [:can-jump] (get-in @load-data [:can-jump])))
              (if (not= nil (get-in @load-data [:anchor])) (swap! e assoc-in [:anchor] (get-in @load-data [:anchor])))
              (if (not= nil (get-in @load-data [:holding])) (swap! e assoc-in [:holding] (get-in @load-data [:holding])))

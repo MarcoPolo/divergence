@@ -1,16 +1,16 @@
 (ns divergence.entity
   (:require [divergence.component :as c]
-            [divergence.system :as s]))
+            [divergence.camera :as camera]))
 
 (def normal-gravity 0.2)
 
-(def playerTexture (js/PIXI.Texture.fromImage "assets/img/player.png"))
-(def blockTexture (js/PIXI.Texture.fromImage "assets/img/Brick_Block.png"))
-(def boxTexture (js/PIXI.Texture.fromImage "assets/img/box.png"))
-(def goalTexture (js/PIXI.Texture.fromImage "assets/img/door.png"))
-(def bgTexture (js/PIXI.Texture.fromImage "assets/img/background.png"))
-(def ropeTexture (js/PIXI.Texture.fromImage "assets/img/rope.png"))
-(def keyTexture (js/PIXI.Texture.fromImage "assets/img/key.png"))
+(def playerTexture :divergence.textures/player)
+(def blockTexture :divergence.textures/block)
+(def boxTexture :divergence.textures/box)
+(def goalTexture :divergence.textures/goal)
+(def bgTexture :divergence.textures/bg)
+(def ropeTexture :divergence.textures/rope)
+(def keyTexture :divergence.textures/key)
 
 (def jumpAnimation [playerTexture playerTexture])
 (def climbAnimation [playerTexture playerTexture playerTexture])
@@ -27,7 +27,7 @@
 (defn player [stage]
   (entity [(c/named :player)
            (c/sprite [playerTexture])
-           (c/position (/ s/camera-width 3) (/ s/camera-height 3) 0)
+           (c/position (/ camera/camera-width 3) (/ camera/camera-height 3) 0)
            (c/on-stage stage)
            (c/friction 1)
            (c/scale 0.4 0.4)
@@ -36,10 +36,22 @@
            (c/holding? :nothing)
            c/items
            c/collidable
-           c/create-ref
-           c/player-input
-           c/has-actions
-           c/movable
+
+;(defn bunny [stage]
+;  (entity [(c/named :bunny)
+;           #_(c/sprite :divergence.textures/bunny)
+;           (c/sprite [:divergence.textures/bunny])
+;           c/create-ref
+;           c/player-input
+;           c/has-actions
+;           c/movable
+
+;           (c/position 90 50 0)
+;          (c/on-stage stage)
+;          (c/friction 1)
+;          c/collidable
+;          (c/scale 1 1)
+
            c/accelerates
            c/can-jump
            c/climbing
@@ -70,7 +82,8 @@
 
 (defn block [scale-x scale-y x y pname stage]
   (entity [(c/named pname)
-           (c/sprite [blockTexture])
+           ;(c/sprite [blockTexture])
+           (c/sprite [:divergence.textures/block])
            (c/entity-type :tile)
            c/create-ref
            (c/position x y 0)
