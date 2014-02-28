@@ -1,7 +1,7 @@
 (ns divergence.component)
 
-
 (defn component [name attributes]
+  "Simple returns a hashmap of the name and attributes"
   {:name name
    :attr attributes})
 
@@ -9,17 +9,19 @@
   (component :sprite
              {:texture texture}))
 
+(defn tiling-sprite [texture]
+  (component :tiling-sprite
+             {:texture texture}))
+
 (defn on-stage [stage]
   (component :stage stage))
 
 (defn position [x y rot]
   (component :position
-             {:x x :y y :rot rot}))
+             [x y rot]))
 
-(defn throw-in-space []
-  (component
-   :velocity
-   {:x-speed 0.5 :y-speed 0 :rot-speed 0.01}))
+(defn friction [f]
+  (component :friction [f]))
 
 (defn anchor [x y]
   (component :anchor
@@ -43,7 +45,10 @@
   (component :actions #{}))
 
 (def movable
-  (component :velocity {:x-speed 0 :y-speed 0 :rot-speed 0}))
+  (component :velocity [0 0 0]))
+
+(def pushable
+  (component :pushable true))
 
 (defn text [string style]
   (component :text
@@ -52,3 +57,15 @@
 
 (def fps-counter
   (component :fps-counter true))
+
+(def collidable
+  (component :collidable :true))
+
+(def accelerates
+  (component :acceleration [0 0 0]))
+
+(defn gravity
+  "Gravity settings should be:
+   [x-acceleration y-acceleration rot-acceleration]"
+  [gravity-settings]
+  (component :gravity gravity-settings))
