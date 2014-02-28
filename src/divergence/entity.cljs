@@ -1,8 +1,6 @@
 (ns divergence.entity
   (:require [divergence.component :as c]))
 
-(def bunnyTexture (js/PIXI.Texture.fromImage "assets/img/bunny.png"))
-(def blockTexture (js/PIXI.Texture.fromImage "assets/img/Brick_Block.png"))
 
 (defn entity [components]
   (reduce
@@ -14,7 +12,7 @@
 
 (defn bunny [stage]
   (entity [(c/named :bunny)
-           (c/sprite bunnyTexture)
+           (c/sprite :divergence.textures/bunny)
            c/create-ref
            c/player-input
            c/has-actions
@@ -23,14 +21,14 @@
            (c/on-stage stage)
            (c/friction 1)
            c/collidable
-           (c/scale 2 2)
+           (c/scale 1 1)
            c/accelerates
            (c/gravity [0 .2 0])
            ]))
 
 (defn block [scale-x scale-y x y stage]
   (entity [(c/named :block)
-           (c/sprite blockTexture)
+           (c/sprite :divergence.textures/block)
            c/create-ref
            (c/position x y 0)
            (c/scale scale-x scale-y)

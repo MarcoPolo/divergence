@@ -1,5 +1,6 @@
 (ns divergence.system
-  (:require [divergence.physics :as phys]))
+  (:require [divergence.physics :as phys]
+            [divergence.textures :as textures]))
 
 (comment
   (defn time-point [entities id]
@@ -84,7 +85,7 @@
 
 (defn create-ref [entities]
   (doseq [e entities]
-    (swap! e assoc :ref (js/PIXI.Sprite. (-> @e :sprite :texture)))))
+    (swap! e assoc :ref (js/PIXI.Sprite. (-> @e :sprite :texture textures/textures)))))
 
 (defn create-tiling-ref [entities]
   (doseq [e entities]
