@@ -34,10 +34,13 @@
 
 (defn save-entities-to-timestream! [timestream-entity entities]
   (let [{:keys [prev-node timeline]} (:timestream @timestream-entity)]
+    ;; We've traveled back in time so we need to create a new timeline
     (when (get-in @timestream-entity [:timestream :traveled-back])
       (swap! timestream-entity assoc-in [:timestream :traveled-back] false)
       (swap! timestream-entity assoc-in [:timestream :prev-node] [(inc timeline) 0])
-      (swap! timestream-entity update-in [:timestream :timeline] inc))
+      (swap! timestream-entity update-in [:timestream :timeline] inc)
+      ;; TODO create a new entity that lives on the other timeline
+      )
     (let [{:keys [timestream timeline traveled-back]} (:timestream @timestream-entity)]
       (swap! timestream-entity
              assoc-in [:timestream :timestream]
