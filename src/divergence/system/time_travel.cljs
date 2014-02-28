@@ -15,13 +15,13 @@
 (defn get-prev-node [timestream [timeline time]]
   (get-in timestream [timeline time :prev-node]))
 
-(defn reverse-time [timestream timeline time-left-in-timeline rewind-time]
+(defn reverse-time [timestream [timeline time-left-in-timeline] rewind-time]
   (if (> time-left-in-timeline rewind-time)
     [timeline (- time-left-in-timeline rewind-time)]
     (let [[prev-timeline prev-time] (get-in timestream [timeline 0 :prev-node])]
       (println "prev node is" [prev-timeline prev-time])
       (println "rewind" rewind-time)
-      (reverse-time timestream prev-timeline prev-time (- rewind-time time-left-in-timeline)))))
+      (reverse-time timestream [prev-timeline prev-time] (- rewind-time time-left-in-timeline)))))
 
 (defn end-node-in-time?
   "true if it's the last node on a timeline"
@@ -33,15 +33,18 @@
 
 
 (defn save-entities-to-timestream! [timestream-entity entities]
-  (let [{:keys [timestream timeline prev-node]} (:timestream @timestream-entity)]
-    (swap! timestream-entity
-           assoc-in [:timestream :timestream]
-           (conj-to-timestream timestream timeline prev-node (mapv deref entities)))))
+  (let [{:keys [prev-node timeline]} (:timestream @timestream-entity)]
+    (when (get-in @timestream-entity [:timestream :traveled-back])
+      (swap! timestream-entity assoc-in [:timestream :traveled-back] false)
+      (swap! timestream-entity assoc-in [:timestream :prev-node] [(inc timeline) 0])
+      (swap! timestream-entity update-in [:timestream :timeline] inc))
+    (let [{:keys [timestream timeline traveled-back]} (:timestream @timestream-entity)]
+      (swap! timestream-entity
+             assoc-in [:timestream :timestream]
+             (conj-to-timestream timestream timeline prev-node (mapv deref entities))))))
 
 (defn update-prev-node! [timestream-entity]
   (swap! timestream-entity update-in [:timestream :prev-node 1] inc))
-
-
 
 (def once (atom true))
 
@@ -57,17 +60,19 @@
       (let [{:keys [timestream timeline prev-node]} (:timestream @timestream-entity)
             time (count (timestream timeline))
             time-flux-capacitor-value 1
-            base-node (reverse-time timestream timeline time time-flux-capacitor-value)
+            base-node (reverse-time timestream prev-node time-flux-capacitor-value)
             old-entity (first (:value (get-in timestream base-node)))]
-        (println "prev-node is" prev-node)
         (println "timeline is" timeline)
         (println "time is" timeline)
+        (println "prev-node is" prev-node)
         (println "base node is" base-node)
 
         (when old-entity
           (reset! player-entity old-entity)
-          (swap! timestream-entity update-in [:timestream :timeline] inc)
-          (swap! timestream-entity assoc-in [:timestream :timestream (inc timeline)] [{:prev-node ((get-in timestream base-node) :prev-node) :value [old-entity]}])
+          (swap! timestream-entity assoc-in [:timestream :traveled-back] true)
+          #_(swap! timestream-entity assoc-in [:timestream :timeline] (first base-node))
+          #_(swap! timestream-entity assoc-in [:timestream :time] (second base-node))
+          #_(swap! timestream-entity assoc-in [:timestream :timestream (inc timeline)] [{:prev-node ((get-in timestream base-node) :prev-node) :value [old-entity]}])
           (swap! timestream-entity assoc-in [:timestream :prev-node] base-node))
         ))))
 
