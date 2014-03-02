@@ -12,16 +12,12 @@
     {:id id :timelines time-line})
 )
 
-(def on-ground (atom 1))
-
 (def can-climb (atom 0))
 
 (def serial-data (atom ""))
 
 (defn save-to-local-db [data]
-  ;(js/alert @serial-data)
-  (.setItem js/localStorage "dm" data)
-  )
+  (.setItem js/localStorage "dm" data))
 
 (defn serialize [entities]
   (doseq [e entities]
@@ -29,7 +25,6 @@
       (save-to-local-db (dissoc @e :ref :sprite :stage)))))
 
 (defn deserialize [entities]
-  ;(js/alert @serial-data)
    (doseq [e entities
            :when (= :bunny (@e :name))]
      (reset! e (read-string (.getItem js/localStorage "dm")))))
@@ -55,11 +50,11 @@
             y-future (move-entity @e [0 y-v 0])]
         (when (< 1 (count (filter (partial phys/colliding? x-future) es)))
           (swap! e assoc-in [:velocity 0] 0)
-          (reset! can-climb 1) ;when character hits wall, can climb - Chelsea
+          (reset! can-climb 1) ;when character hits wall, can climb
           )
         (when (< 1 (count (filter (partial phys/colliding? y-future) es)))
-          (reset! on-ground 1) ;when character hits ground, can jump - Chelsea
           (swap! e assoc-in [:velocity 1] 0)
+          (swap! e assoc-in [:can-jump] 1)
           )))))
 
 
@@ -185,9 +180,10 @@
       (when
         (actions :down) (swap! e assoc-in [:acceleration] [0 1 0]))
       (when
-        (and (= @on-ground 1) (actions :up))
+        (and (= (@e :can-jump) 1) (actions :up))
         (swap! e assoc-in [:acceleration] [0 -2 0])
-        (reset! on-ground 0)) ;caps the jump
+        (swap! e assoc-in [:can-jump] 0)) ;caps the jump
+
       (when
         (and (= @can-climb 1) (actions :up)) ;climb function
         (swap! e assoc-in [:acceleration] [0 -2 0])

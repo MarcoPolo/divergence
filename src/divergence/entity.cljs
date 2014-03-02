@@ -29,6 +29,7 @@
            (c/scale 1 1)
            c/accelerates
            (c/gravity [0 .2 0])
+           c/can-jump
            ]))
 
 (defn goal [x y stage]
