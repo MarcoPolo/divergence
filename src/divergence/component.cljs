@@ -72,3 +72,6 @@
 
 (def can-jump
   (component :can-jump 1))
+
+(def can-climb
+  (component :can-climb 0))

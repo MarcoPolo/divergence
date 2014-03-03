@@ -12,8 +12,6 @@
     {:id id :timelines time-line})
 )
 
-(def can-climb (atom 0))
-
 (def serial-data (atom ""))
 
 (defn save-to-local-db [data]
@@ -50,12 +48,19 @@
             y-future (move-entity @e [0 y-v 0])]
         (when (< 1 (count (filter (partial phys/colliding? x-future) es)))
           (swap! e assoc-in [:velocity 0] 0)
-          (reset! can-climb 1) ;when character hits wall, can climb
+          (swap! e assoc-in [:can-climb] 1) ;when character hits wall, can climb
+          ;(js/alert (count (filter (partial phys/colliding? x-future) es)))
           )
         (when (< 1 (count (filter (partial phys/colliding? y-future) es)))
           (swap! e assoc-in [:velocity 1] 0)
-          (swap! e assoc-in [:can-jump] 1)
-          )))))
+          (swap! e assoc-in [:can-jump] 1))
+        (if (and (= (@e :can-climb 1)) (< 2 (count (filter (partial phys/colliding? x-future) es))))
+          (
+        ;(when (= 2 (count (filter (partial phys/colliding? x-future) es)))
+          ;(js/alert (count (filter (partial phys/colliding? x-future) es)))
+          ;(swap! e assoc-in [:gravity] [0 0.2 0])
+          (swap! e assoc-in [:can-climb] 0)
+        ))))))
 
 
 (defn push [entities player]
@@ -170,12 +175,12 @@
       (when
         (actions :left)
         (swap! e assoc-in [:acceleration] [-3 0 0])
-        (reset! can-climb 0) ;when pressing left, turn gravity back on and climb mode off
+        (swap! e assoc-in [:can-climb] 0) ;when pressing left, turn gravity back on and climb mode off
         (swap! e assoc-in [:gravity] [0 0.2 0]))
       (when
         (actions :right)
         (swap! e assoc-in [:acceleration] [3 0 0])
-        (reset! can-climb 0) ;when pressing right, turn gravity back on and climb mode off
+        (swap! e assoc-in [:can-climb] 0) ;when pressing right, turn gravity back on and climb mode off
         (swap! e assoc-in [:gravity] [0 0.2 0]))
       (when
         (actions :down) (swap! e assoc-in [:acceleration] [0 1 0]))
@@ -185,7 +190,7 @@
         (swap! e assoc-in [:can-jump] 0)) ;caps the jump
 
       (when
-        (and (= @can-climb 1) (actions :up)) ;climb function
+        (and (= (@e :can-climb) 1) (actions :up)) ;climb function
         (swap! e assoc-in [:acceleration] [0 -2 0])
         (swap! e assoc-in [:gravity] [0 0 0])) ;turns off the gravity
       (when (not-any? actions [:up :left :right :down])
