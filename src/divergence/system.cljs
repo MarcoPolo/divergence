@@ -9,23 +9,7 @@
     {:id id :timepoints time-point}
     )
   (defn time-stream [time-line id]
-    {:id id :timelines time-line})
-)
-
-(def serial-data (atom ""))
-
-(defn save-to-local-db [data]
-  (.setItem js/localStorage "dm" data))
-
-(defn serialize [entities]
-  (doseq [e entities]
-    (if (= ":bunny" (pr-str (@e :name)))
-      (save-to-local-db (dissoc @e :ref :sprite :stage)))))
-
-(defn deserialize [entities]
-   (doseq [e entities
-           :when (= :bunny (@e :name))]
-     (reset! e (read-string (.getItem js/localStorage "dm")))))
+    {:id id :timelines time-line}))
 
 (defn as [entity k]
   (@entity k))
@@ -48,19 +32,10 @@
             y-future (move-entity @e [0 y-v 0])]
         (when (< 1 (count (filter (partial phys/colliding? x-future) es)))
           (swap! e assoc-in [:velocity 0] 0)
-          (swap! e assoc-in [:can-climb] 1) ;when character hits wall, can climb
-          ;(js/alert (count (filter (partial phys/colliding? x-future) es)))
-          )
+          (swap! e assoc-in [:can-climb] 1)) ;when character hits wall, can climb
         (when (< 1 (count (filter (partial phys/colliding? y-future) es)))
           (swap! e assoc-in [:velocity 1] 0)
-          (swap! e assoc-in [:can-jump] 1))
-        (if (and (= (@e :can-climb 1)) (< 2 (count (filter (partial phys/colliding? x-future) es))))
-          (
-        ;(when (= 2 (count (filter (partial phys/colliding? x-future) es)))
-          ;(js/alert (count (filter (partial phys/colliding? x-future) es)))
-          ;(swap! e assoc-in [:gravity] [0 0.2 0])
-          (swap! e assoc-in [:can-climb] 0)
-        ))))))
+          (swap! e assoc-in [:can-jump] 1))))))
 
 
 (defn push [entities player]
