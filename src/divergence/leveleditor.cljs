@@ -22,6 +22,7 @@
 		  width (.width canvas)
 		]
     (set-entity entities x y 0)
+    (. js/console (log "clicked " x ", " y ""))
     ))
 
 
