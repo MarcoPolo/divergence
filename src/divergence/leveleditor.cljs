@@ -3,25 +3,17 @@
             [divergence.entity :as e]))
 
 (def canvas (js/document.getElementById "game"))
-(def entities [])
 
-(defn set-entity [entities x y id]
-  (case id
-    0 (entities conj 5)
-    )
-)
 (defn parse-click [event]
 	(let [cx (.-pageX event)
 		  cy (.-pageY event)
-		  offset (.offset canvas)
-		  left-offset (.-left offset)
-		  top-offset (.-top offset)
+		  left-offset (- (.-offsetLeft event) (.-scrollLeft event))
+		  top-offset (- (.-offsetTop event) (.-scrollTop event))
 		  x (- cx left-offset)
 		  y (- cy top-offset)
-		  height (.height canvas)
-		  width (.width canvas)
+		  ;height (.height canvas)
+		  ;width (.width canvas)
 		]
-    (set-entity entities x y 0)
     (. js/console (log "clicked " x ", " y ""))
     ))
 

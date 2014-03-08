@@ -116,6 +116,7 @@
     (s/position (c->e :position))
     (s/fps-counter (c->e :fps-counter))
     (s/update-camera container (c->e :position))
+    (le/set-click (c->e :player-input))
     (js/requestAnimationFrame @animate-ref)))
 
 
