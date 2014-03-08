@@ -5,16 +5,9 @@
 (def canvas (js/document.getElementById "game"))
 
 (defn parse-click [event]
-	(let [cx (.-pageX event)
-		  cy (.-pageY event)
-		  left-offset (- (.-offsetLeft event) (.-scrollLeft event))
-		  top-offset (- (.-offsetTop event) (.-scrollTop event))
-		  x (- cx left-offset)
-		  y (- cy top-offset)
-		  ;height (.height canvas)
-		  ;width (.width canvas)
+	(let [coords (js/clickCoords event)
 		]
-    (. js/console (log "clicked " x ", " y ""))
+    (. js/console (log "clicked " (.-x coords) ", " (.-y coords)))
     ))
 
 
