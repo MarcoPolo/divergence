@@ -40,6 +40,9 @@
   [gravity-settings]
   (component :gravity gravity-settings))
 
+(defn interactive? [bool]
+  (component :interactive bool))
+
 (def items
   (component :items #{}))
 

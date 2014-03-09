@@ -265,7 +265,6 @@
       (update-camera-coords camera (nth (@e :position) 0) (nth (@e :position) 1)))))
 
 
-
 ;;SAVE/LOAD---------------------------------------------
 
 (def serial-data (atom ""))
@@ -287,3 +286,13 @@
            :when (= :bunny (@e :name))]
      (reset! e (read-string (.getItem js/localStorage "dm")))))
 )
+
+(defn interactive [entities]
+  (doseq [e entities]
+
+   (comment (let [interact (@e :interactive)]
+      (when (interact)
+        (.-setInteractive (e :ref) true)
+        )))
+
+    ))

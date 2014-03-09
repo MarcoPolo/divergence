@@ -11,7 +11,7 @@
 (def renderer (js/PIXI.autoDetectRenderer. s/screen-width s/screen-height))
 (js/document.body.appendChild (.-view renderer))
 
-(def stage (atom (js/PIXI.Stage. 0x66FF99)))
+(def stage (atom (js/PIXI.Stage. 0x66FF99 true)))
 
 (def container (atom (js/PIXI.DisplayObjectContainer.)))
 (def camera (atom (js/PIXI.DisplayObjectContainer.)))
@@ -105,6 +105,10 @@
     (s/climbing (c->e :position))
     (s/execute-actions (c->e :actions))
     (s/move-background (c->e :actions))
+
+    (s/interactive (c->e :sprite));;sets interactive property for sprites
+    (le/tray-out (c->e :sprite));;slides out level editor on hover
+
     (s/gravity (c->e :gravity))
     (s/movement-caps (c->e :velocity))
     (s/friction (c->e :acceleration))
