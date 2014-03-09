@@ -70,12 +70,7 @@
 
 (defn loadgame []
   (let [c->e @component->entities]
-  (s/deserialize (c->e :position)))
-    (reset! animate-ref nil)
-    (setup entities)
-    (reset! stage (js/PIXI.Stage. 0x66FF99))
-    (setup (entities @stage))
-    )
+  (s/deserialize (c->e :position))))
 
 (defn animate []
   (let [c->e @component->entities]

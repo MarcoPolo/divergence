@@ -216,3 +216,20 @@
                 now (.getTime (js/Date.))]]
     (.setText ref (str "FPS: " (js/Math.round (/ 1000 (- now @fps-time))))))
   (reset! fps-time (.getTime (js/Date.))))
+
+(def serial-data (atom ""))
+
+(defn save-to-local-db [data]
+  ;(js/alert @serial-data)
+  (.setItem js/localStorage "dm" data))
+
+(defn serialize [entities]
+  (doseq [e entities]
+    (if (= ":bunny" (pr-str (@e :name)))
+      (js/alert (dissoc @e :ref :sprite :stage)))))
+
+(defn deserialize [entities]
+  ;(js/alert @serial-data)
+   (doseq [e entities
+           :when (= :bunny (@e :name))]
+     (reset! e (read-string (.getItem js/localStorage "dm")))))
