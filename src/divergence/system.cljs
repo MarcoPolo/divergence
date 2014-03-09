@@ -287,12 +287,12 @@
      (reset! e (read-string (.getItem js/localStorage "dm")))))
 )
 
-(defn interactive [entities]
+(defn interactive "sets interactive to true for sprites" [entities]
   (doseq [e entities]
 
-   (comment (let [interact (@e :interactive)]
+   (comment
+     (let [interact (@e :interactive)]
       (when (interact)
-        (.-setInteractive (e :ref) true)
-        )))
-
+        (.-setInteractive (e :ref) true)))
+     )
     ))
