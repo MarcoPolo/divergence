@@ -69,3 +69,9 @@
    [x-acceleration y-acceleration rot-acceleration]"
   [gravity-settings]
   (component :gravity gravity-settings))
+
+(def can-jump
+  (component :can-jump 1))
+
+(def can-climb
+  (component :can-climb 0))

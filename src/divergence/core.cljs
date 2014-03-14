@@ -2,14 +2,15 @@
   (:require [divergence.component :as c]
             [divergence.entity :as e]
             [divergence.system :as s]
-            [divergence.leveleditor :as le]))
+            [divergence.leveleditor :as le]
+            [goog.dom :as dom]))
 
 (enable-console-print!)
 
 (def renderer (js/PIXI.autoDetectRenderer. 800 600))
 (js/document.body.appendChild (.-view renderer))
 
-(def stage (js/PIXI.Stage. 0x66FF99))
+(def stage (atom (js/PIXI.Stage. 0x66FF99)))
 
 (def entity->components
   "A map to an entity and a list of it's components"
@@ -31,7 +32,7 @@
       (swap! component->entities update-in [n] conj entity-atom))))
 
 
-(def entities
+(defn entities [stage]
   [(e/bunny stage)
    (e/some-text stage)
    ;(e/vertical-full-block 0 -40 stage)
@@ -56,9 +57,29 @@
     (s/scale (c->e :scale))))
 
 
+(defn resetGame []
+    (reset! component->entities {})
+    (reset! entity->components {})
+    (reset! entity-count 0)
+    (reset! stage (js/PIXI.Stage. 0x66FF99))
+    (setup (entities @stage)))
+
+(defn savegame []
+  (let [c->e @component->entities]
+  (s/serialize (c->e :position))))
+
+(defn loadgame []
+  (let [c->e @component->entities]
+  (s/deserialize (c->e :position)))
+    (reset! animate-ref nil)
+    (setup entities)
+    (reset! stage (js/PIXI.Stage. 0x66FF99))
+    (setup (entities @stage))
+    )
+
 (defn animate []
   (let [c->e @component->entities]
-    (.render renderer stage)
+    (.render renderer @stage)
     (s/player-input (c->e :player-input))
     (s/execute-actions (c->e :actions))
     (s/move-background (c->e :actions))
@@ -77,5 +98,5 @@
 
 (reset! animate-ref animate)
 
-(setup entities)
+(setup (entities @stage))
 (js/requestAnimationFrame @animate-ref)

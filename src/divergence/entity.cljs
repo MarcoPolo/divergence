@@ -26,9 +26,11 @@
            (c/on-stage stage)
            (c/friction 1)
            c/collidable
-           (c/scale 2 2)
+           (c/scale 1 1)
            c/accelerates
            (c/gravity [0 .2 0])
+           c/can-jump
+           c/can-climb
            ]))
 
 (defn goal [x y stage]
