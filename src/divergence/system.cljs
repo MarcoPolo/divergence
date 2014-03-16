@@ -1,6 +1,10 @@
 (ns divergence.system
   (:require [divergence.physics :as phys]))
 
+;;GLOBAL VALUES===============================================
+(def screen-width 800)
+(def screen-height 600)
+
 (defn as [entity k]
   (@entity k))
 

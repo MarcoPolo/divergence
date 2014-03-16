@@ -8,7 +8,7 @@
 (enable-console-print!)
 
 ;;DATA DECLARATIONS==============================================
-(def renderer (js/PIXI.autoDetectRenderer. 800 600))
+(def renderer (js/PIXI.autoDetectRenderer. s/screen-width s/screen-height))
 (js/document.body.appendChild (.-view renderer))
 
 (def stage (atom (js/PIXI.Stage. 0x66FF99)))
@@ -56,9 +56,11 @@
     (s/create-ref (c->e :sprite))
     (s/create-tiling-ref (c->e :tiling-sprite))
     (s/create-text (c->e :text))
+
     (s/to-stage @container (c->e :stage))
     (s/add-camera @camera @container)
     (s/on-stage @stage @camera)
+
     (s/position (c->e :position))
     (s/anchor (c->e :anchor))
     (s/scale (c->e :scale))))
