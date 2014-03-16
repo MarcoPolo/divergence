@@ -7,10 +7,14 @@
 
 (enable-console-print!)
 
+;;DATA DECLARATIONS==============================================
 (def renderer (js/PIXI.autoDetectRenderer. 800 600))
 (js/document.body.appendChild (.-view renderer))
 
 (def stage (atom (js/PIXI.Stage. 0x66FF99)))
+
+(def container (atom (js/PIXI.DisplayObjectContainer.)))
+(def camera (atom (js/PIXI.DisplayObjectContainer.)))
 
 (def entity->components
   "A map to an entity and a list of it's components"
@@ -22,8 +26,9 @@
 
 (def entity-count (atom 0))
 
-(def animate-ref (atom nil) )
+(def animate-ref (atom nil))
 
+;;GAME SETUP====================================================
 (defn register-entity! [entity]
   (let [entity-atom (atom entity)]
     (swap! entity->components assoc @entity-count entity-atom)
@@ -51,11 +56,15 @@
     (s/create-ref (c->e :sprite))
     (s/create-tiling-ref (c->e :tiling-sprite))
     (s/create-text (c->e :text))
-    (s/on-stage (c->e :stage))
+    (s/to-stage @container (c->e :stage))
+    (s/add-camera @camera @container)
+    (s/on-stage @stage @camera)
     (s/position (c->e :position))
     (s/anchor (c->e :anchor))
     (s/scale (c->e :scale))))
 
+
+;;MASTER FEATURES=================================================
 
 (defn resetGame []
     (reset! component->entities {})
@@ -72,6 +81,8 @@
   (let [c->e @component->entities]
   (s/deserialize (c->e :position))))
 
+
+;;RENDERING LOOP============================================
 (defn animate []
   (let [c->e @component->entities]
     (.render renderer @stage)
@@ -88,6 +99,7 @@
     (s/move (c->e :velocity))
     (s/position (c->e :position))
     (s/fps-counter (c->e :fps-counter))
+    (s/update-camera container (c->e :position))
     (js/requestAnimationFrame @animate-ref)))
 
 

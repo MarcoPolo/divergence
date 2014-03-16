@@ -1,19 +1,11 @@
 (ns divergence.system
   (:require [divergence.physics :as phys]))
 
-(comment
-  (defn time-point [entities id]
-    {:id id :state entities})
-
-  (defn time-line [time-point id]
-    {:id id :timepoints time-point}
-    )
-  (defn time-stream [time-line id]
-    {:id id :timelines time-line}))
-
 (defn as [entity k]
   (@entity k))
 
+
+;;PHYSICS---------------------------------------------
 (defn move-entity [entity [x-speed y-speed rot-speed]]
   (update-in entity [:position]
              #(map (partial +) [x-speed y-speed rot-speed] %)))
@@ -47,16 +39,6 @@
           (doseq [e entities]
             (when (phys/colliding? x-future @e)
               (swap! e assoc-in [:velocity 0] (* (compare x-v 0) 2)))))))))
-
-(defn goal? [entities player]
-  (doseq [p player]
-    (when (not= (@p :velocity) [0 0 0])
-      (let [{[x-v y-v rot-speed] :velocity} @p]
-        (let [x-future (move-entity @p [x-v 0 0])
-                y-future (move-entity @p [y-v 0 0])]
-          (doseq [e entities]
-            (when (and (phys/colliding? x-future @e) (= (@e :name) :goal))
-              (. js/console (log "Win")))))))))
 
 (defn friction
   [entities]
@@ -104,6 +86,20 @@
       (aset (.-position ref) "y" y)
       (aset ref "rotation" rot))))
 
+
+;;EVENT RESPONSES---------------------------------------------
+(defn goal? [entities player]
+  (doseq [p player]
+    (when (not= (@p :velocity) [0 0 0])
+      (let [{[x-v y-v rot-speed] :velocity} @p]
+        (let [x-future (move-entity @p [x-v 0 0])
+                y-future (move-entity @p [y-v 0 0])]
+          (doseq [e entities]
+            (when (and (phys/colliding? x-future @e) (= (@e :name) :goal))
+              (. js/console (log "Win")))))))))
+
+
+;;RENDERING---------------------------------------------
 (defn create-ref [entities]
   (doseq [e entities]
     (swap! e assoc :ref (js/PIXI.Sprite. (-> @e :sprite :texture)))))
@@ -115,10 +111,33 @@
 (defn player-input [entities]
   (doseq [e entities]))
 
-(defn on-stage [entities]
-  (doseq [e entities]
-    (.addChild (@e :stage) (@e :ref))))
+(defn add-camera [camera container]
+  (.addChild camera container))
 
+(defn to-stage [container entities]
+  (doseq [e entities]
+    (.addChild container (@e :ref))))
+
+(defn on-stage [stage container]
+  (.addChild stage container))
+
+(defn create-text [entities]
+  (doseq [e entities]
+    (let [style (get-in @e [:text :style])
+          text (get-in @e [:text :string])]
+      (swap! e assoc :ref (js/PIXI.Text. text style)))))
+
+(def fps-time (atom (.getTime (js/Date.))))
+
+(defn fps-counter [entities]
+  (doseq [e entities
+          :let [ref (@e :ref)
+                now (.getTime (js/Date.))]]
+    (.setText ref (str "FPS: " (js/Math.round (/ 1000 (- now @fps-time))))))
+  (reset! fps-time (.getTime (js/Date.))))
+
+
+;;KEYLISTENER AND KEY EVENTS---------------------------------------------
 (def code->key
   {32 :up
    37 :left
@@ -202,20 +221,20 @@
           (when  (= (@e :name) :bg) (swap! e assoc-in [:position] [(- x 5) y r])))))))
 
 
+;;GAME CAMERA---------------------------------------------
+(defn update-camera-coords [camera x y]
+  (set! (.-x (.-position @camera)) x);;adjust the math here
+  ;(set! (.-y (.-position @camera)) (- (@camera-coords :y) 50))
+)
 
-(defn create-text [entities]
+(defn update-camera [camera entities]
   (doseq [e entities]
-    (let [style (get-in @e [:text :style])
-          text (get-in @e [:text :string])]
-      (swap! e assoc :ref (js/PIXI.Text. text style)))))
+    (when (= (@e :name) :player)
+      (update-camera-coords camera (nth (@e :position) 0) (nth (@e :position) 1)))))
 
-(def fps-time (atom (.getTime (js/Date.))))
-(defn fps-counter [entities]
-  (doseq [e entities
-          :let [ref (@e :ref)
-                now (.getTime (js/Date.))]]
-    (.setText ref (str "FPS: " (js/Math.round (/ 1000 (- now @fps-time))))))
-  (reset! fps-time (.getTime (js/Date.))))
+
+
+;;SAVE/LOAD---------------------------------------------
 
 (def serial-data (atom ""))
 

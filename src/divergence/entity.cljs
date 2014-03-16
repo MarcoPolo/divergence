@@ -17,7 +17,7 @@
 
 
 (defn bunny [stage]
-  (entity [(c/named :bunny)
+  (entity [(c/named :player)
            (c/sprite bunnyTexture)
            c/create-ref
            c/player-input
