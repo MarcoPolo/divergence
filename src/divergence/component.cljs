@@ -75,3 +75,6 @@
 
 (def can-climb
   (component :can-climb 0))
+
+(def climb
+  (component :climbing false))
