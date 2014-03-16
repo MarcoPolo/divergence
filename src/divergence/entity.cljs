@@ -6,6 +6,7 @@
 (def boxTexture (js/PIXI.Texture.fromImage "assets/img/box.png"))
 (def goalTexture (js/PIXI.Texture.fromImage "assets/img/door.png"))
 (def bgTexture (js/PIXI.Texture.fromImage "assets/img/background.png"))
+(def ropeTexture (js/PIXI.Texture.fromImage "assets/img/rope.png"))
 
 (defn entity [components]
   (reduce
@@ -90,6 +91,13 @@
 
 (def regular-block
   (partial block .1 .1))
+
+(defn rope-block [x y stage]
+  (entity [(c/named :rope)
+           (c/sprite ropeTexture)
+           (c/position x y 0)
+           (c/on-stage stage)
+           (c/scale 1 1)]))
 
 (defn some-text [stage]
   (entity [(c/named :fps-counter)
