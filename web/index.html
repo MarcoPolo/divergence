@@ -35,14 +35,8 @@
                 <br>
             </header>
 
-            <section class="game-container">
+            <section id="game-container">
              <div id="game">
-                    <script type="text/javascript">goog.require("divergence.core");</script>
-                    <script>function callResetGame(){divergence.core.resetGame()}</script>
-                    <script>function callSaveGame(){divergence.core.savegame()}</script>
-                    <script>function callLoadGame(){divergence.core.loadgame()}</script>
-                    <script>function callTest(){divergence.core.test()}</script>
-                    <br><br>
                     <button onclick="callResetGame()">Reset</button>
                     <button onclick="callSaveGame()">Save</button>
                     <button onclick="callLoadGame()">Load</button>
@@ -50,4 +44,9 @@
               </div>
 			</section>
     </body>
+    <script type="text/javascript">goog.require("divergence.core");</script>
+    <script>function callResetGame(){divergence.core.resetGame()}</script>
+    <script>function callSaveGame(){divergence.core.savegame()}</script>
+    <script>function callLoadGame(){divergence.core.loadgame()}</script>
+    <script>function callTest(){divergence.core.test()}</script>
 </html>

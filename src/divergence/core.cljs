@@ -8,7 +8,7 @@
 (enable-console-print!)
 
 (def renderer (js/PIXI.autoDetectRenderer. 800 600))
-(js/document.body.appendChild (.-view renderer))
+(.appendChild (js/document.getElementById "game-container") (.-view renderer))
 
 (def stage (atom (js/PIXI.Stage. 0x66FF99)))
 

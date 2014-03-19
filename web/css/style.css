@@ -70,6 +70,12 @@ a{
 	position: relative;
 	text-align: center;
 }
+
+#game-container{
+	height: 600px;
+	width: 800px;
+	margin: auto;
+}
 .clr{
 	clear: both;
 }
