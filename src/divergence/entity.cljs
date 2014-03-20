@@ -31,7 +31,7 @@
            c/accelerates
            (c/gravity [0 .2 0])
            c/can-jump
-           c/can-climb
+           c/climbing
            ]))
 
 (defn goal [x y stage]
@@ -97,7 +97,10 @@
            (c/sprite ropeTexture)
            (c/position x y 0)
            (c/on-stage stage)
-           (c/scale 1 1)]))
+           (c/scale 0.5 5)
+           c/create-ref
+           c/can-climb
+           ]))
 
 (defn some-text [stage]
   (entity [(c/named :fps-counter)

@@ -40,7 +40,8 @@
 (defn entities [stage]
   [(e/bunny stage)
    (e/some-text stage)
-   ;(e/vertical-full-block 0 -40 stage)
+   (e/vertical-full-block 0 -40 stage)
+   (e/rope-block 40 40 stage)
    ;(e/vertical-full-block 760 -40 stage)
    (e/regular-block 380 520 stage)
    (e/horizontal-full-block 0 560 stage)
@@ -89,6 +90,7 @@
   (let [c->e @component->entities]
     (.render renderer @stage)
     (s/player-input (c->e :player-input))
+    (s/climbing (c->e :position))
     (s/execute-actions (c->e :actions))
     (s/move-background (c->e :actions))
     (s/gravity (c->e :gravity))

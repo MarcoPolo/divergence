@@ -10,6 +10,27 @@
 
 
 ;;PHYSICS---------------------------------------------
+(defn climbing? [player entities]
+  (doseq [e entities
+          :let [cond1 (phys/colliding? @player @e)
+                cond2 (@e :can-climb)
+               ]]
+    (if (and cond1 cond2)
+      (do
+        (swap! player assoc-in [:climbing] 1)
+        (swap! player assoc-in [:gravity] [0 0 0])
+        (swap! player assoc-in [:acceleration] [0 -10 0])
+        )
+      (do
+        (swap! player assoc-in [:climbing] 0)
+        (swap! player assoc-in [:gravity] [0 0.2 0]))
+      )))
+
+(defn climbing [entities]
+  (doseq [e entities]
+    (when (= (@e :name) :player)
+        (climbing? e entities))))
+
 (defn move-entity [entity [x-speed y-speed rot-speed]]
   (update-in entity [:position]
              #(map (partial +) [x-speed y-speed rot-speed] %)))
@@ -27,12 +48,10 @@
       (let [x-future (move-entity @e [x-v 0 0])
             y-future (move-entity @e [0 y-v 0])]
         (when (< 1 (count (filter (partial phys/colliding? x-future) es)))
-          (swap! e assoc-in [:velocity 0] 0)
-          (swap! e assoc-in [:can-climb] 1)) ;when character hits wall, can climb
+          (swap! e assoc-in [:velocity 0] 0))
         (when (< 1 (count (filter (partial phys/colliding? y-future) es)))
           (swap! e assoc-in [:velocity 1] 0)
           (swap! e assoc-in [:can-jump] 1))))))
-
 
 (defn push [entities player]
   (doseq [p player]
@@ -173,24 +192,21 @@
       (when
         (actions :left)
         (swap! e assoc-in [:acceleration] [-3 0 0])
-        (swap! e assoc-in [:can-climb] 0) ;when pressing left, turn gravity back on and climb mode off
+        (swap! e assoc-in [:climbing] 0) ;when pressing left, turn gravity back on and climb mode off
         (swap! e assoc-in [:gravity] [0 0.2 0]))
       (when
         (actions :right)
         (swap! e assoc-in [:acceleration] [3 0 0])
-        (swap! e assoc-in [:can-climb] 0) ;when pressing right, turn gravity back on and climb mode off
+        (swap! e assoc-in [:climbing] 0) ;when pressing right, turn gravity back on and climb mode off
         (swap! e assoc-in [:gravity] [0 0.2 0]))
       (when
-        (actions :down) (swap! e assoc-in [:acceleration] [0 1 0]))
+        (actions :down)
+        (swap! e assoc-in [:acceleration] [0 1 0]))
       (when
         (and (= (@e :can-jump) 1) (actions :up))
-        (swap! e assoc-in [:acceleration] [0 -2 0])
-        (swap! e assoc-in [:can-jump] 0)) ;caps the jump
+        (swap! e assoc-in [:acceleration] [0 -4 0])
+        (swap! e assoc-in [:can-jump] 0))
 
-      (when
-        (and (= (@e :can-climb) 1) (actions :up)) ;climb function
-        (swap! e assoc-in [:acceleration] [0 -2 0])
-        (swap! e assoc-in [:gravity] [0 0 0])) ;turns off the gravity
       (when (not-any? actions [:up :left :right :down])
         (swap! e assoc-in [:acceleration] [0 0 0])))))
 
@@ -211,13 +227,13 @@
                 [x y r] (@e :position)
                 ]]
     (when actions
-      (when (and (actions :left) (= (@e :name) :bunny) (not (zero? (nth (@e :velocity) 0))))
+      (when (and (actions :left) (= (@e :name) :player) (not (zero? (nth (@e :velocity) 0))))
         (doseq [e entities
                 :let [actions (@e :actions)
                      [x y r] (@e :position)
                 ]]
           (when  (= (@e :name) :bg) (swap! e assoc-in [:position] [(+ x 5) y r]))))
-      (when (and (actions :right) (= (@e :name) :bunny) (not (zero? (nth (@e :velocity) 0))))
+      (when (and (actions :right) (= (@e :name) :player) (not (zero? (nth (@e :velocity) 0))))
         (doseq [e entities
                 :let [actions (@e :actions)
                      [x y r] (@e :position)
@@ -235,8 +251,6 @@
   (doseq [e entities]
     (when (= (@e :name) :player)
       (update-camera-coords camera (nth (@e :position) 0) (nth (@e :position) 1)))))
-
-
 
 ;;SAVE/LOAD---------------------------------------------
 
