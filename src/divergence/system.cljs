@@ -260,6 +260,8 @@
   ;(js/alert @serial-data)
   (.setItem js/localStorage "dm" data))
 
+(comment
+  "Not sure what read-string refers to, but commenting out for now, since undeclared"
 (defn serialize [entities]
   (doseq [e entities]
     (if (= ":bunny" (pr-str (@e :name)))
@@ -270,3 +272,4 @@
    (doseq [e entities
            :when (= :bunny (@e :name))]
      (reset! e (read-string (.getItem js/localStorage "dm")))))
+)
