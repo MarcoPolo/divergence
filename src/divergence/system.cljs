@@ -225,17 +225,20 @@
   ;(js/alert @serial-data)
   (.setItem js/localStorage "dm" data))
 
-(defn serialize [entities]
+
+(comment
+ "Is read-string supposed to be a js function? Can't find it here"
+ (defn serialize [entities]
   (doseq [e entities]
     (if (= ":bunny" (pr-str (@e :name)))
       ;(js/alert (dissoc @e :ref :sprite :stage))
       ;(js/alert (read-string ("[250 250 0]")))
       (swap! e assoc-in [:position] (read-string "[250 250 0]"))
       )))
-      ;(js/alert (dissoc @e :ref :sprite :stage)))))
 
 (defn deserialize [entities]
   ;(js/alert @serial-data)
    (doseq [e entities
            :when (= :bunny (@e :name))]
      (reset! e (read-string (.getItem js/localStorage "dm")))))
+)
