@@ -248,9 +248,19 @@
 (defn use-item [entities]
   ())
 
-;;GAME CAMERA---------------------------------------------
+;;GAME CAMERA============================================
+(def screenWidth 800) ;not needed
+(def screenHeight 600) ;not needed
+
+(defn cameraXCheck [x]
+  (if (< x screenWidth) true false)) ;replace screenWidth with a levelWidth once it exists
+
 (defn update-camera-coords [camera x y]
-  (set! (.-x (.-position @camera)) x);;adjust the math here
+  (set! (.-x (.-position @camera)) (if (= (cameraXCheck x) true) (* -1 (- x 375)) (* x 0)))
+  ;;when the camera hits the end of the screen (screenWidth), it should stop scrolling
+  ;;right now when player hits edge of the screen he vanishes. (This is okay, final
+  ;;product will have object boundaries to prevent this)
+
   ;(set! (.-y (.-position @camera)) (- (@camera-coords :y) 50))
 )
 
