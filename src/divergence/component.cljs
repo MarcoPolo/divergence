@@ -34,6 +34,15 @@
 (defn named [n]
   (component :name n))
 
+(defn gravity
+  "Gravity settings should be:
+   [x-acceleration y-acceleration rot-acceleration]"
+  [gravity-settings]
+  (component :gravity gravity-settings))
+
+(defn items [stage]
+  (component :items {}))
+
 (def create-ref
   "Create a reference to the PIXI object"
   (component :create-ref true))
@@ -64,12 +73,6 @@
 (def accelerates
   (component :acceleration [0 0 0]))
 
-(defn gravity
-  "Gravity settings should be:
-   [x-acceleration y-acceleration rot-acceleration]"
-  [gravity-settings]
-  (component :gravity gravity-settings))
-
 (def can-jump
   (component :can-jump 1))
 
@@ -78,3 +81,5 @@
 
 (def climbing
   (component :climbing 0))
+
+
