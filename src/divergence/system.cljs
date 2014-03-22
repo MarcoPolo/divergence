@@ -243,6 +243,11 @@
           (when  (= (@e :name) :bg) (swap! e assoc-in [:position] [(- x 5) y r])))))))
 
 
+(defn pick-up [entities]
+  ())
+(defn use-item [entities]
+  ())
+
 ;;GAME CAMERA---------------------------------------------
 (defn update-camera-coords [camera x y]
   (set! (.-x (.-position @camera)) x);;adjust the math here

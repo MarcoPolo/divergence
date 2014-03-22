@@ -40,8 +40,8 @@
   [gravity-settings]
   (component :gravity gravity-settings))
 
-(defn items [stage]
-  (component :items {}))
+(def items
+  (component :items #{}))
 
 (def create-ref
   "Create a reference to the PIXI object"

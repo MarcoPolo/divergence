@@ -1,12 +1,14 @@
 (ns divergence.entity
   (:require [divergence.component :as c]))
 
-(def bunnyTexture (js/PIXI.Texture.fromImage "assets/img/bunny.png"))
+(def normal-gravity 0.2)
+(def playerTexture (js/PIXI.Texture.fromImage "assets/img/bunny.png"))
 (def blockTexture (js/PIXI.Texture.fromImage "assets/img/Brick_Block.png"))
 (def boxTexture (js/PIXI.Texture.fromImage "assets/img/box.png"))
 (def goalTexture (js/PIXI.Texture.fromImage "assets/img/door.png"))
 (def bgTexture (js/PIXI.Texture.fromImage "assets/img/background.png"))
 (def ropeTexture (js/PIXI.Texture.fromImage "assets/img/rope.png"))
+;(def keyTexture (js/PIXI.Texture.fromImage "assets/img/key.png"))
 
 (defn entity [components]
   (reduce
@@ -16,20 +18,21 @@
    components))
 
 
-(defn bunny [stage]
+(defn player [stage]
   (entity [(c/named :player)
-           (c/sprite bunnyTexture)
+           (c/sprite playerTexture)
+           (c/position 90 50 0)
+           (c/on-stage stage)
+           (c/friction 1)
+           (c/scale 1 1)
+           (c/gravity [0 normal-gravity 0])
+           c/items
+           c/collidable
            c/create-ref
            c/player-input
            c/has-actions
            c/movable
-           (c/position 90 50 0)
-           (c/on-stage stage)
-           (c/friction 1)
-           c/collidable
-           (c/scale 1 1)
            c/accelerates
-           (c/gravity [0 .2 0])
            c/can-jump
            c/climbing
            ]))
@@ -77,7 +80,7 @@
            c/pushable
            c/collidable
            (c/friction 1)
-           (c/gravity [0 .2 0])
+           (c/gravity [0 normal-gravity 0])
            (c/position x y 0)
            (c/on-stage stage)
            (c/scale .5 .5)
@@ -109,3 +112,12 @@
            c/fps-counter
            (c/on-stage stage)]))
 
+(comment (defn key-block [x y stage]
+  (entity [(c/named :key)
+           (c/sprite keyTexture)
+           (c/position x y 0)
+           (c/on-stage stage)
+           (c/scale 0.5 0.5)
+           c/create-ref
+           c/gravity
+           ])))
