@@ -3,6 +3,7 @@
             [divergence.system :as s]))
 
 (def normal-gravity 0.2)
+
 (def playerTexture (js/PIXI.Texture.fromImage "assets/img/player.png"))
 (def blockTexture (js/PIXI.Texture.fromImage "assets/img/Brick_Block.png"))
 (def boxTexture (js/PIXI.Texture.fromImage "assets/img/box.png"))
@@ -10,6 +11,7 @@
 (def bgTexture (js/PIXI.Texture.fromImage "assets/img/background.png"))
 (def ropeTexture (js/PIXI.Texture.fromImage "assets/img/rope.png"))
 (def keyTexture (js/PIXI.Texture.fromImage "assets/img/key.png"))
+
 
 (defn entity [components]
   (reduce
