@@ -38,7 +38,7 @@
 
 
 (defn entities [stage]
-  [(e/bunny stage)
+  [(e/player stage)
    (e/some-text stage)
    (e/vertical-full-block 0 -40 stage)
    (e/rope-block 40 40 stage)
