@@ -40,13 +40,25 @@
 (defn entities [stage]
   [(e/player stage)
    (e/some-text stage)
+
+   (e/rope-block 950 40 stage)
+   (e/key-block 500 510 stage)
+
    (e/vertical-full-block 0 -40 stage)
-   (e/rope-block 40 40 stage)
-   ;(e/vertical-full-block 760 -40 stage)
-   (e/regular-block 380 520 stage)
    (e/horizontal-full-block 0 560 stage)
-   (e/box 300 300 stage)
-   (e/goal 700 485 stage)
+   (e/horizontal-full-block 800 560 stage)
+   (e/vertical-full-block 1560 -40 stage)
+
+   (e/regular-block 1000 520 stage)
+   (e/regular-block 1000 460 stage)
+   (e/regular-block 1000 420 stage)
+   (e/regular-block 1000 360 stage)
+
+   (e/box 400 300 stage)
+   (e/box 400 100 stage)
+
+   (e/goal 1300 485 stage)
+
    (e/background stage)
    ])
 

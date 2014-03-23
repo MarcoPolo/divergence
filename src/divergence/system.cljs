@@ -4,8 +4,8 @@
 ;;GLOBAL VALUES===============================================
 (def camera-width 900)
 (def camera-height 506)
-(def level-width 1600)
-(def level-height 900)
+(def level-width 3200)
+(def level-height 506)
 
 (defn as [entity k]
   (@entity k))
@@ -131,7 +131,7 @@
 
 (defn create-tiling-ref [entities]
   (doseq [e entities]
-    (swap! e assoc :ref (js/PIXI.TilingSprite. (-> @e :tiling-sprite :texture) 400 400))))
+    (swap! e assoc :ref (js/PIXI.TilingSprite. (-> @e :tiling-sprite :texture) level-width (* level-height 2)))))
 
 (defn player-input [entities]
   (doseq [e entities]))
@@ -141,7 +141,7 @@
 
 (defn to-stage [container entities]
   (doseq [e entities]
-    (.addChild container (@e :ref))))
+      (.addChild container (@e :ref))))
 
 (defn on-stage [stage container]
   (.addChild stage container))
@@ -254,7 +254,7 @@
 
 (defn update-camera-coords [camera x y]
   (set! (.-x (.-position @camera)) (if (camera-x-check x)
-                                     (* -1 (- x 375))
+                                     (* -1 (- x (/ camera-width 3)))
                                      (- x 0)))
   ;(set! (.-y (.-position @camera)) (- (@camera-coords :y) 50))
 )
@@ -263,6 +263,8 @@
   (doseq [e entities]
     (when (= (@e :name) :player)
       (update-camera-coords camera (nth (@e :position) 0) (nth (@e :position) 1)))))
+
+
 
 ;;SAVE/LOAD---------------------------------------------
 

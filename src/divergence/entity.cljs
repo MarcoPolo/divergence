@@ -1,14 +1,15 @@
 (ns divergence.entity
-  (:require [divergence.component :as c]))
+  (:require [divergence.component :as c]
+            [divergence.system :as s]))
 
 (def normal-gravity 0.2)
-(def playerTexture (js/PIXI.Texture.fromImage "assets/img/bunny.png"))
+(def playerTexture (js/PIXI.Texture.fromImage "assets/img/player.png"))
 (def blockTexture (js/PIXI.Texture.fromImage "assets/img/Brick_Block.png"))
 (def boxTexture (js/PIXI.Texture.fromImage "assets/img/box.png"))
 (def goalTexture (js/PIXI.Texture.fromImage "assets/img/door.png"))
 (def bgTexture (js/PIXI.Texture.fromImage "assets/img/background.png"))
 (def ropeTexture (js/PIXI.Texture.fromImage "assets/img/rope.png"))
-;(def keyTexture (js/PIXI.Texture.fromImage "assets/img/key.png"))
+(def keyTexture (js/PIXI.Texture.fromImage "assets/img/key.png"))
 
 (defn entity [components]
   (reduce
@@ -21,10 +22,10 @@
 (defn player [stage]
   (entity [(c/named :player)
            (c/sprite playerTexture)
-           (c/position 90 50 0)
+           (c/position (/ s/camera-width 3) (/ s/camera-height 3) 0)
            (c/on-stage stage)
            (c/friction 1)
-           (c/scale 1 1)
+           (c/scale 0.4 0.4)
            (c/gravity [0 normal-gravity 0])
            c/items
            c/collidable
@@ -50,12 +51,13 @@
 (defn background [stage]
   (entity [(c/named :bg)
            (c/sprite bgTexture)
+           (c/tiling-sprite bgTexture)
            (c/on-stage stage)
            c/has-actions
            c/player-input
            c/create-ref
            c/movable
-           (c/position -500 -200 0)
+           (c/position -500 0 0)
            (c/scale 1 1)
            ]))
 
@@ -107,12 +109,12 @@
 
 (defn some-text [stage]
   (entity [(c/named :fps-counter)
-           (c/text "Hello World" #js {:font "20px Arial" :fill "black"})
+           (c/text "Hello World" #js {:font "20px Arial" :fill "white"})
            (c/position 20 10 0)
            c/fps-counter
            (c/on-stage stage)]))
 
-(comment (defn key-block [x y stage]
+(defn key-block [x y stage]
   (entity [(c/named :key)
            (c/sprite keyTexture)
            (c/position x y 0)
@@ -120,4 +122,4 @@
            (c/scale 0.5 0.5)
            c/create-ref
            c/gravity
-           ])))
+           ]))
