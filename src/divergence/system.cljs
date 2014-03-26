@@ -175,11 +175,13 @@
 (aset js/document.body "onkeydown" (fn [e]
                                      (let [k (code->key (.-keyCode e))]
                                        (when k
+                                         (.preventDefault e)
                                          (swap! key-inputs conj k)))))
 
 (aset js/document.body "onkeyup" (fn [e]
                                      (let [k (code->key (.-keyCode e))]
                                        (when k
+                                         (.preventDefault e)
                                          (swap! key-inputs disj k)))))
 
 (defn player-input [entities]
