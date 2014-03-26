@@ -168,7 +168,8 @@
    37 :left
    38 :up
    39 :right
-   40 :down})
+   40 :down
+   80 :p})
 
 (def key-inputs (atom #{}))
 
@@ -193,6 +194,9 @@
           :let [actions (@e :actions)
                 [ax ay ar] (@e :acceleration)]]
     (when actions
+    (when
+        (actions :p)
+        (js/ShowMenu))
       (when
         (actions :left)
         (swap! e assoc-in [:acceleration] [-3 0 0])

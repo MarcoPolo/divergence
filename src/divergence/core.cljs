@@ -9,7 +9,7 @@
 
 ;;DATA DECLARATIONS==============================================
 (def renderer (js/PIXI.autoDetectRenderer. s/screen-width s/screen-height))
-(js/document.body.appendChild (.-view renderer))
+(.appendChild (js/document.getElementById "game-container") (.-view renderer))
 
 (def stage (atom (js/PIXI.Stage. 0x66FF99)))
 
