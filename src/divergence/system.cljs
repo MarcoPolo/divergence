@@ -1,5 +1,6 @@
 (ns divergence.system
-  (:require [divergence.physics :as phys]))
+  (:require [divergence.physics :as phys]
+            [divergence.leveleditor :as le]))
 
 ;;GLOBAL VALUES===============================================
 (def camera-width 900)
@@ -287,12 +288,12 @@
      (reset! e (read-string (.getItem js/localStorage "dm")))))
 )
 
+
 (defn interactive "sets interactive to true for sprites" [entities]
   (doseq [e entities]
-
-   (comment
-     (let [interact (@e :interactive)]
-      (when (interact)
-        (.-setInteractive (e :ref) true)))
-     )
-    ))
+     (let [interact (@e :interactive)
+           sprite (@e :ref)]
+      (when (= interact 1)
+        (set! (.-interactive sprite) true)
+        ;(when (= (@e :name) :tray) (set! (.-mouseover sprite) le/tray-out))
+        ))))

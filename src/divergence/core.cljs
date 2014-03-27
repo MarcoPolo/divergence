@@ -38,7 +38,8 @@
 
 
 (defn entities [stage]
-  [(e/player stage)
+  [(le/tray 0 0 stage)
+   (e/player stage)
    (e/some-text stage)
 
    (e/rope-block 950 40 stage)
@@ -120,7 +121,7 @@
     (s/position (c->e :position))
     (s/fps-counter (c->e :fps-counter))
     (s/update-camera container (c->e :position))
-    (le/set-click (c->e :player-input))
+    (le/set-click)
     (js/requestAnimationFrame @animate-ref)))
 
 
