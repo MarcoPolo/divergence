@@ -108,7 +108,6 @@
     (s/move-background (c->e :actions))
 
     (s/interactive (c->e :sprite));;sets interactive property for sprites
-    (le/tray-out (c->e :sprite));;slides out level editor on hover
 
     (s/gravity (c->e :gravity))
     (s/movement-caps (c->e :velocity))
