@@ -4,6 +4,7 @@
             [divergence.system :as s]
             [divergence.leveleditor :as le]
             [goog.dom :as dom]
+            [divergence.timeviz]
             [divergence.system.time-travel :as tt]))
 
 (enable-console-print!)
@@ -153,6 +154,9 @@
 
     ;; FPS counter
     (s/fps-counter (c->e :fps-counter))
+
+    ;; Time viz
+    (divergence.timeviz/render-stage)
 
     (s/update-camera container (c->e :position))
     (s/pick-drop-item (c->e :position))
