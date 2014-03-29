@@ -1,4 +1,5 @@
-(ns divergence.system.time-travel)
+(ns divergence.system.time-travel
+  (:require [divergence.entity :as e]))
 
 (def sample-entity {:foo 0 :bar 1})
 
@@ -7,7 +8,7 @@
     {:prev-node [0 0] :value (update-in sample-entity [:foo] inc)}]])
 
 (defn create-timestream [origin-entity]
-  [[{:prev-node :origin :entity origin-entity}]])
+  [[{:prev-node [0 1] :entity origin-entity}]])
 
 (defn conj-to-timestream [timestream timeline prev-node value]
   (update-in timestream [timeline] (fnil conj []) {:prev-node prev-node :value value}))
@@ -33,13 +34,18 @@
 
 
 (defn save-entities-to-timestream! [timestream-entity entities]
-  (let [{:keys [prev-node timeline]} (:timestream @timestream-entity)]
+  (let [{:keys [prev-node timeline timestream]} (:timestream @timestream-entity)]
     ;; We've traveled back in time so we need to create a new timeline
     (when (get-in @timestream-entity [:timestream :traveled-back])
+
+      #_(println "Entity: " (get-in timestream prev-node))
+
+
       (swap! timestream-entity assoc-in [:timestream :traveled-back] false)
       (swap! timestream-entity assoc-in [:timestream :prev-node] [(inc timeline) 0])
       (swap! timestream-entity update-in [:timestream :timeline] inc)
       ;; TODO create a new entity that lives on the other timeline
+      (println (keys (:timestream @timestream-entity)))
       )
     (let [{:keys [timestream timeline traveled-back]} (:timestream @timestream-entity)]
       (swap! timestream-entity
@@ -49,22 +55,18 @@
 (defn update-prev-node! [timestream-entity]
   (swap! timestream-entity update-in [:timestream :prev-node 1] inc))
 
-(def once (atom true))
-
-(js/setInterval #(reset! once true) 500)
-
 (defn travel-back-in-time [timestream-entity player-entity]
   ;;TODO fix this so it isn't just looking at the player entity
   ;;TODO fix so we update more than just the player
   (let [actions (@player-entity :actions)]
-    (when (and (actions :shift) @once)
-      #_(reset! once false)
+    (when (actions :shift)
       ;; Reverse time
       (let [{:keys [timestream timeline prev-node]} (:timestream @timestream-entity)
             time (count (timestream timeline))
             time-flux-capacitor-value 1
             base-node (reverse-time timestream prev-node time-flux-capacitor-value)
             old-entity (first (:value (get-in timestream base-node)))]
+
         (println "timeline is" timeline)
         (println "time is" timeline)
         (println "prev-node is" prev-node)
@@ -73,11 +75,7 @@
         (when old-entity
           (reset! player-entity old-entity)
           (swap! timestream-entity assoc-in [:timestream :traveled-back] true)
-          #_(swap! timestream-entity assoc-in [:timestream :timeline] (first base-node))
-          #_(swap! timestream-entity assoc-in [:timestream :time] (second base-node))
-          #_(swap! timestream-entity assoc-in [:timestream :timestream (inc timeline)] [{:prev-node ((get-in timestream base-node) :prev-node) :value [old-entity]}])
-          (swap! timestream-entity assoc-in [:timestream :prev-node] base-node))
-        ))))
+          (swap! timestream-entity assoc-in [:timestream :prev-node] base-node))))))
 
 (defn time-tick [timestream entities]
   (let [actions (@(first entities) :actions)]
@@ -86,6 +84,27 @@
       (save-entities-to-timestream! timestream entities)
       (update-prev-node! timestream))
     ))
+
+
+(defn time-tick-divergent-entities
+  "This will simple update the time of the divergent entities.
+   The difference between this and th other time tick, is that this
+   does not modify the timestream."
+  [timestream entities]
+  (doseq [e entities
+          :let [{:keys [timeline prev-node]} (:divergent @e)
+                new-entity (first (:value (get-in timestream )))]]
+    ;; Update the plaer
+    ;; TODO
+    #_(swap! e )))
+
+(defn update-divergent-entities
+  "This will do the actual update to the values of divergent entities"
+  [timestream entities]
+  (doseq [e entities
+          :let [{:keys [timeline prev-node]} (:divergent @e)]]
+    ;; Update the plaer
+    (swap! e )))
 
 (comment
   (def ts (atom (divergence.entity.entity [(divergence.component.timestream)])))

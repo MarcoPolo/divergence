@@ -69,6 +69,7 @@
    #_(e/vertical-full-block 760 -40 stage)
    #_(e/horizontal-full-block 0 560 stage)
    #_(e/timestream)
+   (e/timestream)
    ])
 
 (comment
