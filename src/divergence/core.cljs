@@ -9,6 +9,7 @@
 
 ;;DATA DECLARATIONS==============================================
 (def renderer (js/PIXI.autoDetectRenderer. s/screen-width s/screen-height))
+(aset (.-view renderer) "id" "stage")
 (js/document.body.appendChild (.-view renderer))
 
 (def stage (atom (js/PIXI.Stage. 0x66FF99 true)))
@@ -36,29 +37,12 @@
     (doseq [[n component] entity]
       (swap! component->entities update-in [n] conj entity-atom))))
 
+(def entity-list)
 
 (defn entities [stage]
-  [(le/tray 0 0 stage)
+  [;(le/tray 0 0 stage)
    (e/player stage)
    (e/some-text stage)
-
-   (e/rope-block 950 40 stage)
-   (e/key-block 500 510 stage)
-
-   (e/vertical-full-block 0 -40 stage)
-   (e/horizontal-full-block 0 560 stage)
-   (e/horizontal-full-block 800 560 stage)
-   (e/vertical-full-block 1560 -40 stage)
-
-   (e/regular-block 1000 520 stage)
-   (e/regular-block 1000 460 stage)
-   (e/regular-block 1000 420 stage)
-   (e/regular-block 1000 360 stage)
-
-   (e/box 400 300 stage)
-   (e/box 400 100 stage)
-
-   (e/goal 1300 485 stage)
 
    (e/background stage)
    ])
@@ -87,7 +71,7 @@
     (reset! entity->components {})
     (reset! entity-count 0)
     (reset! stage (js/PIXI.Stage. 0x66FF99))
-    (setup (entities @stage)))
+    (setup entity-list))
 
 (defn savegame []
   (let [c->e @component->entities]
@@ -101,23 +85,27 @@
 ;;RENDERING LOOP============================================
 (defn animate []
   (let [c->e @component->entities]
+    (when (not (nil? le/level))
+      (def entity-list (reverse (cons (first (reverse entity-list)) (cons le/level (rest (reverse entity-list))))))
+      (resetGame)
+      (le/lreset))
     (.render renderer @stage)
     (s/player-input (c->e :player-input))
-    (s/climbing (c->e :position))
-    (s/execute-actions (c->e :actions))
-    (s/move-background (c->e :actions))
+;;     (s/climbing (c->e :position))
+;;     (s/execute-actions (c->e :actions))
+;;     (s/move-background (c->e :actions))
 
-    (s/interactive (c->e :sprite));;sets interactive property for sprites
+;;     (s/interactive (c->e :sprite));;sets interactive property for sprites
 
-    (s/gravity (c->e :gravity))
-    (s/movement-caps (c->e :velocity))
-    (s/friction (c->e :acceleration))
-    (s/accelerate (c->e :acceleration))
-    (s/push (c->e :pushable) (c->e :player-input))
-    (s/goal? (c->e :collidable) (c->e :player-input))
-    (s/collide (c->e :collidable))
-    (s/move (c->e :velocity))
-    (s/position (c->e :position))
+;;     (s/gravity (c->e :gravity))
+;;     (s/movement-caps (c->e :velocity))
+;;     (s/friction (c->e :acceleration))
+;;     (s/accelerate (c->e :acceleration))
+;;     (s/push (c->e :pushable) (c->e :player-input))
+;;     (s/goal? (c->e :collidable) (c->e :player-input))
+;;     (s/collide (c->e :collidable))
+;;     (s/move (c->e :velocity))
+;;     (s/position (c->e :position))
     (s/fps-counter (c->e :fps-counter))
     (s/update-camera container (c->e :position))
     (le/set-click)
@@ -125,6 +113,7 @@
 
 
 (reset! animate-ref animate)
-
-(setup (entities @stage))
+(le/setup stage)
+(def entity-list (entities @stage))
+(setup entity-list)
 (js/requestAnimationFrame @animate-ref)

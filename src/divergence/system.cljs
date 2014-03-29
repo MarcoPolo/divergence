@@ -1,6 +1,6 @@
 (ns divergence.system
-  (:require [divergence.physics :as phys]
-            [divergence.leveleditor :as le]))
+  (:require [divergence.physics :as phys]))
+            ;[divergence.leveleditor :as le]))
 
 ;;GLOBAL VALUES===============================================
 (def camera-width 900)

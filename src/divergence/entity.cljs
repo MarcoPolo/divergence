@@ -85,7 +85,7 @@
            (c/gravity [0 normal-gravity 0])
            (c/position x y 0)
            (c/on-stage stage)
-           (c/scale .5 .5)
+           (c/scale 1 1)
            ]))
 
 (def horizontal-full-block
