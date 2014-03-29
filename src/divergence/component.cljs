@@ -67,14 +67,24 @@
   [gravity-settings]
   (component :gravity gravity-settings))
 
+
+;; Time travel stuff
+
 (defn time-based-state
   "Anything whose state (e.g. position, velocity...) changes based of time. You should name it so it is recognizable in the timestream"
   [name]
-  (component :time-base-state name))
+  (component :time-based-state name))
 
 (defn timestream
   "stores time-based state"
   []
   (component :timestream {:timestream []
                           :timeline 0
-                          :prev-node :origin}))
+                          :prev-node [0 1]}))
+(defn divergent
+  "Anything that exists in a divergent timeline"
+  []
+  (component :divergent {:timeline 0
+                         :prev-node [0 0]
+                         :current-node [0 0]}))
+

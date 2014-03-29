@@ -44,7 +44,7 @@
 
 (defn some-text [stage]
   (entity [(c/named :fps-counter)
-           (c/text "Hello World" #js {:font "20px Arial" :fill "black"})
+           (c/text "Hello World" #js {:font "20px Arial" :fill "white"})
            (c/position 20 10 0)
            c/fps-counter
            (c/on-stage stage)]))

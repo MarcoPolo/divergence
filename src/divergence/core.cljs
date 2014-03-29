@@ -9,7 +9,7 @@
 (def renderer (js/PIXI.autoDetectRenderer. 800 600))
 (js/document.body.appendChild (.-view renderer))
 
-(def stage (js/PIXI.Stage. 0x66FF99))
+(def stage (js/PIXI.Stage. 0x181818))
 
 (def entity->components
   "A map to an entity and a list of it's components"
@@ -37,8 +37,7 @@
    (e/vertical-full-block 0 -40 stage)
    (e/vertical-full-block 760 -40 stage)
    (e/horizontal-full-block 0 560 stage)
-   (e/timestream)
-   ])
+   (e/timestream)])
 
 (defn setup [entities]
   ;; Register all the entities in our maps
