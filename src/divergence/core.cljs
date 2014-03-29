@@ -2,7 +2,9 @@
   (:require [divergence.component :as c]
             [divergence.entity :as e]
             [divergence.system :as s]
-            [divergence.system.time-travel :as tt]))
+            [divergence.system.time-travel :as tt]
+            [divergence.timeviz]
+            [divergence.schema]))
 
 (enable-console-print!)
 
@@ -84,6 +86,9 @@
 
     ;; FPS counter
     (s/fps-counter (c->e :fps-counter))
+
+    ;; Time viz
+    (divergence.timeviz/render-stage)
 
     (js/requestAnimationFrame @animate-ref)))
 
