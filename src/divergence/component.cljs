@@ -68,6 +68,12 @@
   (component :gravity gravity-settings))
 
 
+(defn unique
+  "A wrapper for anything that is unique to the entity instance, and can't be transferred"
+  [component]
+  (with-meta component {:category :unique}))
+
+
 ;; Time travel stuff
 
 (defn time-based-state
@@ -78,13 +84,32 @@
 (defn timestream
   "stores time-based state"
   []
-  (component :timestream {:timestream []
-                          :timeline 0
-                          :prev-node [0 1]}))
+  (component :timestream []))
+
 (defn divergent
-  "Anything that exists in a divergent timeline"
-  []
+  "Anything that exists in a divergent timeline.
+   It needs a unique name that represents that item across time.
+   name should be a :keyword"
+  [time-name]
   (component :divergent {:timeline 0
                          :prev-node [0 0]
-                         :current-node [0 0]}))
+                         :current-node [0 0]
+                         :time-name time-name}))
 
+(defn player-time-traveler
+  "The difference here is that the player has the ability to create
+   alternate timelines"
+  []
+  (component :player-time-traveler {:traveled-back? false})
+  #_(-> (divergent :player)
+      (assoc :name :player-time-traveler)
+      (update-in [:attr] assoc :traveling-back false)))
+
+
+(comment
+
+  (divergent)
+  (player-time-traveler)
+
+  (timestream)
+  )

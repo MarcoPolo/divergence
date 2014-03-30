@@ -6,10 +6,14 @@
   "Represents a unique point in time in a timestream"
   [(s/named s/Num "The Timeline Number") (s/named s/Num "The event number in this timeline")])
 
+(def time-event
+  {:prev-node (s/named time-event-node "A reference to the previous node, possibly across timelines")
+   :value {(s/named s/Keyword "A time unique name") (s/named s/Any "The value of the entity at that point in time")}
+   :forks [(s/named s/Num "The Timeline Number of any forking timelines")]})
+
 (def timeline
   "A sequence of time events. The position in the sequence is the event's time-event-node"
-  [{:prev-node (s/named time-event-node "A reference to the previous node, possibly across timelines")
-    :value (s/named s/Any "The value of the entity at that point in time")}])
+  [time-event])
 
 (def timestream
   "A sequence of timelines"

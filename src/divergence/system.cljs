@@ -1,6 +1,7 @@
 (ns divergence.system
   (:require [divergence.physics :as phys]
-            [divergence.textures :as textures]))
+            [divergence.textures :as textures]
+            [divergence.entity :as e]))
 
 (comment
   (defn time-point [entities id]
@@ -22,20 +23,39 @@
 
 (defn move [entities]
   (doseq [e entities]
-    (let [{v :velocity ref :ref} @e]
+    (let [{v :velocity} @e]
       (swap! e move-entity v))))
+
+(defn set-width-height [entities]
+  (doseq [e entities
+          :let [ref (e/entity-atom->ref e)]]
+    (swap! e assoc-in [:dimensions :width] (.-width ref))
+    (swap! e assoc-in [:dimensions :height] (.-height ref))))
+
 
 (defn collide [entities]
   (let [es (map deref entities)]
     (doseq [e entities
-            :when (not= (@e :velocity) [0 0 0])
+            :when (and (@e :velocity) (not= (@e :velocity) [0 0 0]))
             :let [{[x-v y-v rot-speed] :velocity} @e]]
       (let [x-future (move-entity @e [x-v 0 0])
             y-future (move-entity @e [0 y-v 0])]
+
+        (if-not (get-in @e [:velocity])
+          (println @e))
+        (println "start")
         (when (< 1 (count (filter (partial phys/colliding? x-future) es)))
+          (println "Velocity 1 is " (get-in @e [:velocity]))
           (swap! e assoc-in [:velocity 0] 0))
         (when (< 1 (count (filter (partial phys/colliding? y-future) es)))
-          (swap! e assoc-in [:velocity 1] 0))))))
+          (println "Velocity 2 is " (get-in @e [:velocity]))
+          (swap! e assoc-in [:velocity 1] 0))
+
+        (println "done")
+
+        (if (map? (get-in @e [:velocity]))
+          (println @e))
+        ))))
 
 (defn friction
   [entities]
@@ -57,7 +77,8 @@
 (defn accelerate [entities]
   (doseq [e entities
           :let [{a :acceleration} @e]]
-    (swap! e update-in [:velocity] #(mapv + a %))))
+    (swap! e update-in [:velocity] #(mapv + a %))
+    ))
 
 (defn gravity [entities]
   (doseq [e entities
@@ -66,19 +87,22 @@
 
 (defn anchor [entities]
   (doseq [e entities]
-    (let [{:keys [x y]} (@e :anchor) {ref :ref} @e]
+    (let [{:keys [x y]} (@e :anchor)
+          ref (e/entity-atom->ref e) ]
       (aset (.-anchor ref) "x" x)
       (aset (.-anchor ref) "y" y))))
 
 (defn scale [entities]
   (doseq [e entities]
-    (let [{{:keys [x-scale y-scale rot-speed]} :scale ref :ref} @e]
+    (let [{{:keys [x-scale y-scale rot-speed]} :scale} @e
+          ref (e/entity-atom->ref e)]
       (aset (.-scale ref) "x" x-scale)
       (aset (.-scale ref) "y" y-scale))))
 
 (defn position [entities]
   (doseq [e entities]
-    (let [{[x y rot] :position ref :ref} @e]
+    (let [{[x y rot] :position} @e
+          ref (e/entity-atom->ref e)]
       (aset (.-position ref) "x" x)
       (aset (.-position ref) "y" y)
       (aset ref "rotation" rot))))
@@ -96,7 +120,7 @@
 
 (defn on-stage [entities]
   (doseq [e entities]
-    (.addChild (@e :stage) (@e :ref))))
+    (.addChild (@e :stage) (e/entity-atom->ref e))))
 
 (def code->key
   {32 :up
@@ -104,7 +128,7 @@
    38 :up
    39 :right
    40 :down
-   16 :shift
+   16 :travel-back ;; :shift
    69 :run})
 
 (def key-inputs (atom #{}))
@@ -121,7 +145,7 @@
 
 (defn player-input [entities]
   (doseq [e entities]
-    (swap! e assoc-in [:actions] @key-inputs)))
+    (swap! (@e/unique-entity-atom->entity-atom e) assoc-in [:actions] @key-inputs)))
 
 (defn execute-actions [entities]
   (doseq [e entities
@@ -141,11 +165,12 @@
 
 (defn movement-caps [entities]
   (doseq [e entities]
-    (let [actions (@e :actions)
+    (let [actions (e/entity-atom->component-val e :actions)
           {[vx vy vr] :velocity
            [ax ay ar] :acceleration
            } @e
           ]
+
       (when (and (not (actions :run)) (> vx 4)) (swap! e assoc-in [:velocity] [5 vy vr]))
       (when (and (not (actions :run)) (< vx -4)) (swap! e assoc-in [:velocity] [-5 vy vr]))
       (when (and (< vy -4) (swap! e assoc-in [:velocity] [vx -4 vr])))
@@ -161,7 +186,7 @@
 (def fps-time (atom (.getTime (js/Date.))))
 (defn fps-counter [entities]
   (doseq [e entities
-          :let [ref (@e :ref)
+          :let [ref (e/entity-atom->ref e)
                 now (.getTime (js/Date.))]]
     (.setText ref (str "FPS: " (js/Math.round (/ 1000 (- now @fps-time))))))
   (reset! fps-time (.getTime (js/Date.))))
