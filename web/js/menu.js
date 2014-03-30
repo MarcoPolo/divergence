@@ -16,15 +16,15 @@ jQuery(document).ready(function($) {
 			'<div id="lightbox">' +
 				'<div id="content">' + //insert clicked link's href into img src
 					'<br><br><br><br><br>' +
-					'<img src="/images/menu_pause.png"/>' +
+					'<img src="assets/img/menu/menu_pause.png"/>' +
 					'<br><br>' +
-					'<input type="image" src="/images/menu_resume.png" id="menu_button" onclick="callResume()">' +
+					'<input type="image" src="assets/img/menu/menu_resume.png" id="menu_button" onclick="callResume()">' +
 					'<br><br>' +
-					'<input type="image" src="/images/menu_reset.png" id="menu_button" onclick="callResetGame()">' +
+					'<input type="image" src="assets/img/menu/menu_reset.png" id="menu_button" onclick="callResetGame()">' +
 					'<br><br>' +
-					'<input type="image" src="/images/menu_load.png" id="menu_button">' +
+					'<input type="image" src="assets/img/menu/menu_load.png" id="menu_button">' +
 					'<br><br>' +
-					'<input type="image" src="/images/menu_settings.png" id="menu_button" onclick="callSettingsMenu()">' +
+					'<input type="image" src="assets/img/menu/menu_settings.png" id="menu_button" onclick="callSettingsMenu()">' +
 					'<br><br>' +
 				'</div>' +
 			'</div>';
