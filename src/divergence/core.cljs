@@ -28,6 +28,9 @@
 
 (def animate-ref (atom nil))
 
+(def globalID (atom nil))
+
+
 ;;GAME SETUP====================================================
 (defn register-entity! [entity]
   (let [entity-atom (atom entity)]
@@ -78,7 +81,6 @@
     (s/anchor (c->e :anchor))
     (s/scale (c->e :scale))))
 
-
 ;;MASTER FEATURES=================================================
 
 (defn resetGame []
@@ -96,8 +98,15 @@
   (let [c->e @component->entities]
   (s/deserialize (c->e :position))))
 
+(defn pause []
+  (js/cancelAnimationFrame @globalID))
+
+(defn resume []
+  (js/requestAnimationFrame @animate-ref))
+
 
 ;;RENDERING LOOP============================================
+
 (defn animate []
   (let [c->e @component->entities]
     (.render renderer @stage)
@@ -116,7 +125,7 @@
     (s/position (c->e :position))
     (s/fps-counter (c->e :fps-counter))
     (s/update-camera container (c->e :position))
-    (js/requestAnimationFrame @animate-ref)))
+    (reset! globalID (js/requestAnimationFrame @animate-ref))))
 
 
 (reset! animate-ref animate)

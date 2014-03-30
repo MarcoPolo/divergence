@@ -10,6 +10,8 @@
 (defn as [entity k]
   (@entity k))
 
+(def pause (atom 0))
+
 
 ;;PHYSICS---------------------------------------------
 (defn climbing? [player entities]
@@ -196,7 +198,8 @@
     (when actions
     (when
         (actions :p)
-        (js/ShowMenu))
+        (js/ShowMenu)
+        (js/pause))
       (when
         (actions :left)
         (swap! e assoc-in [:acceleration] [-3 0 0])
