@@ -5,8 +5,10 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <title>Divergence</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
         <link rel="shortcut icon" href="../favicon.ico">
         <link rel="stylesheet" type="text/css" href="css/style.css" />
+
         <script src="http://code.jquery.com/jquery-1.6.2.min.js"></script>
         <script src="lib/pixi.js"></script>
         <script src="js/physics.js"></script>
@@ -43,11 +45,15 @@
 			</section>
     </body>
     <script type="text/javascript">goog.require("divergence.core");</script>
+
     <script>function callResetGame(){HideMenu(); divergence.core.resume(); divergence.core.resetGame()}</script>
-    <script>function callSaveGame(){divergence.core.savegame()}</script>
-    <script>function callLoadGame(){divergence.core.loadgame()}</script>
+
     <script>function callResume(){HideMenu(); divergence.core.resume()}</script>
     <script>function callPause(){divergence.core.pause()}</script>
-    <script>function callSettingsMenu(){HideMenu(); ShowSettingsMenu();}</script>
     <script>function callSettingsResume(){HideSettingsMenu(); divergence.core.resume()}</script>
+    <script>function callSettingsMenu(){HideMenu(); ShowSettingsMenu();}</script>
+
+
+    <script>function callSaveGame(){divergence.core.savegame()}</script>
+    <script>function callLoadGame(){divergence.core.loadgame()}</script>
 </html>

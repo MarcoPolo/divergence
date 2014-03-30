@@ -167,6 +167,7 @@
   (reset! fps-time (.getTime (js/Date.))))
 
 
+
 ;;KEYLISTENER AND KEY EVENTS---------------------------------------------
 (def code->key
   {32 :up
@@ -204,10 +205,11 @@
       (swap! e assoc-in [:items] 1)
       (swap! e assoc-in [:items] 0))
     (when actions
-    (when
+      (when
         (actions :p)
         (js/ShowMenu)
-        (js/pause))
+    ;    (js/pause)
+      )
       (when
         (actions :left)
         (swap! e assoc-in [:acceleration] [-3 0 0])
