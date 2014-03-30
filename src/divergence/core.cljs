@@ -103,21 +103,19 @@
 
 (defn animate []
   (let [c->e e/component->entities]
+
     (.render renderer/renderer renderer/stage)
 
-    ;; Time travel
-    #_(let [timestream (first (c->e :timestream))]
-      ;; TODO fix this so it works for all entities, I'm just being lazy here
-      (tt/time-tick timestream [(@entity->components 0)])
-
-      )
-
     (tt/time-travel timestream (c->e :divergent) (first (c->e :player-time-traveler)))
+
+    ;; set width/height
+    (s/set-width-height (c->e :collidable))
 
     (s/player-input (c->e :player-input))
     (s/climbing (c->e :position))
     (s/execute-actions (c->e :actions))
     (s/move-background (c->e :actions))
+
     (s/gravity (c->e :gravity))
     (s/movement-caps (c->e :velocity))
     (s/friction (c->e :acceleration))
@@ -125,15 +123,9 @@
 
     (s/push (c->e :pushable) (c->e :player-input))
     (s/goal? (c->e :position) (c->e :player-input))
-    (s/collide (c->e :collidable))
-
     (s/move (c->e :velocity))
     (s/position (c->e :position))
 
-    ;; set width/height
-    (s/set-width-height (c->e :collidable))
-
-    (s/collide (c->e :collidable))
 
     ;; FPS counter
     (s/fps-counter (c->e :fps-counter))
@@ -145,7 +137,21 @@
     (s/pick-drop-item (c->e :position))
     (reset! globalID (js/requestAnimationFrame @animate-ref))))
 
+(defn debug-slow-down
+  "A way to slow down the game for debugging"
+  []
+  (let [slow-down-factor 2
+        cnt (atom 0)]
+    (fn []
+      (swap! cnt inc)
+      (if (zero? (mod @cnt slow-down-factor))
+        (animate)
+        (js/requestAnimationFrame @animate-ref)))))
+
+
 (reset! animate-ref animate)
+
+#_(reset! animate-ref (debug-slow-down))
 
 (setup e/entities)
 

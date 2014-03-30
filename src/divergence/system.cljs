@@ -13,6 +13,7 @@
 (def level (atom 0))
 (def current-level (atom 0))
 
+
 (defn as [entity k]
   (@entity k))
 
@@ -83,11 +84,7 @@
       (let [x-future (move-entity @e [x-v 0 0])
             y-future (move-entity @e [0 y-v 0])]
 
-        (if-not (get-in @e [:velocity])
-          (println @e))
-        (println "start")
         (when (< 1 (count (filter (partial phys/colliding? x-future) es)))
-          (println "Velocity 1 is " (get-in @e [:velocity]))
           (swap! e assoc-in [:velocity 0] 0))
         (when (< 1 (count (filter (partial phys/colliding? y-future) es)))
           (swap! e assoc-in [:velocity 1] 0)

@@ -53,7 +53,6 @@
 (def e-atom->c-val entity-atom->component-val )
 
 (def entity-count (atom 0))
->>>>>>> tons of work on time travel
 
 (defn entity [components]
   (reduce
@@ -87,6 +86,7 @@
   (bunny :foo)
 
   (block 0 0 1 1 :foo)
+  (non-player-bunny :foo)
 
   (reduce #(or %1 %2) [[:foo :baz] nil])
   (component->entities :sprite)
@@ -112,6 +112,9 @@
            c/accelerates
            c/can-jump
            c/climbing
+
+           (c/divergent :player)
+           (c/unique (c/player-time-traveler))
            ]))
 
 (defn goal [x y stage]
@@ -137,27 +140,17 @@
            (c/scale 1 1)
            ]))
 
-(defn block [scale-x scale-y x y pname stage]
-  (entity [(c/named pname)
-           ;(c/sprite [blockTexture])
-           (c/sprite [:divergence.textures/block])
-           (c/entity-type :tile)
-           c/create-ref
-=======
-           (c/gravity [0 .02 0])
-           (c/divergent :player)
-           (c/unique (c/player-time-traveler))]))
-
 
 (defn non-player-bunny [stage]
   (-> (bunny stage)
-      (dissoc :player-time-traveler :player-input)))
+      (update-in [:unique]dissoc :player-time-traveler :player-input)))
 
 
 (defn block [scale-x scale-y x y stage]
   (entity [(c/named :block)
            (c/unique (c/sprite :divergence.textures/block))
->>>>>>> tons of work on time travel
+           (c/sprite [:divergence.textures/block])
+           (c/entity-type :tile)
            (c/position x y 0)
            (c/scale scale-x scale-y)
            c/collidable
@@ -233,18 +226,28 @@
     (swap! entity-count inc)
     (doseq [[n component] normal-components]
       (swap! normal-component->entities update-in [n] conj entity-atom))
-    (dec @entity-count)
 
     ;; Now register the unique components
     (swap! entity-atom->unique-entity-atom assoc entity-atom unique-entity-atom)
     (swap! unique-entity-atom->entity-atom assoc unique-entity-atom entity-atom)
     (doseq [[n component] unique-components]
-      (swap! unique-component->entities update-in [n] conj unique-entity-atom))))
+      (swap! unique-component->entities update-in [n] conj unique-entity-atom))
 
-(defn destroy-entity [entity]
+    ;; return the normal-entity-atom and unique-entity-atom
+    [entity-atom unique-entity-atom]))
+
+(defn destroy-entity! [entity]
   ;; TODO implement this
   (println "I want to destroy an entity!")
-  )
+
+  ;; remove from the stage
+  (let [unique-atom (@entity-atom->unique-entity-atom entity)
+        stage (:stage @unique-atom)]
+    (.removeChild stage (:ref @unique-atom))
+
+    ;; Remove from our internal hashmap
+    #_(swap! normal-component->entities dissoc )
+    ))
 
 (def entities
   [(bunny renderer/stage)

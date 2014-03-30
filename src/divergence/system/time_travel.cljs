@@ -128,14 +128,13 @@
   )
 
 (defn create-divergent-entity [time-event-node]
-  (let [e-id (e/register-entity! (e/non-player-bunny renderer/stage))
-        entity (@e/entity->components e-id)]
-    (s/create-ref [entity])
-    (s/on-stage [entity])
-    (s/position [entity])
-    (s/anchor [entity])
-    (s/scale [entity])
-    (swap! entity assoc-in [:divergent :current-node] time-event-node)))
+  (let [[normal-e-atom unique-e-atom] (e/register-entity! (e/non-player-bunny renderer/stage))]
+    (s/create-ref [unique-e-atom])
+    (s/on-stage [unique-e-atom])
+    (s/position [normal-e-atom])
+    (s/anchor [normal-e-atom])
+    (s/scale [normal-e-atom])
+    (swap! normal-e-atom assoc-in [:divergent :current-node] time-event-node)))
 
 (defn create-new-timeline
   "This will create a new timeline with the prev-node where the current-node is"
@@ -214,6 +213,7 @@
                 past-node (reverse-time @timestream current-node rewind-speed)
                 past-state (get-in @timestream (conj past-node :value time-name))]]
     ;; Check if we need to destory the entity
+    ;; TODO fix this so it actually destroys entities
     (if (< time-in-timeline rewind-speed)
       ;; Destroy entity
       (e/destroy-entity! e)
@@ -224,14 +224,15 @@
 (defn time-travel
   "Entry function for traveling through time forward and backwards"
   [timestream divergent-entities player-entity]
-  (let [actions (@(@e/unique-entity-atom->entity-atom player-entity) :actions)
+  (let [normal-player-entity (@e/unique-entity-atom->entity-atom player-entity)
+        actions (@normal-player-entity :actions)
         traveling-back? (actions :travel-back)
         traveled-back? (get-in @player-entity [:player-time-traveler :traveled-back?])]
 
     ;; We need to create a new timeline for the player in this case
     (when (and (not traveling-back?) traveled-back?)
       (swap! player-entity assoc-in [:player-time-traveler :traveled-back?] false)
-      (create-new-timeline timestream player-entity))
+      (create-new-timeline timestream normal-player-entity))
 
     (if traveling-back?
       ;; we are traveling back in time, so lets call tick-backwards
