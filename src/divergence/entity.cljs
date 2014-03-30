@@ -71,6 +71,7 @@
   (bunny :foo)
 
   (block 0 0 1 1 :foo)
+  (non-player-bunny :foo)
 
   (reduce #(or %1 %2) [[:foo :baz] nil])
   (component->entities :sprite)
@@ -89,14 +90,13 @@
            c/collidable
            (c/scale 1 1)
            c/accelerates
-           (c/gravity [0 .02 0])
+           (c/gravity [0 .2 0])
            (c/divergent :player)
            (c/unique (c/player-time-traveler))]))
 
-
 (defn non-player-bunny [stage]
   (-> (bunny stage)
-      (dissoc :player-time-traveler :player-input)))
+      (update-in [:unique]dissoc :player-time-traveler :player-input)))
 
 
 (defn block [scale-x scale-y x y stage]
@@ -134,18 +134,28 @@
     (swap! entity-count inc)
     (doseq [[n component] normal-components]
       (swap! normal-component->entities update-in [n] conj entity-atom))
-    (dec @entity-count)
 
     ;; Now register the unique components
     (swap! entity-atom->unique-entity-atom assoc entity-atom unique-entity-atom)
     (swap! unique-entity-atom->entity-atom assoc unique-entity-atom entity-atom)
     (doseq [[n component] unique-components]
-      (swap! unique-component->entities update-in [n] conj unique-entity-atom))))
+      (swap! unique-component->entities update-in [n] conj unique-entity-atom))
 
-(defn destroy-entity [entity]
+    ;; return the normal-entity-atom and unique-entity-atom
+    [entity-atom unique-entity-atom]))
+
+(defn destroy-entity! [entity]
   ;; TODO implement this
   (println "I want to destroy an entity!")
-  )
+
+  ;; remove from the stage
+  (let [unique-atom (@entity-atom->unique-entity-atom entity)
+        stage (:stage @unique-atom)]
+    (.removeChild stage (:ref @unique-atom))
+
+    ;; Remove from our internal hashmap
+    #_(swap! normal-component->entities dissoc )
+    ))
 
 (def entities
   [(bunny renderer/stage)
