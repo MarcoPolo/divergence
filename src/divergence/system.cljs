@@ -208,7 +208,7 @@
       (when
         (actions :p)
         (js/ShowMenu)
-    ;    (js/pause)
+        (js/pause)
       )
       (when
         (actions :left)
