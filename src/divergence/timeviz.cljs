@@ -18,10 +18,6 @@
 
 (.render renderer stage)
 
-(println "hey")
-
-(set! js/foo "hey")
-
 (def offset-cache (atom {}))
 
 (defn find-time-offset [timestream origin-timeline-number]
@@ -49,7 +45,7 @@
 
 (defn draw-time-node
   ([[timeline time-event] color]
-   (when (= 0 (mod time-event 10))
+   (when (= 0 (mod time-event 40))
      (.beginFill graphics color 1)
      (.drawCircle graphics (+ 20 time-event) (* 10 (+ 2 timeline)) 4)
      (.endFill graphics)))

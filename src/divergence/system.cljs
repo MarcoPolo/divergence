@@ -2,7 +2,7 @@
   (:require  [cljs.reader :as reader]
              [divergence.audio :as a]
              [divergence.physics :as phys]
-             [divergence.entity :as ent]
+             [divergence.entity :as e]
              [divergence.textures :as textures]
              [divergence.camera :as camera]))
 
@@ -41,7 +41,7 @@
                ]]
     (if (and cond1 cond2)
       (do
-        (set! (.-textures sprite) (cljs-to-js ent/climbAnimation))
+        (set! (.-textures sprite) (cljs-to-js e/climbAnimation))
         (set! (.-playing sprite) true)
         (swap! player assoc-in [:climbing] 1)
         (swap! player assoc-in [:gravity] [0 0 0])
@@ -50,7 +50,7 @@
       (do
         (swap! player assoc-in [:climbing] 0)
         (swap! player assoc-in [:gravity] [0 0.2 0]))
-        (set! (.-textures sprite) (cljs-to-js [ent/playerTexture]))
+        (set! (.-textures sprite) (cljs-to-js [e/playerTexture]))
         (set! (.-playing sprite) true)
       )))
 
@@ -65,17 +65,29 @@
 
 (defn move [entities]
   (doseq [e entities]
-    (let [{v :velocity ref :ref} @e]
+    (let [{v :velocity} @e]
       (swap! e move-entity v))))
+
+(defn set-width-height [entities]
+  (doseq [e entities
+          :let [ref (e/entity-atom->ref e)]]
+    (swap! e assoc-in [:dimensions :width] (.-width ref))
+    (swap! e assoc-in [:dimensions :height] (.-height ref))))
+
 
 (defn collide [entities]
   (let [es (map deref entities)]
     (doseq [e entities
-            :when (not= (@e :velocity) [0 0 0])
+            :when (and (@e :velocity) (not= (@e :velocity) [0 0 0]))
             :let [{[x-v y-v rot-speed] :velocity} @e]]
       (let [x-future (move-entity @e [x-v 0 0])
             y-future (move-entity @e [0 y-v 0])]
+
+        (if-not (get-in @e [:velocity])
+          (println @e))
+        (println "start")
         (when (< 1 (count (filter (partial phys/colliding? x-future) es)))
+          (println "Velocity 1 is " (get-in @e [:velocity]))
           (swap! e assoc-in [:velocity 0] 0))
         (when (< 1 (count (filter (partial phys/colliding? y-future) es)))
           (swap! e assoc-in [:velocity 1] 0)
@@ -90,7 +102,7 @@
                 y-future (move-entity @p [y-v 0 0])]
           (doseq [e entities]
             (when (phys/colliding? x-future @e)
-              (set! (.-textures sprite) (cljs-to-js ent/pushAnimation))
+              (set! (.-textures sprite) (cljs-to-js e/pushAnimation))
               (set! (.-playing sprite) true)
               (swap! e assoc-in [:velocity 0] (* (compare x-v 0) 2)))))))))
 
@@ -114,7 +126,8 @@
 (defn accelerate [entities]
   (doseq [e entities
           :let [{a :acceleration} @e]]
-    (swap! e update-in [:velocity] #(mapv + a %))))
+    (swap! e update-in [:velocity] #(mapv + a %))
+    ))
 
 (defn gravity [entities]
   (doseq [e entities
@@ -123,19 +136,22 @@
 
 (defn anchor [entities]
   (doseq [e entities]
-    (let [{:keys [x y]} (@e :anchor) {ref :ref} @e]
+    (let [{:keys [x y]} (@e :anchor)
+          ref (e/entity-atom->ref e) ]
       (aset (.-anchor ref) "x" x)
       (aset (.-anchor ref) "y" y))))
 
 (defn scale [entities]
   (doseq [e entities]
-    (let [{{:keys [x-scale y-scale rot-speed]} :scale ref :ref} @e]
+    (let [{{:keys [x-scale y-scale rot-speed]} :scale} @e
+          ref (e/entity-atom->ref e)]
       (aset (.-scale ref) "x" x-scale)
       (aset (.-scale ref) "y" y-scale))))
 
 (defn position [entities]
   (doseq [e entities]
-    (let [{[x y rot] :position ref :ref} @e]
+    (let [{[x y rot] :position} @e
+          ref (e/entity-atom->ref e)]
       (aset (.-position ref) "x" x)
       (aset (.-position ref) "y" y)
       (aset ref "rotation" rot))))
@@ -184,19 +200,21 @@
       (.addChild container (@e :ref))))
 
 (defn on-stage [stage container]
-  (.addChild stage container))
+  (doseq [e entities]
+    (.addChild (@e :stage) (e/entity-atom->ref e))))
 
 (defn create-text [entities]
   (doseq [e entities]
     (let [style (get-in @e [:text :style])
-          text (get-in @e [:text :string])]
+          text (get-in @e [:text :string])
+          ref (e/entity-atom->ref e)]
       (swap! e assoc :ref (js/PIXI.Text. text style)))))
 
 (def fps-time (atom (.getTime (js/Date.))))
 
 (defn fps-counter [entities]
   (doseq [e entities
-          :let [ref (@e :ref)
+          :let [ref (e/entity-atom->ref e)
                 now (.getTime (js/Date.))]]
     (.setText ref (str "FPS: " (js/Math.round (/ 1000 (- now @fps-time))))))
   (reset! fps-time (.getTime (js/Date.))))
@@ -219,7 +237,7 @@
    40 :down
    77 :item
    80 :p
-   16 :shift
+   16 :travel-back ;; :shift
    69 :run})
 
 (def key-inputs (atom #{}))
@@ -238,7 +256,7 @@
 
 (defn player-input [entities]
   (doseq [e entities]
-    (swap! e assoc-in [:actions] @key-inputs)))
+    (swap! (@e/unique-entity-atom->entity-atom e) assoc-in [:actions] @key-inputs)))
 
 (defn execute-actions [entities]
   (doseq [e entities
@@ -272,24 +290,23 @@
         (and (= (@e :can-jump) 1) (actions :up))
         (when (= (@e :name) :player)
           (a/play-sound :jump)
-          (set! (.-textures sprite) (cljs-to-js ent/jumpAnimation))
+          (set! (.-textures sprite) (cljs-to-js e/jumpAnimation))
           (set! (.-playing sprite) true))
         (swap! e assoc-in [:acceleration] [0 -4 0])
         (swap! e assoc-in [:can-jump] 0))
 
       (when (not-any? actions [:up :left :right :down])
         (when (= (@e :name) :player)
-          (set! (.-textures sprite) (cljs-to-js [ent/playerTexture]))
+          (set! (.-textures sprite) (cljs-to-js [e/playerTexture]))
           )
         (swap! e assoc-in [:acceleration] [0 0 0])))))
 
 (defn movement-caps [entities]
   (doseq [e entities]
-    (let [actions (@e :actions)
+    (let [actions (e/entity-atom->component-val e :actions)
           {[vx vy vr] :velocity
            [ax ay ar] :acceleration
-           } @e
-          ]
+           } @e]
       (when (> vx 4) (swap! e assoc-in [:velocity] [5 vy vr]))
       (when (< vx -4) (swap! e assoc-in [:velocity] [-5 vy vr]))
       (when (and (< vy -4) (swap! e assoc-in [:velocity] [vx -4 vr]))))))

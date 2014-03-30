@@ -4,6 +4,7 @@
             [divergence.system :as s]
             [divergence.leveleditor :as le]
             [goog.dom :as dom]
+            [divergence.renderer :as renderer]
             [divergence.timeviz]
             [divergence.system.time-travel :as tt]))
 
@@ -13,7 +14,8 @@
 (def renderer (js/PIXI.autoDetectRenderer. s/screen-width s/screen-height))
 (.appendChild (js/document.getElementById "game-container") (.-view renderer))
 
-(def stage (atom (js/PIXI.Stage. 0x66FF99)))
+(def stage (atom renderer/stage))
+
 
 (def container (atom (js/PIXI.DisplayObjectContainer.)))
 (def camera (atom (js/PIXI.DisplayObjectContainer.)))
@@ -32,6 +34,8 @@
 
 (def globalID (atom nil))
 
+(def timestream (atom [[{:prev-node [0 0]}]]))
+
 
 ;;GAME SETUP====================================================
 
@@ -42,37 +46,6 @@
     (doseq [[n component] entity]
       (swap! component->entities update-in [n] conj entity-atom))))
 
-(defn entities [stage]
-  [(e/player stage)
-   (e/some-text stage)
-
-   (e/rope-block 950 40 stage)
-   (e/key-block 500 510 stage)
-
-   (e/vertical-full-block 0 -40 :block1 stage)
-   (e/horizontal-full-block 0 560 :block2 stage)
-   (e/horizontal-full-block 800 560 :block3 stage)
-   (e/vertical-full-block 1560 -40 :block4 stage)
-
-   (e/regular-block 1000 520 :block5 stage)
-   (e/regular-block 1000 460 :block6 stage)
-   (e/regular-block 1000 420 :block7 stage)
-   (e/regular-block 1000 360 :block8 stage)
-
-   (e/box :box1 400 300 stage)
-   (e/box :box2 400 100 stage)
-
-   (e/goal 1300 485 stage)
-
-   (e/background stage)
-
-   #_(e/vertical-full-block 0 -40 stage)
-   #_(e/vertical-full-block 760 -40 stage)
-   #_(e/horizontal-full-block 0 560 stage)
-   #_(e/timestream)
-   (e/timestream)
-   ])
-
 (comment
 (defn next-level []
   (when (not (= s/level s/current-level))
@@ -80,8 +53,8 @@
 
 (defn setup [entities]
   ;; Register all the entities in our maps
-  (doseq [e entities] (register-entity! e))
-  (let [c->e @component->entities]
+  (doseq [e entities] (e/register-entity! e))
+  (let [c->e e/component->entities]
     (s/create-ref (c->e :sprite))
     (s/create-tiling-ref (c->e :tiling-sprite))
     (s/create-text (c->e :text))
@@ -94,9 +67,10 @@
     (s/position (c->e :position))
     (s/anchor (c->e :anchor))
     (s/scale (c->e :scale))
+    (s/set-width-height (c->e :collidable))
 
     ;; Setup the time travel
-    (let [timestream (first (c->e :timestream))]
+    #_(let [timestream (first (c->e :timestream))]
       (tt/save-entities-to-timestream! timestream [(@entity->components 0)])
       (swap! timestream assoc-in [:timestream :prev-node] [0 0]))
 
@@ -128,15 +102,17 @@
 ;;RENDERING============================================
 
 (defn animate []
-  (let [c->e @component->entities]
-    (.render renderer stage)
+  (let [c->e e/component->entities]
+    (.render renderer/renderer renderer/stage)
 
     ;; Time travel
-    (let [timestream (first (c->e :timestream))]
+    #_(let [timestream (first (c->e :timestream))]
       ;; TODO fix this so it works for all entities, I'm just being lazy here
       (tt/time-tick timestream [(@entity->components 0)])
 
       )
+
+    (tt/time-travel timestream (c->e :divergent) (first (c->e :player-time-traveler)))
 
     (s/player-input (c->e :player-input))
     (s/climbing (c->e :position))
@@ -146,11 +122,18 @@
     (s/movement-caps (c->e :velocity))
     (s/friction (c->e :acceleration))
     (s/accelerate (c->e :acceleration))
+
     (s/push (c->e :pushable) (c->e :player-input))
     (s/goal? (c->e :position) (c->e :player-input))
     (s/collide (c->e :collidable))
+
     (s/move (c->e :velocity))
     (s/position (c->e :position))
+
+    ;; set width/height
+    (s/set-width-height (c->e :collidable))
+
+    (s/collide (c->e :collidable))
 
     ;; FPS counter
     (s/fps-counter (c->e :fps-counter))
@@ -164,7 +147,7 @@
 
 (reset! animate-ref animate)
 
-(setup (entities @stage))
+(setup e/entities)
 
 (js/requestAnimationFrame @animate-ref)
 
