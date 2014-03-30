@@ -17,7 +17,7 @@
 (def camera (atom (js/PIXI.DisplayObjectContainer.)))
 
 (def entity->components
-  "A map to an entity and a list of it's components"
+  "A map to an entity and a list of its components"
   (atom {}))
 
 (def component->entities
@@ -35,7 +35,6 @@
     (swap! entity-count inc)
     (doseq [[n component] entity]
       (swap! component->entities update-in [n] conj entity-atom))))
-
 
 (defn entities [stage]
   [(e/player stage)
@@ -62,6 +61,11 @@
    (e/background stage)
    ])
 
+(comment
+(defn next-level []
+  (when (not (= s/level s/current-level))
+   (swap! s/curent-level inc))))
+
 (defn setup [entities]
   ;; Register all the entities in our maps
   (doseq [e entities] (register-entity! e))
@@ -77,7 +81,6 @@
     (s/position (c->e :position))
     (s/anchor (c->e :anchor))
     (s/scale (c->e :scale))))
-
 
 ;;MASTER FEATURES=================================================
 
@@ -97,7 +100,7 @@
   (s/deserialize (c->e :position))))
 
 
-;;RENDERING LOOP============================================
+;;RENDERING============================================
 (defn animate []
   (let [c->e @component->entities]
     (.render renderer @stage)
@@ -110,16 +113,17 @@
     (s/friction (c->e :acceleration))
     (s/accelerate (c->e :acceleration))
     (s/push (c->e :pushable) (c->e :player-input))
-    (s/goal? (c->e :collidable) (c->e :player-input))
+    (s/goal? (c->e :position) (c->e :player-input))
     (s/collide (c->e :collidable))
     (s/move (c->e :velocity))
     (s/position (c->e :position))
     (s/fps-counter (c->e :fps-counter))
     (s/update-camera container (c->e :position))
+    (s/pick-drop-item (c->e :position))
     (js/requestAnimationFrame @animate-ref)))
-
 
 (reset! animate-ref animate)
 
 (setup (entities @stage))
+
 (js/requestAnimationFrame @animate-ref)

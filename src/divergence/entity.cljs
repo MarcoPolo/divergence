@@ -29,6 +29,7 @@
            (c/friction 1)
            (c/scale 0.4 0.4)
            (c/gravity [0 normal-gravity 0])
+           (c/entity-type :player)
            c/items
            c/collidable
            c/create-ref
@@ -42,16 +43,16 @@
 
 (defn goal [x y stage]
   (entity [(c/named :goal)
+           (c/entity-type :goal)
            (c/sprite goalTexture)
            c/create-ref
            (c/position x y 0)
            (c/on-stage stage)
-           c/collidable
-           (c/scale 2 2)
-           (c/gravity [0 .2 0])]))
+           (c/scale 2 2)]))
 
 (defn background [stage]
   (entity [(c/named :bg)
+           (c/entity-type :bg)
            (c/sprite bgTexture)
            (c/tiling-sprite bgTexture)
            (c/on-stage stage)
@@ -66,6 +67,7 @@
 (defn block [scale-x scale-y x y stage]
   (entity [(c/named :block)
            (c/sprite blockTexture)
+           (c/entity-type :tile)
            c/create-ref
            (c/position x y 0)
            (c/scale scale-x scale-y)
@@ -76,6 +78,7 @@
 
 (defn box [x y stage]
   (entity [(c/named :box)
+           (c/entity-type :obstacle)
            (c/sprite boxTexture)
            c/create-ref
            c/accelerates
@@ -101,6 +104,7 @@
 
 (defn rope-block [x y stage]
   (entity [(c/named :rope)
+           (c/entity-type :tool)
            (c/sprite ropeTexture)
            (c/position x y 0)
            (c/on-stage stage)
@@ -118,6 +122,7 @@
 
 (defn key-block [x y stage]
   (entity [(c/named :key)
+           (c/entity-type :item)
            (c/sprite keyTexture)
            (c/position x y 0)
            (c/on-stage stage)

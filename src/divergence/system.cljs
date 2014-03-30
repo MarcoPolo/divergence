@@ -7,6 +7,9 @@
 (def level-width 3200)
 (def level-height 506)
 
+(def level (atom 0))
+(def current-level (atom 0))
+
 (defn as [entity k]
   (@entity k))
 
@@ -113,15 +116,15 @@
 
 
 ;;EVENT RESPONSES---------------------------------------------
+(defn next-level []
+  (. js/console (log "hola"))
+  (swap! level inc))
+
 (defn goal? [entities player]
   (doseq [p player]
-    (when (not= (@p :velocity) [0 0 0])
-      (let [{[x-v y-v rot-speed] :velocity} @p]
-        (let [x-future (move-entity @p [x-v 0 0])
-                y-future (move-entity @p [y-v 0 0])]
-          (doseq [e entities]
-            (when (and (phys/colliding? x-future @e) (= (@e :name) :goal))
-              (. js/console (log "Win")))))))))
+    (doseq [e entities]
+      (when (and (= (@p :name) :player) (phys/colliding? @p @e) (= (@e :name) :goal))
+        (next-level)))))
 
 
 ;;RENDERING---------------------------------------------
@@ -168,7 +171,9 @@
    37 :left
    38 :up
    39 :right
-   40 :down})
+   40 :down
+   77 :item
+   })
 
 (def key-inputs (atom #{}))
 
@@ -192,6 +197,10 @@
   (doseq [e entities
           :let [actions (@e :actions)
                 [ax ay ar] (@e :acceleration)]]
+    (if
+      (actions :item)
+      (swap! e assoc-in [:items] 1)
+      (swap! e assoc-in [:items] 0))
     (when actions
       (when
         (actions :left)
@@ -244,11 +253,23 @@
                 ]]
           (when  (= (@e :name) :bg) (swap! e assoc-in [:position] [(- x 5) y r])))))))
 
-
-(defn pick-up [entities]
-  ())
-(defn use-item [entities]
-  ())
+(defn pick-drop-item [entities]
+  (doseq [e entities]
+    (when (= (@e :name) :player)
+      (let [p @e
+            actions (p :actions)
+            [x y r] (p :position)]
+          (doseq [en entities
+                  :let [item @en
+                        collide? (phys/colliding? item p)]]
+            (when (and (= (item :type) :item) collide?)
+              (if (= (p :items) 1)
+                (do (set! (.-visible (item :ref)) false)
+                    (let [pheight (.-height (p :ref))
+                          iheight (.-height (item :ref))
+                          ]
+                     (swap! en assoc-in [:position] [x (+ y (- pheight iheight)) r])))
+                (set! (.-visible (item :ref)) true))))))))
 
 ;;GAME CAMERA============================================
 (defn camera-x-check [x]

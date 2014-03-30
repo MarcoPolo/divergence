@@ -40,8 +40,11 @@
   [gravity-settings]
   (component :gravity gravity-settings))
 
+(defn entity-type [entity-type]
+  (component :type entity-type))
+
 (def items
-  (component :items #{}))
+  (component :items 0))
 
 (def create-ref
   "Create a reference to the PIXI object"
