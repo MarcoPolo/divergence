@@ -19,8 +19,6 @@ jQuery(document).ready(function($) {
 					'<br><br>' +
 					'<input type="image" src="assets/img/menu/menu_resume.png" id="menu_button" onclick="callSettingsResume()">' +
 					'<br><br>' +
-					'<input type="image" src="assets/img/menu/menu_load.png" id="menu_button">' +
-					'<br><br>' +
 					'<input type="image" src="assets/img/menu/menu_audio.png" id="menu_button">' +
 					'<br><br>' +
 					'<input type="image" src="assets/img/menu/menu_controls.png" id="menu_button">' +
