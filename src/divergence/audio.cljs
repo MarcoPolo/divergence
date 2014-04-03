@@ -1,5 +1,5 @@
 (ns divergence.audio
-  :require [divergence.system :as s]
+  (:require [divergence.system :as s])
   )
 
 (def jumpSound (js/buzz.sound. "assets/sounds/fins__jumping.wav"))

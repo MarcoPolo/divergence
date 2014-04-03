@@ -123,10 +123,20 @@
   (. js/console (log "hola"))
   (swap! level inc))
 
+(defn has-key? [player]
+  (let [item (player :holding)]
+   (. js/console (log (name item)))
+   (if (= item :key)
+    true
+    false
+     )))
+
 (defn goal? [entities player]
   (doseq [p player]
     (doseq [e entities]
-      (when (and (= (@p :name) :player) (phys/colliding? @p @e) (= (@e :name) :goal))
+      (when (and (= (@p :name) :player) (phys/colliding? @p @e)
+                 (has-key? @p) (= (@e :name) :goal))
+        (. js/console (log "win"))
         (next-level)))))
 
 
@@ -275,11 +285,14 @@
             (when (and (= (item :type) :item) collide?)
               (if (= (p :items) 1)
                 (do (set! (.-visible (item :ref)) false)
+                    (swap! p assoc-in [:holding] [(item :name)])
+                    (. js/console (log "picking up"))
                     (let [pheight (.-height (p :ref))
                           iheight (.-height (item :ref))
                           ]
                      (swap! en assoc-in [:position] [x (+ y (- pheight iheight)) r])))
-                (set! (.-visible (item :ref)) true))))))))
+                (do (swap! p assoc-in [:holding] [:nothing])
+                    (set! (.-visible (item :ref)) true)))))))))
 
 ;;GAME CAMERA============================================
 (defn camera-x-check [x]

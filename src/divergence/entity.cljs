@@ -30,6 +30,7 @@
            (c/scale 0.4 0.4)
            (c/gravity [0 normal-gravity 0])
            (c/entity-type :player)
+           (c/holding? :nothing)
            c/items
            c/collidable
            c/create-ref

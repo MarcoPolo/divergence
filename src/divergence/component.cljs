@@ -46,6 +46,9 @@
 (def items
   (component :items 0))
 
+(defn holding? [itemName]
+  (component :holding itemName))
+
 (def create-ref
   "Create a reference to the PIXI object"
   (component :create-ref true))
