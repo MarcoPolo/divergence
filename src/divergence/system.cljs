@@ -314,22 +314,32 @@
 
 ;;SAVE/LOAD---------------------------------------------
 
-(def serial-data (atom ""))
+(def serial-data (atom nil))
+(def load-data (atom nil))
 
-(defn save-to-local-db [data]
-  ;(js/alert @serial-data)
-  (.setItem js/localStorage "dm" data))
+(defn save-to-local-db [objname data]
+  (.setItem js/localStorage objname data))
 
-(comment
-  "Not sure what read-string refers to, but commenting out for now, since undeclared"
 (defn serialize [entities]
   (doseq [e entities]
-    (if (= ":bunny" (pr-str (@e :name)))
-      (js/alert (dissoc @e :ref :sprite :stage)))))
+      (reset! serial-data @e) ;loops through and copies entities into serial-data
+      (swap! serial-data dissoc :ref :sprite :stage :actions :tiling-sprite) ;takes out complex data
+      (save-to-local-db (pr-str (@e :name)) @serial-data))) ;save to local database
 
 (defn deserialize [entities]
-  ;(js/alert @serial-data)
-   (doseq [e entities
-           :when (= :bunny (@e :name))]
-     (reset! e (read-string (.getItem js/localStorage "dm")))))
-)
+   (doseq [e entities]
+           (if (= ":player" (pr-str (get-in @e [:name]))) ;doseq is going through all the entities and if it is player, then:
+           (do
+             (reset! load-data (reader/read-string (.getItem js/localStorage ":player"))) ;read back from local database
+             (swap! e assoc-in [:position] (get-in @load-data [:position])) ;asigns the position from load-data back into player
+             (swap! e assoc-in [:gravity] (get-in @load-data [:gravity]))
+             (swap! e assoc-in [:friction] (get-in @load-data [:friction]))
+             (swap! e assoc-in [:velocity] (get-in @load-data [:velocity]))
+             (swap! e assoc-in [:player-input] (get-in @load-data [:player-input]))
+             (swap! e assoc-in [:items] (get-in @load-data [:items]))
+             (swap! e assoc-in [:acceleration] (get-in @load-data [:acceleration]))
+             (swap! e assoc-in [:collidable] (get-in @load-data [:collidable]))
+             (swap! e assoc-in [:create-ref] (get-in @load-data [:create-ref]))
+             (swap! e assoc-in [:scale] (get-in @load-data [:scale]))
+             (swap! e assoc-in [:can-jump] (get-in @load-data [:can-jump]))
+             (swap! e assoc-in [:climbing] (get-in @load-data [:climbing]))))))
