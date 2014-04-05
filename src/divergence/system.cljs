@@ -1,6 +1,7 @@
 (ns divergence.system
-  (:require  [divergence.audio :as a]
-             [divergence.physics :as phys]))
+  (:require  ;[divergence.audio :as a]
+             [divergence.physics :as phys]
+             [cljs.reader :as reader]))
 
 ;;GLOBAL VALUES===============================================
 (def camera-width 900)
@@ -236,7 +237,7 @@
         (swap! e assoc-in [:acceleration] [0 1 0]))
       (when
         (and (= (@e :can-jump) 1) (actions :up))
-        (a/play-sound :jump)
+        ;(a/play-sound :jump)
         (swap! e assoc-in [:acceleration] [0 -4 0])
         (swap! e assoc-in [:can-jump] 0))
 
@@ -317,29 +318,30 @@
 (def serial-data (atom nil))
 (def load-data (atom nil))
 
-(defn save-to-local-db [objname data]
+(defn save-to-local-db [objname data] ;saves the object name and the data to local storage
   (.setItem js/localStorage objname data))
 
 (defn serialize [entities]
   (doseq [e entities]
       (reset! serial-data @e) ;loops through and copies entities into serial-data
-      (swap! serial-data dissoc :ref :sprite :stage :actions :tiling-sprite) ;takes out complex data
+      (swap! serial-data dissoc :ref :sprite :stage :actions :tiling-sprite :on-stage) ;takes out complex data
       (save-to-local-db (pr-str (@e :name)) @serial-data))) ;save to local database
 
 (defn deserialize [entities]
    (doseq [e entities]
-           (if (= ":player" (pr-str (get-in @e [:name]))) ;doseq is going through all the entities and if it is player, then:
-           (do
-             (reset! load-data (reader/read-string (.getItem js/localStorage ":player"))) ;read back from local database
-             (swap! e assoc-in [:position] (get-in @load-data [:position])) ;asigns the position from load-data back into player
-             (swap! e assoc-in [:gravity] (get-in @load-data [:gravity]))
-             (swap! e assoc-in [:friction] (get-in @load-data [:friction]))
-             (swap! e assoc-in [:velocity] (get-in @load-data [:velocity]))
-             (swap! e assoc-in [:player-input] (get-in @load-data [:player-input]))
-             (swap! e assoc-in [:items] (get-in @load-data [:items]))
-             (swap! e assoc-in [:acceleration] (get-in @load-data [:acceleration]))
-             (swap! e assoc-in [:collidable] (get-in @load-data [:collidable]))
-             (swap! e assoc-in [:create-ref] (get-in @load-data [:create-ref]))
-             (swap! e assoc-in [:scale] (get-in @load-data [:scale]))
-             (swap! e assoc-in [:can-jump] (get-in @load-data [:can-jump]))
-             (swap! e assoc-in [:climbing] (get-in @load-data [:climbing]))))))
+           (do ;everything executes together
+             (reset! load-data (reader/read-string (.getItem js/localStorage (pr-str (get-in @e [:name]))))) ;read back from local database
+             (if (not= nil (get-in @load-data [:position])) (swap! e assoc-in [:position] (get-in @load-data [:position]))) ;asigns the position from load-data back into player
+             (if (not= nil (get-in @load-data [:gravity])) (swap! e assoc-in [:gravity] (get-in @load-data [:gravity]))) ;if not equal to nil, get data. If it's equal to nil, then that object never had that data so no need to assign it.
+             (if (not= nil (get-in @load-data [:friction])) (swap! e assoc-in [:friction] (get-in @load-data [:friction]))) ;swaps the current position with the position from the data from local storage IF NOT NIL!
+             (if (not= nil (get-in @load-data [:velocity])) (swap! e assoc-in [:velocity] (get-in @load-data [:velocity])))
+             (if (not= nil (get-in @load-data [:player-input])) (swap! e assoc-in [:player-input] (get-in @load-data [:player-input])))
+             (if (not= nil (get-in @load-data [:items])) (swap! e assoc-in [:items] (get-in @load-data [:items])))
+             (if (not= nil (get-in @load-data [:acceleration])) (swap! e assoc-in [:acceleration] (get-in @load-data [:acceleration])))
+             (if (not= nil (get-in @load-data [:collidable])) (swap! e assoc-in [:collidable] (get-in @load-data [:collidable])))
+             (if (not= nil (get-in @load-data [:create-ref])) (swap! e assoc-in [:create-ref] (get-in @load-data [:create-ref])))
+             (if (not= nil (get-in @load-data [:scale])) (swap! e assoc-in [:scale] (get-in @load-data [:scale])))
+             (if (not= nil (get-in @load-data [:can-jump])) (swap! e assoc-in [:can-jump] (get-in @load-data [:can-jump])))
+             (if (not= nil (get-in @load-data [:anchor])) (swap! e assoc-in [:anchor] (get-in @load-data [:anchor])))
+             (if (not= nil (get-in @load-data [:holding])) (swap! e assoc-in [:holding] (get-in @load-data [:holding])))
+             (if (not= nil (get-in @load-data [:climbing])) (swap! e assoc-in [:climbing] (get-in @load-data [:climbing]))))))
