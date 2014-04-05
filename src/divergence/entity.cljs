@@ -65,8 +65,8 @@
            (c/scale 1 1)
            ]))
 
-(defn block [scale-x scale-y x y stage]
-  (entity [(c/named :block)
+(defn block [scale-x scale-y x y pname stage]
+  (entity [(c/named pname)
            (c/sprite blockTexture)
            (c/entity-type :tile)
            c/create-ref
@@ -77,8 +77,8 @@
            (c/on-stage stage)]))
 
 
-(defn box [x y stage]
-  (entity [(c/named :box)
+(defn box [pname x y stage]
+  (entity [(c/named pname)
            (c/entity-type :obstacle)
            (c/sprite boxTexture)
            c/create-ref

@@ -41,19 +41,15 @@
                 <br>
             </header>
             <section id="game-container">
-
 			</section>
     </body>
     <script type="text/javascript">goog.require("divergence.core");</script>
 
     <script>function callResetGame(){HideMenu(); divergence.core.resume(); divergence.core.resetGame()}</script>
-
     <script>function callResume(){HideMenu(); divergence.core.resume()}</script>
     <script>function callPause(){divergence.core.pause()}</script>
     <script>function callSettingsResume(){HideSettingsMenu(); divergence.core.resume()}</script>
     <script>function callSettingsMenu(){HideMenu(); ShowSettingsMenu();}</script>
-
-
-    <script>function callSaveGame(){divergence.core.savegame()}</script>
-    <script>function callLoadGame(){divergence.core.loadgame()}</script>
+    <script>function callSaveGame(){HideMenu(); divergence.core.savegame(); divergence.core.resume()}</script>
+    <script>function callLoadGame(){HideMenu(); divergence.core.loadgame(); divergence.core.resume()}</script>
 </html>

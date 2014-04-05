@@ -22,7 +22,9 @@ jQuery(document).ready(function($) {
 					'<br><br>' +
 					'<input type="image" src="assets/img/menu/menu_reset.png" id="menu_button" onclick="callResetGame()">' +
 					'<br><br>' +
-					'<input type="image" src="assets/img/menu/menu_load.png" id="menu_button">' +
+          '<input type="image" src="assets/img/menu/menu_save.png" id="menu_button" onclick="callSaveGame()">' +
+					'<br><br>' +
+					'<input type="image" src="assets/img/menu/menu_load.png" id="menu_button" onclick="callLoadGame()">' +
 					'<br><br>' +
 					'<input type="image" src="assets/img/menu/menu_settings.png" id="menu_button" onclick="callSettingsMenu()">' +
 					'<br><br>' +
