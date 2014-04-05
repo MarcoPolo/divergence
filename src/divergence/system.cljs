@@ -123,10 +123,10 @@
   (. js/console (log "hola"))
   (swap! level inc))
 
-(defn has-key? [player]
+(defn has-item? [player itemName]
   (let [item (player :holding)]
    (. js/console (log (name item)))
-   (if (= item :key)
+   (if (= item itemName)
     true
     false
      )))
@@ -135,7 +135,7 @@
   (doseq [p player]
     (doseq [e entities]
       (when (and (= (@p :name) :player) (phys/colliding? @p @e)
-                 (has-key? @p) (= (@e :name) :goal))
+                 (has-item? @p :key) (= (@e :name) :goal))
         (. js/console (log "win"))
         (next-level)))))
 
