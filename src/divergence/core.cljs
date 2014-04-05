@@ -47,18 +47,18 @@
    (e/rope-block 950 40 stage)
    (e/key-block 500 510 stage)
 
-   (e/vertical-full-block 0 -40 stage)
-   (e/horizontal-full-block 0 560 stage)
-   (e/horizontal-full-block 800 560 stage)
-   (e/vertical-full-block 1560 -40 stage)
+   (e/vertical-full-block 0 -40 :block1 stage)
+   (e/horizontal-full-block 0 560 :block2 stage)
+   (e/horizontal-full-block 800 560 :block3 stage)
+   (e/vertical-full-block 1560 -40 :block4 stage)
 
-   (e/regular-block 1000 520 stage)
-   (e/regular-block 1000 460 stage)
-   (e/regular-block 1000 420 stage)
-   (e/regular-block 1000 360 stage)
+   (e/regular-block 1000 520 :block5 stage)
+   (e/regular-block 1000 460 :block6 stage)
+   (e/regular-block 1000 420 :block7 stage)
+   (e/regular-block 1000 360 :block8 stage)
 
-   (e/box 400 300 stage)
-   (e/box 400 100 stage)
+   (e/box :box1 400 300 stage)
+   (e/box :box2 400 100 stage)
 
    (e/goal 1300 485 stage)
 
