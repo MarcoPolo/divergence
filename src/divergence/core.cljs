@@ -3,7 +3,6 @@
             [divergence.entity :as e]
             [divergence.system :as s]
             [divergence.leveleditor :as le]
-            [divergence.audio :as a]
             [goog.dom :as dom]))
 
 (enable-console-print!)

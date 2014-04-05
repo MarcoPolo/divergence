@@ -12,6 +12,7 @@
 (def ropeTexture (js/PIXI.Texture.fromImage "assets/img/rope.png"))
 (def keyTexture (js/PIXI.Texture.fromImage "assets/img/key.png"))
 
+(def textures [playerTexture blockTexture boxTexture])
 
 (defn entity [components]
   (reduce

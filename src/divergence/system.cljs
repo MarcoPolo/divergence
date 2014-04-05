@@ -1,7 +1,8 @@
 (ns divergence.system
-  (:require  ;[divergence.audio :as a]
+  (:require  [cljs.reader :as reader]
+             [divergence.audio :as a]
              [divergence.physics :as phys]
-             [cljs.reader :as reader]))
+             ))
 
 ;;GLOBAL VALUES===============================================
 (def camera-width 900)
@@ -126,7 +127,7 @@
 
 (defn has-item? [player itemName]
   (let [item (player :holding)]
-   (. js/console (log (name item)))
+   ;(. js/console (log (name item)))
    (if (= item itemName)
     true
     false
@@ -237,7 +238,7 @@
         (swap! e assoc-in [:acceleration] [0 1 0]))
       (when
         (and (= (@e :can-jump) 1) (actions :up))
-        ;(a/play-sound :jump)
+        (a/play-sound :jump)
         (swap! e assoc-in [:acceleration] [0 -4 0])
         (swap! e assoc-in [:can-jump] 0))
 
