@@ -4,7 +4,7 @@
              [divergence.physics :as phys]
              ))
 
-;;GLOBAL VALUES===============================================
+;;GLOBAL VALUES-----------------------------------
 (def camera-width 900)
 (def camera-height 506)
 (def level-width 3200)
@@ -18,6 +18,19 @@
 
 (def pause (atom 0))
 
+;;CONVERSIONS-----------------------------------------
+(defn cljs-to-js
+  "Recursively transforms ClojureScript maps into Javascript objects,
+   other ClojureScript colls into JavaScript arrays, and ClojureScript
+   keywords into JavaScript strings."
+  [x]
+  (cond
+    (string? x) x
+    (keyword? x) (name x)
+    (map? x) (.strobj (reduce (fn [m [k v]]
+               (assoc m (clj->js k) (clj->js v))) {} x))
+    (coll? x) (apply array (map clj->js x))
+    :else x))
 
 ;;PHYSICS---------------------------------------------
 (defn climbing? [player entities]
@@ -145,7 +158,7 @@
 ;;RENDERING---------------------------------------------
 (defn create-ref [entities]
   (doseq [e entities]
-    (swap! e assoc :ref (js/PIXI.Sprite. (-> @e :sprite :texture)))))
+    (swap! e assoc :ref (js/PIXI.MovieClip. (cljs-to-js (-> @e :sprite :texture))))))
 
 (defn create-tiling-ref [entities]
   (doseq [e entities]
@@ -179,7 +192,12 @@
     (.setText ref (str "FPS: " (js/Math.round (/ 1000 (- now @fps-time))))))
   (reset! fps-time (.getTime (js/Date.))))
 
-
+(defn animations [entities]
+  (doseq [e entities
+          :let [sprite (@e :ref)]]
+    (set! (.-animationSpeed sprite) 1)
+    ;(. sprite play)
+    ))
 
 ;;KEYLISTENER AND KEY EVENTS---------------------------------------------
 (def code->key

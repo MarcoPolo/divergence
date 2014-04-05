@@ -24,7 +24,7 @@
 
 (defn player [stage]
   (entity [(c/named :player)
-           (c/sprite playerTexture)
+           (c/sprite textures)
            (c/position (/ s/camera-width 3) (/ s/camera-height 3) 0)
            (c/on-stage stage)
            (c/friction 1)
@@ -46,7 +46,7 @@
 (defn goal [x y stage]
   (entity [(c/named :goal)
            (c/entity-type :goal)
-           (c/sprite goalTexture)
+           (c/sprite [goalTexture])
            c/create-ref
            (c/position x y 0)
            (c/on-stage stage)
@@ -55,7 +55,7 @@
 (defn background [stage]
   (entity [(c/named :bg)
            (c/entity-type :bg)
-           (c/sprite bgTexture)
+           (c/sprite [bgTexture])
            (c/tiling-sprite bgTexture)
            (c/on-stage stage)
            c/has-actions
@@ -68,7 +68,7 @@
 
 (defn block [scale-x scale-y x y pname stage]
   (entity [(c/named pname)
-           (c/sprite blockTexture)
+           (c/sprite [blockTexture])
            (c/entity-type :tile)
            c/create-ref
            (c/position x y 0)
@@ -81,7 +81,7 @@
 (defn box [pname x y stage]
   (entity [(c/named pname)
            (c/entity-type :obstacle)
-           (c/sprite boxTexture)
+           (c/sprite [boxTexture])
            c/create-ref
            c/accelerates
            c/movable
@@ -107,7 +107,7 @@
 (defn rope-block [x y stage]
   (entity [(c/named :rope)
            (c/entity-type :tool)
-           (c/sprite ropeTexture)
+           (c/sprite [ropeTexture])
            (c/position x y 0)
            (c/on-stage stage)
            (c/scale 0.5 5)
@@ -125,7 +125,7 @@
 (defn key-block [x y stage]
   (entity [(c/named :key)
            (c/entity-type :item)
-           (c/sprite keyTexture)
+           (c/sprite [keyTexture])
            (c/position x y 0)
            (c/on-stage stage)
            (c/scale 0.5 0.5)

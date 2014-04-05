@@ -1,5 +1,5 @@
 (ns divergence.audio
-  (:require [divergence.system :as s])
+  ;(:require [divergence.system :as s])
   )
 
 (def jumpSound (js/buzz.sound. "assets/sounds/fins__jumping.wav"))
@@ -24,8 +24,8 @@
   ))
 
 ;;use this in core, may need adjustments
-(defn startBGM []
-  (case (deref s/level)
+(defn startBGM [level]
+  (case (level)
     0 (play-sound :bgm1)
     1 (play-sound :bgm2)
     ))

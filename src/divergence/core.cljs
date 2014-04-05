@@ -76,6 +76,7 @@
     (s/create-ref (c->e :sprite))
     (s/create-tiling-ref (c->e :tiling-sprite))
     (s/create-text (c->e :text))
+    (s/animations (c->e :player-input))
 
     (s/to-stage @container (c->e :stage))
     (s/add-camera @camera @container)
@@ -129,7 +130,6 @@
     (s/fps-counter (c->e :fps-counter))
     (s/update-camera container (c->e :position))
     (s/pick-drop-item (c->e :position))
-    ;(js/requestAnimationFrame @animate-ref)
     (reset! globalID (js/requestAnimationFrame @animate-ref))
     ))
 
