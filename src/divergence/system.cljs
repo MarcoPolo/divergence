@@ -331,10 +331,10 @@
    (doseq [e entities]
            (do ;everything executes together
              (reset! load-data (reader/read-string (.getItem js/localStorage (pr-str (get-in @e [:name]))))) ;read back from local database
-             (if (not= nil (get-in @load-data [:position])) (swap! e assoc-in [:position] (get-in @load-data [:position]))) ;asigns the position from load-data back into player
-             (if (not= nil (get-in @load-data [:gravity])) (swap! e assoc-in [:gravity] (get-in @load-data [:gravity]))) ;if not equal to nil, get data. If it's equal to nil, then that object never had that data so no need to assign it.
-             (if (not= nil (get-in @load-data [:friction])) (swap! e assoc-in [:friction] (get-in @load-data [:friction]))) ;swaps the current position with the position from the data from local storage IF NOT NIL!
-             (if (not= nil (get-in @load-data [:velocity])) (swap! e assoc-in [:velocity] (get-in @load-data [:velocity])))
+             (if (not= nil (get-in @load-data [:position])) (swap! e assoc-in [:position] (get-in @load-data [:position]))) ;assigns the position from load-data back into object
+             (if (not= nil (get-in @load-data [:gravity])) (swap! e assoc-in [:gravity] (get-in @load-data [:gravity]))) ;If not equal to nil, get data.
+             (if (not= nil (get-in @load-data [:friction])) (swap! e assoc-in [:friction] (get-in @load-data [:friction]))) ;If it's equal to nil, then that object never had that data so no need to assign it.
+             (if (not= nil (get-in @load-data [:velocity])) (swap! e assoc-in [:velocity] (get-in @load-data [:velocity]))) ;swaps the current position with the position from the data from local storage IF NOT NIL!
              (if (not= nil (get-in @load-data [:player-input])) (swap! e assoc-in [:player-input] (get-in @load-data [:player-input])))
              (if (not= nil (get-in @load-data [:items])) (swap! e assoc-in [:items] (get-in @load-data [:items])))
              (if (not= nil (get-in @load-data [:acceleration])) (swap! e assoc-in [:acceleration] (get-in @load-data [:acceleration])))
