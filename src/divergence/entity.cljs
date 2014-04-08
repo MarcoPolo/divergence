@@ -12,7 +12,9 @@
 (def ropeTexture (js/PIXI.Texture.fromImage "assets/img/rope.png"))
 (def keyTexture (js/PIXI.Texture.fromImage "assets/img/key.png"))
 
-(def textures [playerTexture blockTexture boxTexture])
+(def jumpAnimation [playerTexture playerTexture])
+(def climbAnimation [playerTexture playerTexture playerTexture])
+(def pushAnimation [playerTexture playerTexture])
 
 (defn entity [components]
   (reduce
@@ -24,7 +26,7 @@
 
 (defn player [stage]
   (entity [(c/named :player)
-           (c/sprite textures)
+           (c/sprite [playerTexture])
            (c/position (/ s/camera-width 3) (/ s/camera-height 3) 0)
            (c/on-stage stage)
            (c/friction 1)

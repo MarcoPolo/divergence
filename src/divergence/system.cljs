@@ -2,6 +2,7 @@
   (:require  [cljs.reader :as reader]
              [divergence.audio :as a]
              [divergence.physics :as phys]
+             [divergence.entity :as ent]
              ))
 
 ;;GLOBAL VALUES-----------------------------------
@@ -37,9 +38,12 @@
   (doseq [e entities
           :let [cond1 (phys/colliding? @player @e)
                 cond2 (@e :can-climb)
+                sprite (@player :ref)
                ]]
     (if (and cond1 cond2)
       (do
+        (set! (.-textures sprite) (cljs-to-js ent/climbAnimation))
+        (set! (.-playing sprite) true)
         (swap! player assoc-in [:climbing] 1)
         (swap! player assoc-in [:gravity] [0 0 0])
         (swap! player assoc-in [:acceleration] [0 -10 0])
@@ -47,6 +51,8 @@
       (do
         (swap! player assoc-in [:climbing] 0)
         (swap! player assoc-in [:gravity] [0 0.2 0]))
+        (set! (.-textures sprite) (cljs-to-js [ent/playerTexture]))
+        (set! (.-playing sprite) true)
       )))
 
 (defn climbing [entities]
@@ -79,11 +85,14 @@
 (defn push [entities player]
   (doseq [p player]
     (when (not= (@p :velocity) [0 0 0])
-      (let [{[x-v y-v rot-speed] :velocity} @p]
+      (let [{[x-v y-v rot-speed] :velocity} @p
+            sprite (@p :ref)]
         (let [x-future (move-entity @p [x-v 0 0])
                 y-future (move-entity @p [y-v 0 0])]
           (doseq [e entities]
             (when (phys/colliding? x-future @e)
+              (set! (.-textures sprite) (cljs-to-js ent/pushAnimation))
+              (set! (.-playing sprite) true)
               (swap! e assoc-in [:velocity 0] (* (compare x-v 0) 2)))))))))
 
 (defn friction
@@ -140,7 +149,6 @@
 
 (defn has-item? [player itemName]
   (let [item (player :holding)]
-   ;(. js/console (log (name item)))
    (if (= item itemName)
     true
     false
@@ -151,7 +159,7 @@
     (doseq [e entities]
       (when (and (= (@p :name) :player) (phys/colliding? @p @e)
                  (has-item? @p :key) (= (@e :name) :goal))
-        (. js/console (log "win"))
+        (js/alert "win")
         (next-level)))))
 
 
@@ -196,8 +204,10 @@
   (doseq [e entities
           :let [sprite (@e :ref)]]
     (set! (.-animationSpeed sprite) 1)
-    ;(. sprite play)
+    (set! (.-loop sprite) true)
     ))
+
+
 
 ;;KEYLISTENER AND KEY EVENTS---------------------------------------------
 (def code->key
@@ -230,7 +240,8 @@
 (defn execute-actions [entities]
   (doseq [e entities
           :let [actions (@e :actions)
-                [ax ay ar] (@e :acceleration)]]
+                [ax ay ar] (@e :acceleration)
+                sprite (@e :ref)]]
     (if
       (actions :item)
       (swap! e assoc-in [:items] 1)
@@ -256,11 +267,17 @@
         (swap! e assoc-in [:acceleration] [0 1 0]))
       (when
         (and (= (@e :can-jump) 1) (actions :up))
-        (a/play-sound :jump)
+        (when (= (@e :name) :player)
+          (a/play-sound :jump)
+          (set! (.-textures sprite) (cljs-to-js ent/jumpAnimation))
+          (set! (.-playing sprite) true))
         (swap! e assoc-in [:acceleration] [0 -4 0])
         (swap! e assoc-in [:can-jump] 0))
 
       (when (not-any? actions [:up :left :right :down])
+        (when (= (@e :name) :player)
+          (set! (.-textures sprite) (cljs-to-js [ent/playerTexture]))
+          )
         (swap! e assoc-in [:acceleration] [0 0 0])))))
 
 (defn movement-caps [entities]
@@ -296,18 +313,18 @@
 (defn pick-drop-item [entities]
   (doseq [e entities]
     (when (= (@e :name) :player)
-      (let [p @e
-            actions (p :actions)
-            [x y r] (p :position)]
+      (let [p e
+            actions (@p :actions)
+            [x y r] (@p :position)]
           (doseq [en entities
                   :let [item @en
-                        collide? (phys/colliding? item p)]]
+                        collide? (phys/colliding? item @p)]]
             (when (and (= (item :type) :item) collide?)
-              (if (= (p :items) 1)
+              (if (= (@p :items) 1)
                 (do (set! (.-visible (item :ref)) false)
-                    (swap! p assoc-in [:holding] [(item :name)])
-                    (. js/console (log "picking up"))
-                    (let [pheight (.-height (p :ref))
+                    (swap! p assoc-in [:holding] (item :name))
+                    (. js/console (log (name (@p :holding))))
+                    (let [pheight (.-height (@p :ref))
                           iheight (.-height (item :ref))
                           ]
                      (swap! en assoc-in [:position] [x (+ y (- pheight iheight)) r])))
