@@ -22,15 +22,10 @@
     (s/position (c->e :position))
     (s/anchor (c->e :anchor))
     (s/scale (c->e :scale))
-    (s/set-width-height (c->e :collidable))
+    (s/set-width-height (c->e :collidable))))
 
-    ;; Setup the time travel
-    #_(let [timestream (first (c->e :timestream))]
-      (tt/save-entities-to-timestream! timestream [(@entity->components 0)])
-      (swap! timestream assoc-in [:timestream :prev-node] [0 0]))
 
-    ))
-
+;;Initial timestream
 (def timestream (atom [[{:prev-node [0 0]}]]))
 
 ;(get-in js/k [0 0])
