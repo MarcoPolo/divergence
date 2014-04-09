@@ -4,128 +4,13 @@
             [divergence.renderer :as renderer]
             [divergence.system :as s]))
 
-(def sample-entity {:foo 0 :bar 1})
-
-(def sample-timeline
-  [[{:prev-node :origin :value sample-entity}
-    {:prev-node [0 0] :value (update-in sample-entity [:foo] inc)}]])
-
-(defn create-timestream [origin-entity]
-  [[{:prev-node [0 1] :entity origin-entity}]])
-
-(defn conj-to-timestream [timestream timeline prev-node value]
-  (update-in timestream [timeline] (fnil conj []) {:prev-node prev-node :value value}))
-
-(defn get-prev-node [timestream [timeline time]]
-  (get-in timestream [timeline time :prev-node]))
+(def rewind-speed 1)
 
 (defn reverse-time [timestream [timeline time-left-in-timeline] rewind-time]
   (if (> time-left-in-timeline rewind-time)
     [timeline (- time-left-in-timeline rewind-time)]
     (let [[prev-timeline prev-time] (get-in timestream [timeline 0 :prev-node])]
-      #_(println "prev node is" [prev-timeline prev-time])
-      #_(println "rewind" rewind-time)
       (reverse-time timestream [prev-timeline prev-time] (- rewind-time time-left-in-timeline)))))
-
-(defn end-node-in-time?
-  "true if it's the last node on a timeline"
-  [timestream [timeline time]]
-  (>= time (dec (count (nth timestream timeline)))))
-
-(def next-timeline (conj-to-timestream sample-timeline 1 [0 1] {:foo 3 :bar 5}))
-(conj-to-timestream next-timeline 1 [1 0] {:foo 7 :bar 2})
-
-
-(defn save-entities-to-timestream! [timestream-entity entities]
-  (let [{:keys [prev-node timeline timestream]} (:timestream @timestream-entity)]
-
-    (let [ time-offset (timeviz/find-time-offset timestream (first prev-node))]
-      #_(println "Printing at " prev-node)
-      (timeviz/draw-time-node [(first prev-node) (+ time-offset (second prev-node))])
-      #_(timeviz/render-stage))
-    ;(timeviz/print-timestream (get-in @timestream-entity [:timestream :timestream]))
-
-
-    ;; We've traveled back in time so we need to create a new timeline
-    (when (get-in @timestream-entity [:timestream :traveled-back])
-
-      #_(println "Entity: " (get-in timestream prev-node))
-
-
-      (swap! timestream-entity assoc-in [:timestream :traveled-back] false)
-      (swap! timestream-entity assoc-in [:timestream :prev-node] [(inc timeline) 0])
-      (swap! timestream-entity update-in [:timestream :timeline] inc)
-      ;; TODO create a new entity that lives on the other timeline
-      (println (keys (:timestream @timestream-entity)))
-      (println (keys @timestream-entity))
-      )
-    (let [{:keys [timestream timeline traveled-back]} (:timestream @timestream-entity)]
-      (swap! timestream-entity
-             assoc-in [:timestream :timestream]
-             (conj-to-timestream timestream timeline prev-node (mapv deref entities))))))
-
-(defn update-prev-node! [timestream-entity]
-  (swap! timestream-entity update-in [:timestream :prev-node 1] inc))
-
-(defn travel-back-in-time [timestream-entity player-entity]
-  ;;TODO fix this so it isn't just looking at the player entity
-  ;;TODO fix so we update more than just the player
-  (let [actions (@player-entity :actions)]
-    (when (actions :shift)
-      ;; Reverse time
-      (let [{:keys [timestream timeline prev-node]} (:timestream @timestream-entity)
-            time (count (timestream timeline))
-            time-flux-capacitor-value 1
-            base-node (reverse-time timestream prev-node time-flux-capacitor-value)
-            old-entity (first (:value (get-in timestream base-node)))
-            time-offset (timeviz/find-time-offset timestream (first base-node))]
-
-        (timeviz/draw-time-node [(first base-node) (+ time-offset (second base-node) )] 0xCA2F2F)
-        #_(timeviz/render-stage)
-
-        (set! js/foo (:timestream @timestream-entity))
-
-        (when old-entity
-          (reset! player-entity old-entity)
-          (swap! timestream-entity assoc-in [:timestream :traveled-back] true)
-          (swap! timestream-entity assoc-in [:timestream :prev-node] base-node))))))
-
-(defn time-tick [timestream entities]
-  (let [actions (@(first entities) :actions)]
-    (travel-back-in-time timestream (first entities))
-    (when (not (actions :shift))
-      (save-entities-to-timestream! timestream entities)
-      (update-prev-node! timestream))
-    ))
-
-
-(defn time-tick-divergent-entities
-  "This will simple update the time of the divergent entities.
-   The difference between this and th other time tick, is that this
-   does not modify the timestream."
-  [timestream entities]
-  #_(doseq [e entities
-          :let [{:keys [timeline prev-node]} (:divergent @e)
-                new-entity (first (:value (get-in timestream [])))]]
-    ;; Update the plaer
-    ;; TODO
-    #_(swap! e )))
-
-(defn update-divergent-entities
-  "This will do the actual update to the values of divergent entities"
-  [timestream entities]
-  (doseq [e entities
-          :let [{:keys [timeline prev-node]} (:divergent @e)]]
-    ;; Update the player
-    #_(swap! e )))
-
-
-
-
-(comment
-  (get-in @js/foo [0 28 :forks])
-  (get-in @js/bar [:divergent :current-node])
-  )
 
 (defn create-divergent-entity [time-event-node]
   (let [[normal-e-atom unique-e-atom] (e/register-entity! (e/non-player-bunny renderer/stage))]
@@ -159,29 +44,12 @@
     (swap! timestream assoc-in [new-timeline-number 0 :value time-name] @player-entity)
 
     ;; Create the divergent entity
-    (create-divergent-entity current-node)
-    ))
+    (create-divergent-entity current-node)))
 
 (defn fork-entity
   "Fork the entity into another timeline, if a fork is found"
   [timestream entities])
 
-(def rewind-speed 1)
-
-(comment
-  ;(update-in [[]] [0 1] (fnil identity []))
-  (get-in @js/bar js/foo)
-  js/bar
-  js/baz
-  js/foo
-
-  e/entities
-  @(@e/entity->components 6)
-  (set! js/foo (:ref @(@e/entity->components 6)))
-
-
-  (update-in @js/bar [0 1 :value :player] {:foo :bar})
-  (swap! js/bar update-in [0 1] (fnil identity [])))
 
 (defn tick-forward
   [timestream entities]
@@ -195,12 +63,12 @@
 
     ;; If a time event exists in this future state, we'll reset! the entity to that value
     ;; Otherwise we'll write the current value of the entity into the timestream
+    (timeviz/draw-time-node [(first future-node) (+ (second future-node) (timeviz/find-time-offset @timestream (first future-node)))])
     (if future-state
       (reset! e future-state)
       (do
         ;; add a blank time-event if there isn't a time-event in there already
         (swap! timestream update-in future-node (fnil identity {}))
-
 
         (swap! e assoc-in [:divergent :current-node] future-node)
         (swap! timestream assoc-in future-value-path @e)))))
@@ -214,6 +82,9 @@
                 past-state (get-in @timestream (conj past-node :value time-name))]]
     ;; Check if we need to destory the entity
     ;; TODO fix this so it actually destroys entities
+
+    (timeviz/draw-time-node [(first past-node) (+ (second past-node) (timeviz/find-time-offset @timestream (first past-node)))]
+                            0xCA2F2F)
     (if (< time-in-timeline rewind-speed)
       ;; Destroy entity
       (e/destroy-entity! e)
@@ -241,15 +112,4 @@
         (swap! player-entity assoc-in [:player-time-traveler :traveled-back?] true))
       ;; Else we are going forward
       (tick-forward timestream divergent-entities))))
-
-
-
-(comment
-  (def ts (atom (divergence.entity.entity [(divergence.component.timestream)])))
-  (save-entities-to-timestream! ts [(atom {:foo 3 :bar 4})])
-  (save-entities-to-timestream! ts [(atom {:foo 3 :bar 8})])
-  (map deref [(atom {:foo 3 :bar 4})])
-  ts
-  )
-
 

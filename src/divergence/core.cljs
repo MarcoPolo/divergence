@@ -67,14 +67,8 @@
     (s/position (c->e :position))
     (s/anchor (c->e :anchor))
     (s/scale (c->e :scale))
-    (s/set-width-height (c->e :collidable))
+    (s/set-width-height (c->e :collidable))))
 
-    ;; Setup the time travel
-    #_(let [timestream (first (c->e :timestream))]
-      (tt/save-entities-to-timestream! timestream [(@entity->components 0)])
-      (swap! timestream assoc-in [:timestream :prev-node] [0 0]))
-
-    ))
 
 ;;MASTER FEATURES=================================================
 
@@ -84,6 +78,9 @@
     (reset! entity-count 0)
     (reset! stage (js/PIXI.Stage. 0x66FF99))
     (setup (entities @stage)))
+
+;;Initial timestream
+(def timestream (atom [[{:prev-node [0 0]}]]))
 
 (defn savegame []
   (let [c->e @component->entities]
