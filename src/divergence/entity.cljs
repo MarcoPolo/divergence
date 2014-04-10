@@ -93,9 +93,20 @@
 
   )
 
+(defn block [scale-x scale-y x y stage]
+  (entity [(c/named :block)
+           (c/unique (c/sprite [:divergence.textures/block]))
+           (c/entity-type :tile)
+           (c/position x y 0)
+           (c/scale scale-x scale-y)
+           c/collidable
+           (c/friction 5)
+           (c/on-stage stage)]))
+
+
 (defn player [stage]
   (entity [(c/named :player)
-           (c/unique (c/sprite [:divergence.textures/bunny]))
+           (c/unique (c/sprite [playerTexture]))
            (c/position (/ camera/camera-width 3) (/ camera/camera-height 3) 0)
            (c/unique c/player-input)
            (c/unique (c/on-stage stage))
@@ -117,6 +128,10 @@
            (c/unique (c/player-time-traveler))
            ]))
 
+(defn non-player [stage]
+  (-> (player stage)
+      (update-in [:unique] dissoc :player-time-traveler :player-input)))
+
 (defn goal [x y stage]
   (entity [(c/named :goal)
            (c/entity-type :goal)
@@ -133,7 +148,7 @@
            (c/tiling-sprite bgTexture)
            (c/on-stage stage)
            c/has-actions
-           c/player-input
+           (c/unique c/player-input)
            c/create-ref
            c/movable
            (c/position -500 0 0)
@@ -141,21 +156,7 @@
            ]))
 
 
-(defn non-player-bunny [stage]
-  (-> (bunny stage)
-      (update-in [:unique]dissoc :player-time-traveler :player-input)))
 
-
-(defn block [scale-x scale-y x y stage]
-  (entity [(c/named :block)
-           (c/unique (c/sprite :divergence.textures/block))
-           (c/sprite [:divergence.textures/block])
-           (c/entity-type :tile)
-           (c/position x y 0)
-           (c/scale scale-x scale-y)
-           c/collidable
-           (c/friction 5)
-           (c/on-stage stage)]))
 
 
 (defn box [pname x y stage]
@@ -250,7 +251,7 @@
     ))
 
 (def entities
-  [(bunny renderer/stage)
+  [(player renderer/stage)
    (some-text renderer/stage)
    (vertical-full-block 0 -40 renderer/stage)
    (vertical-full-block 760 -40 renderer/stage)

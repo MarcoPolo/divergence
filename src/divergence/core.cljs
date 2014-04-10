@@ -11,8 +11,7 @@
 (enable-console-print!)
 
 ;;DATA DECLARATIONS==============================================
-(def renderer (js/PIXI.autoDetectRenderer. s/screen-width s/screen-height))
-(.appendChild (js/document.getElementById "game-container") (.-view renderer))
+(def renderer renderer/renderer)
 
 (def stage (atom renderer/stage))
 
@@ -77,7 +76,7 @@
     (reset! entity->components {})
     (reset! entity-count 0)
     (reset! stage (js/PIXI.Stage. 0x66FF99))
-    (setup (entities @stage)))
+    (setup e/entities))
 
 ;;Initial timestream
 (def timestream (atom [[{:prev-node [0 0]}]]))
@@ -117,6 +116,7 @@
     (s/movement-caps (c->e :velocity))
     (s/friction (c->e :acceleration))
     (s/accelerate (c->e :acceleration))
+    (s/collide (c->e :collidable))
 
     (s/push (c->e :pushable) (c->e :player-input))
     (s/goal? (c->e :position) (c->e :player-input))
@@ -146,9 +146,9 @@
         (js/requestAnimationFrame @animate-ref)))))
 
 
-(reset! animate-ref animate)
+#_(reset! animate-ref animate)
 
-#_(reset! animate-ref (debug-slow-down))
+(reset! animate-ref (debug-slow-down))
 
 (setup e/entities)
 

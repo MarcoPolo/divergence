@@ -13,12 +13,14 @@
       (reverse-time timestream [prev-timeline prev-time] (- rewind-time time-left-in-timeline)))))
 
 (defn create-divergent-entity [time-event-node]
-  (let [[normal-e-atom unique-e-atom] (e/register-entity! (e/non-player-bunny renderer/stage))]
+  (let [[normal-e-atom unique-e-atom] (e/register-entity! (e/non-player renderer/stage))]
     (s/create-ref [unique-e-atom])
-    (s/on-stage [unique-e-atom])
+    (s/animations [unique-e-atom])
+    (s/to-stage [unique-e-atom])
     (s/position [normal-e-atom])
     (s/anchor [normal-e-atom])
     (s/scale [normal-e-atom])
+    (js* "debugger")
     (swap! normal-e-atom assoc-in [:divergent :current-node] time-event-node)))
 
 (defn create-new-timeline

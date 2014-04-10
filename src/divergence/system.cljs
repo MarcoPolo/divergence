@@ -180,25 +180,21 @@
   (doseq [e entities]
     (swap! e assoc :ref (js/PIXI.MovieClip. (cljs-to-js (map textures/textures
                                                              (-> @e :sprite :texture)))))))
-    ;(swap! e assoc :ref (js/PIXI.Sprite. (-> @e :sprite :texture textures/textures)))))
 
 (defn create-tiling-ref [entities]
   (doseq [e entities]
     (swap! e assoc :ref (js/PIXI.TilingSprite. (-> @e :tiling-sprite :texture) level-width (* level-height 2)))))
 
-(defn player-input [entities]
-  (doseq [e entities]))
-
 (defn add-camera [camera container]
   (.addChild camera container))
 
 (defn to-stage [container entities]
-  (doseq [e entities]
-      (.addChild container (@e :ref))))
+  (doseq [e entities
+          :let [ref (e/entity-atom->ref e)]]
+      (.addChild container ref)))
 
 (defn on-stage [stage container]
-  (doseq [e entities]
-    (.addChild (@e :stage) (e/entity-atom->ref e))))
+  (.addChild stage container))
 
 (defn create-text [entities]
   (doseq [e entities]
@@ -220,8 +216,7 @@
   (doseq [e entities
           :let [sprite (@e :ref)]]
     (set! (.-animationSpeed sprite) 1)
-    (set! (.-loop sprite) true)
-    ))
+    (set! (.-loop sprite) true)))
 
 
 
@@ -259,7 +254,7 @@
   (doseq [e entities
           :let [actions (@e :actions)
                 [ax ay ar] (@e :acceleration)
-                sprite (@e :ref)]]
+                sprite (e/entity-atom->ref e)]]
     (if
       (actions :item)
       (swap! e assoc-in [:items] 1)
@@ -287,14 +282,15 @@
         (and (= (@e :can-jump) 1) (actions :up))
         (when (= (@e :name) :player)
           (a/play-sound :jump)
-          (set! (.-textures sprite) (cljs-to-js e/jumpAnimation))
+          (set! (.-textures sprite) (cljs-to-js (map textures/textures e/jumpAnimation)))
           (set! (.-playing sprite) true))
         (swap! e assoc-in [:acceleration] [0 -4 0])
         (swap! e assoc-in [:can-jump] 0))
 
       (when (not-any? actions [:up :left :right :down])
         (when (= (@e :name) :player)
-          (set! (.-textures sprite) (cljs-to-js [e/playerTexture]))
+
+          (set! (.-textures sprite) (cljs-to-js (map textures/textures [e/playerTexture])))
           )
         (swap! e assoc-in [:acceleration] [0 0 0])))))
 

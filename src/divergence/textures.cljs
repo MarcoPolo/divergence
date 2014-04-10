@@ -3,7 +3,9 @@
 (def bunnyTexture (js/PIXI.Texture.fromImage "assets/img/bunny.png"))
 (def blockTexture (js/PIXI.Texture.fromImage "assets/img/Brick_Block.png"))
 
-(def playerTexture (js/PIXI.Texture.fromImage "assets/img/player.png"))
+;(def playerTexture (js/PIXI.Texture.fromImage "assets/img/player.png"))
+(def playerTexture (js/PIXI.Texture.fromImage "assets/img/bunny.png"))
+
 (def boxTexture (js/PIXI.Texture.fromImage "assets/img/box.png"))
 (def goalTexture (js/PIXI.Texture.fromImage "assets/img/door.png"))
 (def bgTexture (js/PIXI.Texture.fromImage "assets/img/background.png"))
