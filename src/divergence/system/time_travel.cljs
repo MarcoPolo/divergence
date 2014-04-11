@@ -12,16 +12,17 @@
     (let [[prev-timeline prev-time] (get-in timestream [timeline 0 :prev-node])]
       (reverse-time timestream [prev-timeline prev-time] (- rewind-time time-left-in-timeline)))))
 
+(e/non-player :foo)
+
 (defn create-divergent-entity [time-event-node]
-  (let [[normal-e-atom unique-e-atom] (e/register-entity! (e/non-player renderer/stage))]
+  (let [non-player (-> (e/non-player renderer/stage)
+                       (assoc-in [:normal :divergent :current-node] time-event-node))
+        [normal-e-atom unique-e-atom] (e/register-entity! non-player)]
     (s/create-ref [unique-e-atom])
-    (s/animations [unique-e-atom])
-    (s/to-stage [unique-e-atom])
+    (s/to-stage @renderer/container [unique-e-atom])
     (s/position [normal-e-atom])
     (s/anchor [normal-e-atom])
-    (s/scale [normal-e-atom])
-    (js* "debugger")
-    (swap! normal-e-atom assoc-in [:divergent :current-node] time-event-node)))
+    (s/scale [normal-e-atom])))
 
 (defn create-new-timeline
   "This will create a new timeline with the prev-node where the current-node is"

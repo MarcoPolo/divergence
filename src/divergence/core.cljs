@@ -16,8 +16,8 @@
 (def stage (atom renderer/stage))
 
 
-(def container (atom (js/PIXI.DisplayObjectContainer.)))
-(def camera (atom (js/PIXI.DisplayObjectContainer.)))
+(def container renderer/container)
+(def camera renderer/camera)
 
 (def entity->components
   "A map to an entity and a list of its components"
@@ -38,18 +38,6 @@
 
 ;;GAME SETUP====================================================
 
-(defn register-entity! [entity]
-  (let [entity-atom (atom entity)]
-    (swap! entity->components assoc @entity-count entity-atom)
-    (swap! entity-count inc)
-    (doseq [[n component] entity]
-      (swap! component->entities update-in [n] conj entity-atom))))
-
-(comment
-(defn next-level []
-  (when (not (= s/level s/current-level))
-   (swap! s/curent-level inc))))
-
 (defn setup [entities]
   ;; Register all the entities in our maps
   (doseq [e entities] (e/register-entity! e))
@@ -67,6 +55,13 @@
     (s/anchor (c->e :anchor))
     (s/scale (c->e :scale))
     (s/set-width-height (c->e :collidable))))
+
+
+
+(comment
+(defn next-level []
+  (when (not (= s/level s/current-level))
+   (swap! s/curent-level inc))))
 
 
 ;;MASTER FEATURES=================================================
@@ -137,7 +132,7 @@
 (defn debug-slow-down
   "A way to slow down the game for debugging"
   []
-  (let [slow-down-factor 2
+  (let [slow-down-factor 4
         cnt (atom 0)]
     (fn []
       (swap! cnt inc)
