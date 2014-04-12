@@ -2,17 +2,17 @@
   (:require  [cljs.reader :as reader]
              [divergence.audio :as a]
              [divergence.physics :as phys]
-             [divergence.entity :as ent]
-             ))
+             [divergence.entity :as e]
+             [divergence.textures :as textures]
+             [divergence.camera :as camera]))
 
 ;;GLOBAL VALUES-----------------------------------
-(def camera-width 900)
-(def camera-height 506)
 (def level-width 3200)
 (def level-height 506)
 
 (def level (atom 0))
 (def current-level (atom 0))
+
 
 (defn as [entity k]
   (@entity k))
@@ -42,7 +42,7 @@
                ]]
     (if (and cond1 cond2)
       (do
-        (set! (.-textures sprite) (cljs-to-js ent/climbAnimation))
+        (set! (.-textures sprite) (cljs-to-js e/climbAnimation))
         (set! (.-playing sprite) true)
         (swap! player assoc-in [:climbing] 1)
         (swap! player assoc-in [:gravity] [0 0 0])
@@ -51,7 +51,7 @@
       (do
         (swap! player assoc-in [:climbing] 0)
         (swap! player assoc-in [:gravity] [0 0.2 0]))
-        (set! (.-textures sprite) (cljs-to-js [ent/playerTexture]))
+        (set! (.-textures sprite) (cljs-to-js [e/playerTexture]))
         (set! (.-playing sprite) true)
       )))
 
@@ -66,16 +66,24 @@
 
 (defn move [entities]
   (doseq [e entities]
-    (let [{v :velocity ref :ref} @e]
+    (let [{v :velocity} @e]
       (swap! e move-entity v))))
+
+(defn set-width-height [entities]
+  (doseq [e entities
+          :let [ref (e/entity-atom->ref e)]]
+    (swap! e assoc-in [:dimensions :width] (.-width ref))
+    (swap! e assoc-in [:dimensions :height] (.-height ref))))
+
 
 (defn collide [entities]
   (let [es (map deref entities)]
     (doseq [e entities
-            :when (not= (@e :velocity) [0 0 0])
+            :when (and (@e :velocity) (not= (@e :velocity) [0 0 0]))
             :let [{[x-v y-v rot-speed] :velocity} @e]]
       (let [x-future (move-entity @e [x-v 0 0])
             y-future (move-entity @e [0 y-v 0])]
+
         (when (< 1 (count (filter (partial phys/colliding? x-future) es)))
           (swap! e assoc-in [:velocity 0] 0))
         (when (< 1 (count (filter (partial phys/colliding? y-future) es)))
@@ -91,7 +99,7 @@
                 y-future (move-entity @p [y-v 0 0])]
           (doseq [e entities]
             (when (phys/colliding? x-future @e)
-              (set! (.-textures sprite) (cljs-to-js ent/pushAnimation))
+              (set! (.-textures sprite) (cljs-to-js e/pushAnimation))
               (set! (.-playing sprite) true)
               (swap! e assoc-in [:velocity 0] (* (compare x-v 0) 2)))))))))
 
@@ -115,7 +123,8 @@
 (defn accelerate [entities]
   (doseq [e entities
           :let [{a :acceleration} @e]]
-    (swap! e update-in [:velocity] #(mapv + a %))))
+    (swap! e update-in [:velocity] #(mapv + a %))
+    ))
 
 (defn gravity [entities]
   (doseq [e entities
@@ -124,19 +133,22 @@
 
 (defn anchor [entities]
   (doseq [e entities]
-    (let [{:keys [x y]} (@e :anchor) {ref :ref} @e]
+    (let [{:keys [x y]} (@e :anchor)
+          ref (e/entity-atom->ref e) ]
       (aset (.-anchor ref) "x" x)
       (aset (.-anchor ref) "y" y))))
 
 (defn scale [entities]
   (doseq [e entities]
-    (let [{{:keys [x-scale y-scale rot-speed]} :scale ref :ref} @e]
+    (let [{{:keys [x-scale y-scale rot-speed]} :scale} @e
+          ref (e/entity-atom->ref e)]
       (aset (.-scale ref) "x" x-scale)
       (aset (.-scale ref) "y" y-scale))))
 
 (defn position [entities]
   (doseq [e entities]
-    (let [{[x y rot] :position ref :ref} @e]
+    (let [{[x y rot] :position} @e
+          ref (e/entity-atom->ref e)]
       (aset (.-position ref) "x" x)
       (aset (.-position ref) "y" y)
       (aset ref "rotation" rot))))
@@ -166,21 +178,20 @@
 ;;RENDERING---------------------------------------------
 (defn create-ref [entities]
   (doseq [e entities]
-    (swap! e assoc :ref (js/PIXI.MovieClip. (cljs-to-js (-> @e :sprite :texture))))))
+    (swap! e assoc :ref (js/PIXI.MovieClip. (cljs-to-js (map textures/textures
+                                                             (-> @e :sprite :texture)))))))
 
 (defn create-tiling-ref [entities]
   (doseq [e entities]
     (swap! e assoc :ref (js/PIXI.TilingSprite. (-> @e :tiling-sprite :texture) level-width (* level-height 2)))))
 
-(defn player-input [entities]
-  (doseq [e entities]))
-
 (defn add-camera [camera container]
   (.addChild camera container))
 
 (defn to-stage [container entities]
-  (doseq [e entities]
-      (.addChild container (@e :ref))))
+  (doseq [e entities
+          :let [ref (e/entity-atom->ref e)]]
+      (.addChild container ref)))
 
 (defn on-stage [stage container]
   (.addChild stage container))
@@ -188,14 +199,15 @@
 (defn create-text [entities]
   (doseq [e entities]
     (let [style (get-in @e [:text :style])
-          text (get-in @e [:text :string])]
+          text (get-in @e [:text :string])
+          ref (e/entity-atom->ref e)]
       (swap! e assoc :ref (js/PIXI.Text. text style)))))
 
 (def fps-time (atom (.getTime (js/Date.))))
 
 (defn fps-counter [entities]
   (doseq [e entities
-          :let [ref (@e :ref)
+          :let [ref (e/entity-atom->ref e)
                 now (.getTime (js/Date.))]]
     (.setText ref (str "FPS: " (js/Math.round (/ 1000 (- now @fps-time))))))
   (reset! fps-time (.getTime (js/Date.))))
@@ -204,8 +216,7 @@
   (doseq [e entities
           :let [sprite (@e :ref)]]
     (set! (.-animationSpeed sprite) 1)
-    (set! (.-loop sprite) true)
-    ))
+    (set! (.-loop sprite) true)))
 
 
 
@@ -217,7 +228,9 @@
    39 :right
    40 :down
    77 :item
-   80 :p})
+   80 :p
+   16 :travel-back ;; :shift
+   69 :run})
 
 (def key-inputs (atom #{}))
 
@@ -235,13 +248,13 @@
 
 (defn player-input [entities]
   (doseq [e entities]
-    (swap! e assoc-in [:actions] @key-inputs)))
+    (swap! (@e/unique-entity-atom->entity-atom e) assoc-in [:actions] @key-inputs)))
 
 (defn execute-actions [entities]
   (doseq [e entities
           :let [actions (@e :actions)
                 [ax ay ar] (@e :acceleration)
-                sprite (@e :ref)]]
+                sprite (e/entity-atom->ref e)]]
     (if
       (actions :item)
       (swap! e assoc-in [:items] 1)
@@ -269,24 +282,24 @@
         (and (= (@e :can-jump) 1) (actions :up))
         (when (= (@e :name) :player)
           (a/play-sound :jump)
-          (set! (.-textures sprite) (cljs-to-js ent/jumpAnimation))
+          (set! (.-textures sprite) (cljs-to-js (map textures/textures e/jumpAnimation)))
           (set! (.-playing sprite) true))
         (swap! e assoc-in [:acceleration] [0 -4 0])
         (swap! e assoc-in [:can-jump] 0))
 
       (when (not-any? actions [:up :left :right :down])
         (when (= (@e :name) :player)
-          (set! (.-textures sprite) (cljs-to-js [ent/playerTexture]))
+
+          (set! (.-textures sprite) (cljs-to-js (map textures/textures [e/playerTexture])))
           )
         (swap! e assoc-in [:acceleration] [0 0 0])))))
 
 (defn movement-caps [entities]
   (doseq [e entities]
-    (let [actions (@e :actions)
+    (let [actions (e/entity-atom->component-val e :actions)
           {[vx vy vr] :velocity
            [ax ay ar] :acceleration
-           } @e
-          ]
+           } @e]
       (when (> vx 4) (swap! e assoc-in [:velocity] [5 vy vr]))
       (when (< vx -4) (swap! e assoc-in [:velocity] [-5 vy vr]))
       (when (and (< vy -4) (swap! e assoc-in [:velocity] [vx -4 vr]))))))
@@ -337,7 +350,7 @@
 
 (defn update-camera-coords [camera x y]
   (set! (.-x (.-position @camera)) (if (camera-x-check x)
-                                     (* -1 (- x (/ camera-width 3)))
+                                     (* -1 (- x (/ camera/camera-width 3)))
                                      (- x 0)))
   ;(set! (.-y (.-position @camera)) (- (@camera-coords :y) 50))
 )
@@ -376,7 +389,7 @@
              (if (not= nil (get-in @load-data [:acceleration])) (swap! e assoc-in [:acceleration] (get-in @load-data [:acceleration])))
              (if (not= nil (get-in @load-data [:collidable])) (swap! e assoc-in [:collidable] (get-in @load-data [:collidable])))
              (if (not= nil (get-in @load-data [:create-ref])) (swap! e assoc-in [:create-ref] (get-in @load-data [:create-ref])))
-             (if (not= nil (get-in @load-data [:scale])) (swap! e assoc-in [:scale] (get-in @load-data [:scale])))
+             ;(if (not= nil (get-in @load-data [:scale])) (swap! e assoc-in [:scale] (get-in @load-data [:scale])))
              (if (not= nil (get-in @load-data [:can-jump])) (swap! e assoc-in [:can-jump] (get-in @load-data [:can-jump])))
              (if (not= nil (get-in @load-data [:anchor])) (swap! e assoc-in [:anchor] (get-in @load-data [:anchor])))
              (if (not= nil (get-in @load-data [:holding])) (swap! e assoc-in [:holding] (get-in @load-data [:holding])))

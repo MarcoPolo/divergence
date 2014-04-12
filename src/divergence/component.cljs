@@ -74,7 +74,7 @@
   (component :fps-counter true))
 
 (def collidable
-  (component :collidable :true))
+  (component :collidable true))
 
 (def accelerates
   (component :acceleration [0 0 0]))
@@ -88,4 +88,59 @@
 (def climbing
   (component :climbing 0))
 
+(def time-based-state
+  "Anything whose state (e.g. position, velocity...) changes based of time"
+  (component :time-base-state true))
 
+(defn gravity
+  "Gravity settings should be:
+   [x-acceleration y-acceleration rot-acceleration]"
+  [gravity-settings]
+  (component :gravity gravity-settings))
+
+
+(defn unique
+  "A wrapper for anything that is unique to the entity instance, and can't be transferred"
+  [component]
+  (with-meta component {:category :unique}))
+
+
+;; Time travel stuff
+
+(defn time-based-state
+  "Anything whose state (e.g. position, velocity...) changes based of time. You should name it so it is recognizable in the timestream"
+  [name]
+  (component :time-based-state name))
+
+(defn timestream
+  "stores time-based state"
+  []
+  (component :timestream []))
+
+(defn divergent
+  "Anything that exists in a divergent timeline.
+   It needs a unique name that represents that item across time.
+   name should be a :keyword"
+  [time-name]
+  (component :divergent {:timeline 0
+                         :prev-node [0 0]
+                         :current-node [0 0]
+                         :time-name time-name}))
+
+(defn player-time-traveler
+  "The difference here is that the player has the ability to create
+   alternate timelines"
+  []
+  (component :player-time-traveler {:traveled-back? false})
+  #_(-> (divergent :player)
+      (assoc :name :player-time-traveler)
+      (update-in [:attr] assoc :traveling-back false)))
+
+
+(comment
+
+  (divergent)
+  (player-time-traveler)
+
+  (timestream)
+  )
