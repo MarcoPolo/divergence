@@ -141,9 +141,9 @@
         (js/requestAnimationFrame @animate-ref)))))
 
 
-#_(reset! animate-ref animate)
+(reset! animate-ref animate)
 
-(reset! animate-ref (debug-slow-down))
+;(reset! animate-ref (debug-slow-down))
 
 (setup e/entities)
 
