@@ -374,6 +374,7 @@
   (doseq [e entities]
       (reset! serial-data @e) ;loops through and copies entities into serial-data
       (swap! serial-data dissoc :ref :sprite :stage :actions :tiling-sprite :on-stage) ;takes out complex data
+      ;(js/alert (pr-str @serial-data))
       (save-to-local-db (pr-str (@e :name)) @serial-data))) ;save to local database
 
 (defn deserialize [entities]

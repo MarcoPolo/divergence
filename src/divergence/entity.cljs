@@ -93,8 +93,8 @@
 
   )
 
-(defn block [scale-x scale-y x y stage]
-  (entity [(c/named :block)
+(defn block [scale-x scale-y x y pname stage]
+  (entity [(c/named pname)
            (c/unique (c/sprite [:divergence.textures/block]))
            (c/entity-type :tile)
            (c/position x y 0)
@@ -253,7 +253,7 @@
 (def entities
   [(player renderer/stage)
    (some-text renderer/stage)
-   (vertical-full-block 0 -40 renderer/stage)
-   (vertical-full-block 760 -40 renderer/stage)
-   (horizontal-full-block 0 560 renderer/stage)
+   (vertical-full-block 0 -40 :b1 renderer/stage)
+   (vertical-full-block 760 -40 :b2 renderer/stage)
+   (horizontal-full-block 0 560 :b3 renderer/stage)
    (timestream)])

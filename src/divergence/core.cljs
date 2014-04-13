@@ -77,11 +77,11 @@
 (def timestream (atom [[{:prev-node [0 0]}]]))
 
 (defn savegame []
-  (let [c->e @component->entities]
+  (let [c->e e/component->entities]
   (s/serialize (c->e :position))))
 
 (defn loadgame []
-  (let [c->e @component->entities]
+  (let [c->e e/component->entities]
   (s/deserialize (c->e :position))))
 
 (defn pause []
