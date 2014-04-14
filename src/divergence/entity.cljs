@@ -130,7 +130,8 @@
 
 (defn non-player [stage]
   (-> (player stage)
-      (update-in [:unique] dissoc :player-time-traveler :player-input)))
+      (update-in [:unique] dissoc :player-time-traveler :player-input)
+      (update-in [:normal] assoc :name :non-player)))
 
 (defn goal [x y stage]
   (entity [(c/named :goal)

@@ -12,8 +12,6 @@
     (let [[prev-timeline prev-time] (get-in timestream [timeline 0 :prev-node])]
       (reverse-time timestream [prev-timeline prev-time] (- rewind-time time-left-in-timeline)))))
 
-(e/non-player :foo)
-
 (defn create-divergent-entity [time-event-node]
   (let [non-player (-> (e/non-player renderer/stage)
                        (assoc-in [:normal :divergent :current-node] time-event-node))
