@@ -56,8 +56,9 @@
       )))
 
 (defn climbing [entities]
-  (doseq [e entities]
-    (when (= (@e :name) :player)
+  (doseq [e entities
+          e-name (e/entity-atom->component-val e)]
+    (when (= e-name :player)
         (climbing? e entities))))
 
 (defn move-entity [entity [x-speed y-speed rot-speed]]
@@ -167,12 +168,14 @@
      )))
 
 (defn goal? [entities player]
-  (doseq [p player]
-    (doseq [e entities]
-      (when (and (= (@p :name) :player) (phys/colliding? @p @e)
-                 (has-item? @p :key) (= (@e :name) :goal))
+  (doseq [p player
+          :let [p-name (e/entity-atom->component-val p :name)]
+          e entities
+          :let [e-name (e/entity-atom->component-val e :name)]]
+      (when (and (= p-name :player) (phys/colliding? @p @e)
+                 (has-item? @p :key) (= e-name :goal))
         (js/alert "win")
-        (next-level)))))
+        (next-level))))
 
 
 ;;RENDERING---------------------------------------------
@@ -281,7 +284,7 @@
         (swap! e assoc-in [:acceleration] [0 1 0]))
       (when
         (and (= (@e :can-jump) 1) (actions :up))
-        (when (= (@e :name) :player)
+        (when (= (e/entity-atom->component-val e :name) :player)
           (a/play-sound :jump)
           (set! (.-textures sprite) (cljs-to-js (map textures/textures e/jumpAnimation)))
           (set! (.-playing sprite) true))
@@ -289,7 +292,7 @@
         (swap! e assoc-in [:can-jump] 0))
 
       (when (not-any? actions [:up :left :right :down])
-        (when (= (@e :name) :player)
+        (when (= (e/entity-atom->component-val e :name) :player)
 
           (set! (.-textures sprite) (cljs-to-js (map textures/textures [e/playerTexture])))
           )
@@ -309,38 +312,39 @@
   (doseq [e entities
           :let [actions (@e :actions)
                 [x y r] (@e :position)
-                ]]
+                e-name (e/entity-atom->component-val e :name)]]
     (when actions
-      (when (and (actions :left) (= (@e :name) :player) (not (zero? (nth (@e :velocity) 0))))
+      (when (and (actions :left) (= e-name :player) (not (zero? (nth (@e :velocity) 0))))
         (doseq [e entities
                 :let [actions (@e :actions)
                      [x y r] (@e :position)
                 ]]
-          (when  (= (@e :name) :bg) (swap! e assoc-in [:position] [(+ x 5) y r]))))
-      (when (and (actions :right) (= (@e :name) :player) (not (zero? (nth (@e :velocity) 0))))
+          (when  (= e-name :bg) (swap! e assoc-in [:position] [(+ x 5) y r]))))
+      (when (and (actions :right) (= e-name :player) (not (zero? (nth (@e :velocity) 0))))
         (doseq [e entities
                 :let [actions (@e :actions)
                      [x y r] (@e :position)
                 ]]
-          (when  (= (@e :name) :bg) (swap! e assoc-in [:position] [(- x 5) y r])))))))
+          (when  (= e-name :bg) (swap! e assoc-in [:position] [(- x 5) y r])))))))
 
 (defn pick-drop-item [entities]
-  (doseq [e entities]
-    (when (= (@e :name) :player)
+  (doseq [e entities
+          :let [e-name (e/entity-atom->component-val e :name) ]]
+    (when (= e-name :player)
       (let [p e
             actions (@p :actions)
             [x y r] (@p :position)]
           (doseq [en entities
                   :let [item @en
+                        item-name (e/entity-atom->component-val en :name)
                         collide? (phys/colliding? item @p)]]
             (when (and (= (item :type) :item) collide?)
               (if (= (@p :items) 1)
                 (do (set! (.-visible (item :ref)) false)
-                    (swap! p assoc-in [:holding] (item :name))
+                    (swap! p assoc-in [:holding] item-name)
                     (. js/console (log (name (@p :holding))))
                     (let [pheight (.-height (@p :ref))
-                          iheight (.-height (item :ref))
-                          ]
+                          iheight (.-height (item :ref))]
                      (swap! en assoc-in [:position] [x (+ y (- pheight iheight)) r])))
                 (do (swap! p assoc-in [:holding] [:nothing])
                     (set! (.-visible (item :ref)) true)))))))))
@@ -358,7 +362,7 @@
 
 (defn update-camera [camera entities]
   (doseq [e entities]
-    (when (= (@e :name) :player)
+    (when (= (e/entity-atom->component-val e :name) :player)
       (update-camera-coords camera (nth (@e :position) 0) (nth (@e :position) 1)))))
 
 
@@ -376,12 +380,12 @@
       (reset! serial-data @e) ;loops through and copies entities into serial-data
       (swap! serial-data dissoc :ref :sprite :stage :actions :tiling-sprite :on-stage) ;takes out complex data
       ;(js/alert (pr-str @serial-data))
-      (save-to-local-db (pr-str (@e :name)) @serial-data))) ;save to local database
+      (save-to-local-db (pr-str (e/entity-atom->component-val e :name)) @serial-data))) ;save to local database
 
 (defn deserialize [entities]
    (doseq [e entities]
            (do ;everything executes together
-             (reset! load-data (reader/read-string (.getItem js/localStorage (pr-str (get-in @e [:name]))))) ;read back from local database
+             (reset! load-data (reader/read-string (.getItem js/localStorage (pr-str (e/entity-atom->component-val e :name))))) ;read back from local database
              (if (not= nil (get-in @load-data [:position])) (swap! e assoc-in [:position] (get-in @load-data [:position]))) ;assigns the position from load-data back into object
              (if (not= nil (get-in @load-data [:gravity])) (swap! e assoc-in [:gravity] (get-in @load-data [:gravity]))) ;If not equal to nil, get data.
              (if (not= nil (get-in @load-data [:friction])) (swap! e assoc-in [:friction] (get-in @load-data [:friction]))) ;If it's equal to nil, then that object never had that data so no need to assign it.

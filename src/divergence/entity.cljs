@@ -39,11 +39,10 @@
     (concat part1 part2)))
 
 (defn entity-atom->component-val [e-atom component-keyword]
-  (if-let [component-atom (@entity-atom->unique-entity-atom e-atom)]
+  (if-let [unique-atom (@entity-atom->unique-entity-atom e-atom)]
     (or
-     (get @component-atom component-keyword)
+     (get @unique-atom component-keyword)
      (get @e-atom component-keyword))
-    ;; if it isn't there we'll just try the ref at the entity
     (get @e-atom component-keyword)))
 
 (defn entity-atom->ref [e-atom]
