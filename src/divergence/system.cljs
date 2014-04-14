@@ -191,6 +191,7 @@
 (defn to-stage [container entities]
   (doseq [e entities
           :let [ref (e/entity-atom->ref e)]]
+      (swap! e assoc :container container)
       (.addChild container ref)))
 
 (defn on-stage [stage container]

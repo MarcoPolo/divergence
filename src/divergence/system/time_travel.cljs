@@ -58,7 +58,8 @@
           :let [{:keys [current-node time-name]} (:divergent @e)
                 future-node (update-in current-node [1] inc)
                 future-value-path (conj future-node :value time-name)
-                future-state (get-in @timestream future-value-path)]]
+                future-state (get-in @timestream future-value-path)
+                n (:name @(@e/entity-atom->unique-entity-atom e))]]
 
     ;; TODO we need to check if there is even a time event in the future
 
@@ -67,26 +68,34 @@
     (timeviz/draw-time-node [(first future-node) (+ (second future-node) (timeviz/find-time-offset @timestream (first future-node)))])
     (if future-state
       (reset! e future-state)
-      (do
-        ;; add a blank time-event if there isn't a time-event in there already
-        (swap! timestream update-in future-node (fnil identity {}))
+      ;; Now check if the person is a player of not
+      (if (= :player n)
+        (do
+          ;; add a blank time-event if there isn't a time-event in there already
+          (swap! timestream update-in future-node (fnil identity {}))
 
-        (swap! e assoc-in [:divergent :current-node] future-node)
-        (swap! timestream assoc-in future-value-path @e)))))
+          (swap! e assoc-in [:divergent :current-node] future-node)
+          (swap! timestream assoc-in future-value-path @e))
+        (do
+          ;; We've reached the end of the timeline for a non-player, we must destroy them
+          (e/destroy-entity! e))))))
 
 (defn tick-backwards
   [timestream entities]
   (doseq [e entities
           :let [{:keys [current-node time-name]} (:divergent @e)
+                unique-e (@e/entity-atom->unique-entity-atom e)
                 [current-timeline time-in-timeline] current-node
                 past-node (reverse-time @timestream current-node rewind-speed)
                 past-state (get-in @timestream (conj past-node :value time-name))]]
-    ;; Check if we need to destory the entity
-    ;; TODO fix this so it actually destroys entities
 
+    ;; Draw the node
     (timeviz/draw-time-node [(first past-node) (+ (second past-node) (timeviz/find-time-offset @timestream (first past-node)))]
                             0xCA2F2F)
-    (if (< time-in-timeline rewind-speed)
+
+    ;; Check if we need to destory the entity
+    (if (and (<= time-in-timeline rewind-speed)
+             (= :non-player (:name @unique-e)))
       ;; Destroy entity
       (e/destroy-entity! e)
       ;; Reset! the entity

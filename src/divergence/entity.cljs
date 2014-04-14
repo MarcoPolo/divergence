@@ -105,7 +105,7 @@
 
 
 (defn player [stage]
-  (entity [(c/named :player)
+  (entity [(c/unique (c/named :player))
            (c/unique (c/sprite [playerTexture]))
            (c/position (/ camera/camera-width 3) (/ camera/camera-height 3) 0)
            (c/unique c/player-input)
@@ -131,7 +131,7 @@
 (defn non-player [stage]
   (-> (player stage)
       (update-in [:unique] dissoc :player-time-traveler :player-input)
-      (update-in [:normal] assoc :name :non-player)))
+      (update-in [:unique] assoc :name :non-player)))
 
 (defn goal [x y stage]
   (entity [(c/named :goal)
@@ -239,17 +239,25 @@
     [entity-atom unique-entity-atom]))
 
 (defn destroy-entity! [entity]
-  ;; TODO implement this
-  (println "I want to destroy an entity!")
-
   ;; remove from the stage
   (let [unique-atom (@entity-atom->unique-entity-atom entity)
-        stage (:stage @unique-atom)]
-    (.removeChild stage (:ref @unique-atom))
+        container (:container @unique-atom)
+        unique-keys (keys @unique-atom)
+        normal-keys (keys @entity)]
+    (.removeChild container (:ref @unique-atom))
 
-    ;; Remove from our internal hashmap
-    #_(swap! normal-component->entities dissoc )
-    ))
+    ;; Remove the item from the unique-entity->component
+    (swap! entity->components dissoc entity)
+
+    ;; remove the entity from the lists
+    (doseq [k normal-keys]
+      (swap! normal-component->entities update-in [k] #(remove (partial = entity) %)))
+    (doseq [k unique-keys]
+      (swap! unique-component->entities update-in [k] #(remove (partial = unique-atom) %)))
+
+    ;; remove mappings
+    (swap! entity-atom->unique-entity-atom dissoc entity)
+    (swap! unique-entity-atom->entity-atom dissoc entity)))
 
 (def entities
   [(player renderer/stage)
