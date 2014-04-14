@@ -1,6 +1,7 @@
 (ns divergence.core
   (:require [divergence.component :as c]
             [divergence.entity :as e]
+            [divergence.entity.levels :as levels]
             [divergence.system :as s]
             [divergence.leveleditor :as le]
             [goog.dom :as dom]
@@ -145,20 +146,8 @@
 
 ;(reset! animate-ref (debug-slow-down))
 
-(setup e/entities)
+#_(setup e/entities)
+
+(setup (levels/prologue @stage))
 
 (js/requestAnimationFrame @animate-ref)
-
-
-(comment
-  (@entity->components 0)
-
-  (def timestream (get-in @(first (@component->entities :timestream)) [:timestream :timestream]))
-
-  (get-in timestream [0 1598])
-  (tt/reverse-time timestream 0 1598 1)
-
-
-  (count (get-in @(first (@component->entities :timestream)) [:timestream :timestream 0]))
-  (map :prev-node (get-in @(first (@component->entities :timestream)) [:timestream :timestream 536]))
- )
