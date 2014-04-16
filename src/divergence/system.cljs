@@ -102,7 +102,8 @@
             (when (phys/colliding? x-future @e)
               (set! (.-textures sprite) (cljs-to-js e/pushAnimation))
               (set! (.-playing sprite) true)
-              (swap! e assoc-in [:velocity 0] (* (compare x-v 0) 2)))))))))
+              (swap! e assoc-in [:velocity 0] (* (compare x-v 0) 2))
+              (a/play-sound :push))))))))
 
 (defn friction
   [entities]
@@ -298,6 +299,17 @@
           )
         (swap! e assoc-in [:acceleration] [0 0 0])))))
 
+(defn play-time-travel [entities]
+  (doseq [e entities
+          :let [actions (:actions @e)
+                prev-actions (:prev-actions @e)]]
+    (when (and (actions :travel-back)
+               (not (prev-actions :travel-back)))
+          (a/play-sound :time)
+      )
+    (swap! e assoc :prev-actions actions)
+    ))
+
 (defn movement-caps [entities]
   (doseq [e entities]
     (let [actions (e/entity-atom->component-val e :actions)
@@ -340,14 +352,16 @@
                         collide? (phys/colliding? item @p)]]
             (when (and (= (item :type) :item) collide?)
               (if (= (@p :items) 1)
-                (do (set! (.-visible (item :ref)) false)
+                (do (set! (.-visible (item :ref)) false) ;pick up item
                     (swap! p assoc-in [:holding] item-name)
                     (. js/console (log (name (@p :holding))))
                     (let [pheight (.-height (@p :ref))
                           iheight (.-height (item :ref))]
-                     (swap! en assoc-in [:position] [x (+ y (- pheight iheight)) r])))
-                (do (swap! p assoc-in [:holding] [:nothing])
-                    (set! (.-visible (item :ref)) true)))))))))
+                     (swap! en assoc-in [:position] [x (+ y (- pheight iheight)) r]))
+                    (a/play-sound :pickup))
+                (do (swap! p assoc-in [:holding] [:nothing]) ;drop item
+                    (set! (.-visible (item :ref)) true)
+                    (a/play-sound :drop)))))))))
 
 ;;GAME CAMERA============================================
 (defn camera-x-check [x]
