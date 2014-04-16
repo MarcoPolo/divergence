@@ -378,7 +378,7 @@
 (defn serialize [entities]
   (doseq [e entities]
       (reset! serial-data @e) ;loops through and copies entities into serial-data
-      (swap! serial-data dissoc :ref :sprite :stage :actions :tiling-sprite :on-stage) ;takes out complex data
+      (swap! serial-data dissoc :ref :sprite :stage :actions :tiling-sprite :on-stage :container) ;takes out complex data
       ;(js/alert (pr-str @serial-data))
       (save-to-local-db (pr-str (e/entity-atom->component-val e :name)) @serial-data))) ;save to local database
 
