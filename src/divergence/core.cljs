@@ -63,6 +63,12 @@
     (s/anchor (c->e :anchor))
     (s/scale (c->e :scale))))
 
+(defn updatex [entities]
+  (doseq [e entities]
+    (when (= (@e :name) :player)
+      (def entity-list (cons (e/player2 stage (nth (@e :position) 0) (nth (@e :position) 1)) (rest entity-list)))
+      )))
+
 
 ;;MASTER FEATURES=================================================
 
@@ -71,6 +77,7 @@
     (reset! entity->components {})
     (reset! entity-count 0)
     (reset! stage (js/PIXI.Stage. 0x66FF99))
+    (def entity-list (entities @stage))
     (setup entity-list))
 
 (defn savegame []
@@ -85,35 +92,42 @@
 ;;RENDERING LOOP============================================
 (defn animate []
   (let [c->e @component->entities]
-    (when (not (nil? le/level))
-      (def entity-list (reverse (cons (first (reverse entity-list)) (cons le/level (rest (reverse entity-list))))))
-      (resetGame)
-      (le/lreset))
     (.render renderer @stage)
+    (when (not (nil? le/level))
+      (updatex (c->e :position))
+      (def entity-list (reverse (cons (first (reverse entity-list)) (cons le/level (rest (reverse entity-list))))))
+      (reset! component->entities {})
+      (reset! entity->components {})
+      (reset! entity-count 0)
+      (reset! stage (js/PIXI.Stage. 0x66FF99))
+      (setup entity-list)
+      ;(s/logx (c->e :position))
+      (le/lreset))
     (s/player-input (c->e :player-input))
-;;     (s/climbing (c->e :position))
-;;     (s/execute-actions (c->e :actions))
-;;     (s/move-background (c->e :actions))
+     ;(s/climbing (c->e :position))
+     (s/execute-actions (c->e :actions))
+     (s/move-background (c->e :actions))
 
-;;     (s/interactive (c->e :sprite));;sets interactive property for sprites
+     (s/interactive (c->e :sprite));;sets interactive property for sprites
 
-;;     (s/gravity (c->e :gravity))
-;;     (s/movement-caps (c->e :velocity))
-;;     (s/friction (c->e :acceleration))
-;;     (s/accelerate (c->e :acceleration))
-;;     (s/push (c->e :pushable) (c->e :player-input))
-;;     (s/goal? (c->e :collidable) (c->e :player-input))
-;;     (s/collide (c->e :collidable))
-;;     (s/move (c->e :velocity))
-;;     (s/position (c->e :position))
+     ;(s/gravity (c->e :gravity))
+     (s/movement-caps (c->e :velocity))
+     (s/friction (c->e :acceleration))
+     (s/accelerate (c->e :acceleration))
+     ;(s/push (c->e :pushable) (c->e :player-input))
+     ;(s/goal? (c->e :collidable) (c->e :player-input))
+     ;(s/collide (c->e :collidable))
+     (s/move (c->e :velocity))
+     (s/position (c->e :position))
     (s/fps-counter (c->e :fps-counter))
     (s/update-camera container (c->e :position))
-    (le/set-click)
+    (le/update-camera container)
     (js/requestAnimationFrame @animate-ref)))
 
 
 (reset! animate-ref animate)
 (le/setup stage)
+(le/set-click)
 (def entity-list (entities @stage))
 (setup entity-list)
 (js/requestAnimationFrame @animate-ref)

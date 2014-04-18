@@ -10,6 +10,7 @@
 (def bgTexture (js/PIXI.Texture.fromImage "assets/img/background.png"))
 (def ropeTexture (js/PIXI.Texture.fromImage "assets/img/rope.png"))
 (def keyTexture (js/PIXI.Texture.fromImage "assets/img/key.png"))
+(def floorTexture (js/PIXI.Texture.fromImage "assets/img/tile.png"))
 
 (defn entity [components]
   (reduce
@@ -25,8 +26,27 @@
            (c/position (/ s/camera-width 3) (/ s/camera-height 3) 0)
            (c/on-stage stage)
            (c/friction 1)
-           (c/scale 0.4 0.4)
-           (c/gravity [0 normal-gravity 0])
+           (c/scale 0 0)
+           (c/gravity [0 0 0])
+           c/items
+           c/collidable
+           c/create-ref
+           c/player-input
+           c/has-actions
+           c/movable
+           c/accelerates
+           c/can-jump
+           c/climbing
+           ]))
+
+(defn player2 [stage x y]
+  (entity [(c/named :player)
+           (c/sprite playerTexture)
+           (c/position x y 0)
+           (c/on-stage stage)
+           (c/friction 1)
+           (c/scale 0 0)
+           (c/gravity [0 0 0])
            c/items
            c/collidable
            c/create-ref
@@ -83,6 +103,17 @@
            c/collidable
            (c/friction 1)
            (c/gravity [0 normal-gravity 0])
+           (c/position x y 0)
+           (c/on-stage stage)
+           (c/scale 1 1)
+           ]))
+
+(defn floor [x y stage]
+  (entity [(c/named :floor)
+           (c/sprite floorTexture)
+           c/create-ref
+           c/collidable
+           (c/friction 1)
            (c/position x y 0)
            (c/on-stage stage)
            (c/scale 1 1)

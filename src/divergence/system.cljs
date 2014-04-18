@@ -194,21 +194,22 @@
     (when actions
       (when
         (actions :left)
-        (swap! e assoc-in [:acceleration] [-3 0 0])
-        (swap! e assoc-in [:climbing] 0) ;when pressing left, turn gravity back on and climb mode off
-        (swap! e assoc-in [:gravity] [0 0.2 0]))
+        (swap! e assoc-in [:acceleration] [-3 0 0]))
+        ;(swap! e assoc-in [:climbing] 0) ;when pressing left, turn gravity back on and climb mode off
+        ;(swap! e assoc-in [:gravity] [0 0.2 0]))
       (when
         (actions :right)
-        (swap! e assoc-in [:acceleration] [3 0 0])
-        (swap! e assoc-in [:climbing] 0) ;when pressing right, turn gravity back on and climb mode off
-        (swap! e assoc-in [:gravity] [0 0.2 0]))
+        (swap! e assoc-in [:acceleration] [3 0 0]))
+        ;(swap! e assoc-in [:climbing] 0) ;when pressing right, turn gravity back on and climb mode off
+        ;(swap! e assoc-in [:gravity] [0 0.2 0]))
       (when
         (actions :down)
-        (swap! e assoc-in [:acceleration] [0 1 0]))
+        (swap! e assoc-in [:acceleration] [0 3 0]))
       (when
-        (and (= (@e :can-jump) 1) (actions :up))
-        (swap! e assoc-in [:acceleration] [0 -4 0])
-        (swap! e assoc-in [:can-jump] 0))
+        ;(and (= (@e :can-jump) 1) (actions :up))
+        (actions :up)
+        (swap! e assoc-in [:acceleration] [0 -3 0]))
+        ;(swap! e assoc-in [:can-jump] 0))
 
       (when (not-any? actions [:up :left :right :down])
         (swap! e assoc-in [:acceleration] [0 0 0])))))
@@ -264,6 +265,11 @@
   (doseq [e entities]
     (when (= (@e :name) :player)
       (update-camera-coords camera (nth (@e :position) 0) (nth (@e :position) 1)))))
+
+(defn logx [entities]
+  (doseq [e entities]
+    (when (= (@e :name) :player)
+      (. js/console (log (nth (@e :position) 0))))))
 
 
 ;;SAVE/LOAD---------------------------------------------
