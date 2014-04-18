@@ -3,12 +3,11 @@
 
 (def jumpSound (js/buzz.sound. "assets/sounds/fins__jumping.wav"))
 (def pickUpSound (js/buzz.sound. "assets/sounds/adriancalzon__pickup1.mp3"))
-(def dropSound (js/buzz.sound. "assets/sounds/[INSERT SOUND FILE NAME HERE]"))
+(def dropSound (js/buzz.sound. "assets/sounds/movingplaid_spray-can.wav"))
 (def pushSound (js/buzz.sound. "assets/sounds/stanestane__push.wav"))
-(def magicSound (js/buzz.sound. "assets/joe93barlow__protego.mp3"))
+(def magicSound (js/buzz.sound. "assets/sounds/joe93barlow__protego.mp3"))
 (def timeTravelSound (js/buzz.sound. "assets/sounds/timetravel.wav"))
-(def bgm1 (js/buzz.sound. "Mellowtron.mp3"))
-(def bgm2 (js/buzz.sound. "Pamgaea.mp3"))
+(def bgm1 (js/buzz.sound. "assets/sounds/Mellowtron.mp3"))
 
 (def sounds {
              :jump      jumpSound
@@ -19,7 +18,6 @@
              :time      timeTravelSound
 
              :bgm1      bgm1
-             :bgm2      bgm2
              })
 
 (defn play-sound [key]
@@ -28,9 +26,13 @@
     (. sound play)
   ))
 
-;;use this in core, may need adjustments
+(defn play-bgm [key]
+   (let [sound (sounds key)]
+   (.bind sound "ended" (fn [e] (. sound load) (. sound play)) false)
+    (. sound load)
+    (. sound play)
+  ))
+
 (defn startBGM [level]
-  (case (level)
-    0 (play-sound :bgm1)
-    1 (play-sound :bgm2)
-    ))
+  (when (= level 0) (play-bgm :bgm1))
+    )

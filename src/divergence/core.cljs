@@ -4,6 +4,7 @@
             [divergence.entity.levels :as levels]
             [divergence.system :as s]
             [divergence.leveleditor :as le]
+            [divergence.audio :as a]
             [goog.dom :as dom]
             [divergence.renderer :as renderer]
             [divergence.timeviz]
@@ -51,7 +52,7 @@
     (s/to-stage @container (c->e :stage))
     (s/add-camera @camera @container)
     (s/on-stage @stage @camera)
-
+    (a/startBGM (deref s/current-level))
     (s/position (c->e :position))
     (s/anchor (c->e :anchor))
     (s/scale (c->e :scale))
@@ -140,6 +141,7 @@
       (if (zero? (mod @cnt slow-down-factor))
         (animate)
         (js/requestAnimationFrame @animate-ref)))))
+
 
 
 (reset! animate-ref animate)
