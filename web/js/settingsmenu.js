@@ -5,6 +5,7 @@ jQuery(document).ready(function($) {
 		if ($('#lightbox2').length > 0) { // #lightbox exists
 
 			//show lightbox window - you could use .show('fast') for a transition
+      $('body').css("overflow","hidden");
 			$('#lightbox2').show();
 		}
 
@@ -27,6 +28,7 @@ jQuery(document).ready(function($) {
 			'</div>';
 
 			//insert lightbox HTML into page
+      $('body').css("overflow","hidden");
 			$('body').append(lightbox2);
 		}
 
@@ -34,6 +36,7 @@ jQuery(document).ready(function($) {
 
 	//Click anywhere on the page to get rid of lightbox window
 	HideSettingsMenu = (function() {
+    $('body').css("overflow","auto");
     $('#lightbox2').hide();
 	});
 
