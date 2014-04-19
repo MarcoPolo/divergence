@@ -220,8 +220,12 @@
 (defn animations [entities]
   (doseq [e entities
           :let [sprite (@e :ref)]]
+    (. js/console (log (name (@e :name))))
+    (. js/console (log "ref: " (@e :ref )))
     (set! (.-animationSpeed sprite) 1)
-    (set! (.-loop sprite) true)))
+    (set! (.-loop sprite) true)
+    (set! (.-playing sprite) true)
+    ))
 
 
 
@@ -295,7 +299,7 @@
       (when (not-any? actions [:up :left :right :down])
         (when (= (e/entity-atom->component-val e :name) :player)
 
-          (set! (.-textures sprite) (cljs-to-js (map textures/textures [e/playerTexture])))
+          (set! (.-textures sprite) (cljs-to-js (map textures/textures [e/playerStandingTexture])))
           )
         (swap! e assoc-in [:acceleration] [0 0 0])))))
 

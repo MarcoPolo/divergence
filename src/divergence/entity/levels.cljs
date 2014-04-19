@@ -9,8 +9,18 @@
 (defn prologue [stage]
   [(e/timestream)
    (e/player stage)
-   (e/some-text stage)
+   ;(e/some-text stage)
+   (e/goal 150 0 stage)
    (e/vertical-full-block 0 -40 :b1 stage)
    (e/horizontal-full-block 0 560 :b3 stage)
    (e/horizontal-full-block 760 560 :b3 stage)
-   (e/horizontal-full-block 1540 560 :b3 stage)])
+   (e/horizontal-full-block 1540 560 :b3 stage)
+   ])
+
+;;level 1 definition
+(defn levelOne [stage]
+  [])
+
+;;level 2 definition
+(defn levelTwo [stage]
+  [])

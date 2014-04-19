@@ -3,20 +3,53 @@
             [divergence.renderer :as renderer]
             [divergence.camera :as camera]))
 
+;;-------------------------------------------------
+;;Global Entity Properties-------------------------
+;;-------------------------------------------------
 (def normal-gravity 0.2)
 
-(def playerTexture :divergence.textures/player)
+;;-------------------------------------------------
+;;Texture Definitions------------------------------
+;;-------------------------------------------------
+(def playerStandingTexture :divergence.textures/playerStanding)
+(def playerJumpingTexture :divergence.textures/playerJumping)
+
 (def blockTexture :divergence.textures/block)
 (def boxTexture :divergence.textures/box)
 (def goalTexture :divergence.textures/goal)
 (def bgTexture :divergence.textures/bg)
+
 (def ropeTexture :divergence.textures/rope)
 (def keyTexture :divergence.textures/key)
 
-(def jumpAnimation [playerTexture playerTexture])
-(def climbAnimation [playerTexture playerTexture playerTexture])
-(def pushAnimation [playerTexture playerTexture])
+(def candleATexture :divergence.textures/candleA)
+(def candleBTexture :divergence.textures/candleB)
 
+(def starTileTextureA :divergence.textures/starTileA)
+(def starTileTextureB :divergence.textures/starTileB)
+(def starTileTextureC :divergence.textures/starTileC)
+(def starTileTextureD :divergence.textures/starTileD)
+(def starTileTextureE :divergence.textures/starTileE)
+(def starTileTextureF :divergence.textures/starTileF)
+(def starTileTexturePrime :divergence.textures/starTilePrime)
+
+(def metalTileTextureA :divergence.textures/metalTileA)
+(def metalTileTextureB :divergence.textures/metalTileB)
+(def metalTileTextureC :divergence.textures/metalTileC)
+
+(def backgroundOneTexture :divergence.textures/backgroundOne)
+(def backgroundTwoTexture :divergence.textures/backgroundTwo)
+(def backgroundThreeTexture :divergence.textures/backgroundThree)
+
+(def portalOneTexture :divergence.textures/portalOne)
+(def portalTwoTexture :divergence.textures/portalTwo)
+(def portalThreeTexture :divergence.textures/portalThree)
+
+(def jumpAnimation [playerJumpingTexture])
+
+;;-------------------------------------------------
+;;Entity Methods-----------------------------------
+;;-------------------------------------------------
 (def entity->components
   "A map to an entity and a list of it's components"
   (atom {}))
@@ -48,7 +81,6 @@
 (defn entity-atom->ref [e-atom]
   (entity-atom->component-val e-atom :ref))
 
-;; I'm lazy
 (def e-atom->c-val entity-atom->component-val )
 
 (def entity-count (atom 0))
@@ -68,33 +100,29 @@
   (entity-atom->ref js/l)
   js/l
   @(@unique-entity-atom->entity-atom js/l)
-
   (entity-atom->ref js/l)
   entity->components
-
   (bunny :foo)
   unique-entity->component
-
   (component->entities :position)
   (first (@unique-component->entities :position))
   (first (@normal-component->entities :divergent))
   js/l
   (divergence.system/player-input (unique-component->entities ))
   (unique-entity->component )
-
   (bunny :foo)
-
   (block 0 0 1 1 :foo)
   (non-player-bunny :foo)
-
   (reduce #(or %1 %2) [[:foo :baz] nil])
   (component->entities :sprite)
+ )
 
-  )
-
+;;-------------------------------------------------
+;;Entity Definitions-------------------------------
+;;-------------------------------------------------
 (defn block [scale-x scale-y x y pname stage]
   (entity [(c/named pname)
-           (c/unique (c/sprite [:divergence.textures/block]))
+           (c/unique (c/sprite [blockTexture]))
            (c/entity-type :tile)
            (c/position x y 0)
            (c/scale scale-x scale-y)
@@ -102,10 +130,19 @@
            (c/friction 5)
            (c/on-stage stage)]))
 
+(defn tile [scale-x scale-y texture x y pname stage]
+  (entity [(c/named pname)
+           (c/unique (c/sprite texture))
+           (c/entity-type :tile)
+           (c/position x y 0)
+           (c/scale scale-x scale-y)
+           c/collidable
+           (c/friction 5)
+           (c/on-stage stage)]))
 
 (defn player [stage]
   (entity [(c/unique (c/named :player))
-           (c/unique (c/sprite [playerTexture]))
+           (c/unique (c/sprite [playerStandingTexture]))
            (c/position (/ camera/camera-width 3) (/ camera/camera-height 3) 0)
            (c/unique c/player-input)
            (c/unique (c/on-stage stage))
@@ -135,17 +172,17 @@
 (defn goal [x y stage]
   (entity [(c/named :goal)
            (c/entity-type :goal)
-           (c/sprite [goalTexture])
+           (c/sprite [portalOneTexture portalTwoTexture portalThreeTexture])
            c/create-ref
            (c/position x y 0)
            (c/on-stage stage)
            (c/scale 2 2)]))
 
-(defn background [stage]
+(defn background [texture stage]
   (entity [(c/named :bg)
            (c/entity-type :bg)
-           (c/sprite [bgTexture])
-           (c/tiling-sprite bgTexture)
+           (c/sprite [texture])
+           (c/tiling-sprite texture)
            (c/on-stage stage)
            c/has-actions
            (c/unique c/player-input)
@@ -155,9 +192,9 @@
            (c/scale 1 1)
            ]))
 
-
-
-
+(def backgroundOne (partial background backgroundOneTexture))
+(def backgroundTwo (partial background backgroundTwoTexture))
+(def backgroundThree (partial background backgroundThreeTexture))
 
 (defn box [pname x y stage]
   (entity [(c/named pname)
@@ -178,10 +215,8 @@
 
 (def horizontal-full-block
   (partial block 2 .1))
-
 (def vertical-full-block
   (partial block .1 1.5))
-
 (def regular-block
   (partial block .1 .1))
 
@@ -195,6 +230,20 @@
            c/create-ref
            c/can-climb
            ]))
+
+(def starTileA (partial tile 1 1 [starTileTextureA]))
+(def starTileB (partial tile 1 1 [starTileTextureB]))
+(def starTileC (partial tile 1 1 [starTileTextureC]))
+(def starTileD (partial tile 1 1 [starTileTextureD]))
+(def starTileE (partial tile 1 1 [starTileTextureE]))
+(def starTileF (partial tile 1 1 [starTileTextureF]))
+(def starTilePrime (partial tile 1 1 [starTileTexturePrime]))
+
+(def metalTileA (partial tile 1 1 [metalTileTextureA]))
+(def metalTileB (partial tile 1 1 [metalTileTextureB]))
+(def metalTileC (partial tile 1 1 [metalTileTextureC]))
+
+(def candle (partial tile 1 1 [candleATexture candleBTexture]))
 
 (defn some-text [stage]
   (entity [(c/named :fps-counter)
@@ -214,9 +263,11 @@
            c/gravity
            ]))
 
+;;-------------------------------------------------
+;;Entity-timestream Methods------------------------
+;;-------------------------------------------------
 (defn timestream []
   (entity [(c/timestream)]))
-
 
 (defn register-entity! [entity]
   (let [unique-components (:unique entity)
@@ -258,10 +309,6 @@
     (swap! entity-atom->unique-entity-atom dissoc entity)
     (swap! unique-entity-atom->entity-atom dissoc entity)))
 
-(def entities
-  [(player renderer/stage)
-   (some-text renderer/stage)
-   (vertical-full-block 0 -40 :b1 renderer/stage)
-   (vertical-full-block 760 -40 :b2 renderer/stage)
-   (horizontal-full-block 0 560 :b3 renderer/stage)
-   (timestream)])
+;;-------------------------------------------------
+;;Entity Group Definitions-------------------------
+;;-------------------------------------------------

@@ -47,7 +47,6 @@
     (s/create-ref (c->e :sprite))
     (s/create-tiling-ref (c->e :tiling-sprite))
     (s/create-text (c->e :text))
-    (s/animations (c->e :player-input))
 
     (s/to-stage @container (c->e :stage))
     (s/add-camera @camera @container)
@@ -101,13 +100,13 @@
 
     (tt/time-travel timestream (c->e :divergent) (first (c->e :player-time-traveler)))
 
-    ;; set width/height
     (s/set-width-height (c->e :collidable))
 
     (s/player-input (c->e :player-input))
     (s/climbing (c->e :position))
     (s/execute-actions (c->e :actions))
     (s/move-background (c->e :actions))
+    ;(s/animations (c->e :position))
 
     (s/gravity (c->e :gravity))
     (s/movement-caps (c->e :velocity))
@@ -119,13 +118,8 @@
     (s/goal? (c->e :position) (c->e :player-input))
     (s/move (c->e :velocity))
     (s/position (c->e :position))
-
-
-    ;; FPS counter
-    (s/fps-counter (c->e :fps-counter))
-
-    ;; Time viz
-    (divergence.timeviz/render-stage)
+    (s/fps-counter (c->e :fps-counter)) ;; FPS counter
+    (divergence.timeviz/render-stage) ;; Time viz
 
     (s/update-camera container (c->e :position))
     (s/pick-drop-item (c->e :position))
