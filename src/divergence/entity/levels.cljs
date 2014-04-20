@@ -19,8 +19,15 @@
 
 ;;level 1 definition
 (defn levelOne [stage]
-  [])
+  [(e/timestream)
+   (e/player stage)
+   (e/goal 100 100 stage)
+   ])
 
 ;;level 2 definition
 (defn levelTwo [stage]
-  [])
+  [(e/timestream)
+   (e/player stage)
+   (e/goal 100 100 stage)
+
+   ])
