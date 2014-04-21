@@ -146,6 +146,36 @@ a{
 	float: none;
 	display: inline;
 }
+.profile {
+  clear: both;
+  padding: 1em;
+  width: 600px;
+  margin: 0 auto;
+}
+
+.profile > .info h1 {
+  font-size: 1.5em;
+  font-weight: bold;
+}
+.profile > .info p:first-child {
+  font-weight: bold;
+}
+.profile > .info p:last-child > span {
+  font-weight: 500;
+  font-style: italic;
+}
+.profile > .info p {
+  line-height: 1.5em;
+}
+
+
+.wrap-img {
+  float: left;
+  padding: 1em;
+  padding-top: 0;
+  width: 6em;
+  height: 6em;
+}
 
 #wrapper {
 	width:600px;
@@ -185,6 +215,13 @@ a{
 }
 #menu_button {
 	border: 0;
+}
+
+#about {
+  margin: 0;
+  padding: 2.5em;
+
+  text-align: left;
 }
 
 #lightbox2 {
