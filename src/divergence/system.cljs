@@ -57,7 +57,7 @@
 
 (defn climbing [entities]
   (doseq [e entities
-          e-name (e/entity-atom->component-val e)]
+          :let [e-name (e/entity-atom->component-val e :name)]]
     (when (= e-name :player)
         (climbing? e entities))))
 

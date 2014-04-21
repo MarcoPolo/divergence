@@ -63,33 +63,31 @@
     ::playerfront  playerFacingFront
     ::playerback   playerFacingBack
 
-     ::box boxTexture
-     ::goal goalTexture
-     ::block blockTexture
+    ::box boxTexture
+    ::goal goalTexture
+    ::block blockTexture
 
-     ::rope ropeTexture
-     ::key keyTexture
+    ::rope (js/PIXI.Texture.fromImage "assets/img/source/rope.png")
+    ::key (js/PIXI.Texture.fromImage "assets/img/source/key.png")
 
-     ::portalOne portalOneTexture
-     ::portalTwo portalTwoTexture
-     ::portalThree portalThreeTexture
+    ::portalOne portalOneTexture
+    ::portalTwo portalTwoTexture
+    ::portalThree portalThreeTexture
 
-     ::candleA candleATexture
-     ::candleB candleBTexture
+    ::candleA candleATexture
+    ::candleB candleBTexture
 
-     ::starTileA starTileTextureA
-     ::starTileB starTileTextureB
-     ::starTileC starTileTextureC
-     ::starTileD starTileTextureD
-     ::starTileE starTileTextureE
-     ::starTileF starTileTextureF
-     ::starTilePrime starTileTexturePrime
+    ::starTileA starTileTextureA
+    ::starTileB starTileTextureB
+    ::starTileC starTileTextureC
+    ::starTileD starTileTextureD
+    ::starTileE starTileTextureE
+    ::starTileF starTileTextureF
+    ::starTilePrime starTileTexturePrime
+    ::metalTileB metalTileTextureB
+    ::metalTileC metalTileTextureC
 
-     ::metalTileA metalTileTextureA
-     ::metalTileB metalTileTextureB
-     ::metalTileC metalTileTextureC
-
-     ::backgroundOne backgroundOne
-     ::backgroundTwo backgroundTwo
-     ::backgroundThree backgroundThree
-   })
+    ::backgroundOne backgroundOne
+    ::backgroundTwo backgroundTwo
+    ::backgroundThree backgroundThree
+    })
