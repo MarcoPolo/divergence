@@ -9,7 +9,7 @@
 (defn prologue [stage]
   [(e/timestream)
    (e/player stage)
-   ;(e/some-text stage)
+   (e/some-text stage)
    (e/goal 150 0 stage)
    (e/vertical-full-block 0 -40 :b1 stage)
    (e/horizontal-full-block 0 560 :b3 stage)

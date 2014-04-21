@@ -106,7 +106,7 @@
     (s/climbing (c->e :position))
     (s/execute-actions (c->e :actions))
     (s/move-background (c->e :actions))
-    ;(s/animations (c->e :position))
+    (s/animations (c->e :sprite))
 
     (s/gravity (c->e :gravity))
     (s/movement-caps (c->e :velocity))

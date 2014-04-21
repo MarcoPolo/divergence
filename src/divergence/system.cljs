@@ -220,8 +220,8 @@
 (defn animations [entities]
   (doseq [e entities
           :let [sprite (@e :ref)]]
-    (. js/console (log (name (@e :name))))
-    (. js/console (log "ref: " (@e :ref )))
+    ;(. js/console (log (name (@e :name))))
+    ;(. js/console (log "ref: " (@e :ref )))
     (set! (.-animationSpeed sprite) 1)
     (set! (.-loop sprite) true)
     (set! (.-playing sprite) true)

@@ -1,8 +1,5 @@
 (ns divergence.textures)
 
-(def bunnyTexture (js/PIXI.Texture.fromImage "assets/img/bunny.png"))
-
-
 (def playerStandingTexture (js/PIXI.Texture.fromImage "assets/img/player-standing-filled.png"))
 (def playerJumpingTexture (js/PIXI.Texture.fromImage "assets/img/player-jumping-filled.png"))
 
@@ -19,7 +16,6 @@
 (def blockTexture (js/PIXI.Texture.fromImage "assets/img/Brick_Block.png"))
 (def boxTexture (js/PIXI.Texture.fromImage "assets/img/box.png"))
 (def goalTexture (js/PIXI.Texture.fromImage "assets/img/door.png"))
-(def bgTexture (js/PIXI.Texture.fromImage "assets/img/background.png"))
 
 (def starTileTextureA (js/PIXI.Texture.fromImage "assets/img/star1.png"))
 (def starTileTextureB (js/PIXI.Texture.fromImage "assets/img/star2.png"))
@@ -38,14 +34,11 @@
 (def backgroundThreeTexture (js/PIXI.Texture.fromImage "assets/img/background-c.png"))
 
 (def textures
-  {::bunny bunnyTexture
-
-   ::playerStanding playerStandingTexture
+  {::playerStanding playerStandingTexture
    ::playerJumping playerJumpingTexture
 
    ::box boxTexture
    ::goal goalTexture
-   ::bg bgTexture
    ::block blockTexture
 
    ::rope ropeTexture
