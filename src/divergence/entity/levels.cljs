@@ -14,6 +14,7 @@
    (e/vertical-full-block 0 -40 :b1 stage)
    (e/horizontal-full-block 0 560 :b3 stage)
    (e/horizontal-full-block 760 560 :b4 stage)
+   (e/backgroundOne stage)
    (e/horizontal-full-block 1540 560 :b5 stage)
    ])
 

@@ -11,8 +11,21 @@
 ;;-------------------------------------------------
 ;;Texture Definitions------------------------------
 ;;-------------------------------------------------
-(def playerStandingTexture :divergence.textures/playerStanding)
-(def playerJumpingTexture :divergence.textures/playerJumping)
+(def pr1 :divergence.textures/playerright1)
+(def pr2 :divergence.textures/playerright2)
+(def pr3 :divergence.textures/playerright3)
+(def pr4 :divergence.textures/playerright4)
+
+(def pl1 :divergence.textures/playerleft1)
+(def pl2 :divergence.textures/playerleft2)
+(def pl3 :divergence.textures/playerleft3)
+(def pl4 :divergence.textures/playerleft4)
+
+(def pj1 :divergence.textures/playerJump1)
+(def pj2 :divergence.textures/playerJump2)
+
+(def pf :divergence.textures/playerfront)
+(def pb :divergence.textures/playerback)
 
 (def blockTexture :divergence.textures/block)
 (def boxTexture :divergence.textures/box)
@@ -45,13 +58,15 @@
 (def portalTwoTexture :divergence.textures/portalTwo)
 (def portalThreeTexture :divergence.textures/portalThree)
 
-(def jumpAnimation [playerJumpingTexture])
+(def jumpAnimation [pj1 pj2])
+(def walkAnimationRight [pr1 pr2 pr3 pr4])
+(def walkAnimationLeft [pl1 pl2 pl3 pl4])
 
 ;;-------------------------------------------------
 ;;Entity Methods-----------------------------------
 ;;-------------------------------------------------
 (def entity->components
-  "A map to an entity and a list of it's components"
+  "A map to an entity and a list of its components"
   (atom {}))
 
 (def normal-component->entities
@@ -142,14 +157,14 @@
 
 (defn player [stage]
   (entity [(c/unique (c/named :player))
-           (c/unique (c/sprite [playerStandingTexture]))
+           (c/unique (c/sprite [pf]))
            (c/position (/ camera/camera-width 3) (/ camera/camera-height 3) 0)
            (c/unique c/player-input)
            (c/unique (c/on-stage stage))
            c/has-actions
            c/movable
            (c/friction 1)
-           (c/scale 0.4 0.4)
+           (c/scale 0.5 0.5)
            (c/gravity [0 normal-gravity 0])
            (c/entity-type :player)
            (c/holding? :nothing)
@@ -214,7 +229,7 @@
            ]))
 
 (def horizontal-full-block
-  (partial block 2 .1))
+  (partial block 4 .1))
 (def vertical-full-block
   (partial block .1 1.5))
 (def regular-block
@@ -247,7 +262,7 @@
 
 (defn some-text [stage]
   (entity [(c/named :fps-counter)
-           (c/unique (c/text "Hello World" #js {:font "20px Arial" :fill "white"}))
+           (c/unique (c/text "Hello World" #js {:font "20px Courier New" :fill "white"}))
            (c/position 20 10 0)
            c/fps-counter
            (c/on-stage stage)]))

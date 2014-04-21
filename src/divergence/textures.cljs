@@ -1,7 +1,20 @@
 (ns divergence.textures)
 
-(def playerStandingTexture (js/PIXI.Texture.fromImage "assets/img/player-standing-filled.png"))
-(def playerJumpingTexture (js/PIXI.Texture.fromImage "assets/img/player-jumping-filled.png"))
+(def playerWalkRightTextureA (js/PIXI.Texture.fromImage "assets/img/player-walk-right1.png"))
+(def playerWalkRightTextureB (js/PIXI.Texture.fromImage "assets/img/player-walk-right2.png"))
+(def playerWalkRightTextureC (js/PIXI.Texture.fromImage "assets/img/player-walk-right3.png"))
+(def playerWalkRightTextureD (js/PIXI.Texture.fromImage "assets/img/player-walk-right4.png"))
+
+(def playerWalkLeftTextureA (js/PIXI.Texture.fromImage "assets/img/player-walk-left1.png"))
+(def playerWalkLeftTextureB (js/PIXI.Texture.fromImage "assets/img/player-walk-left2.png"))
+(def playerWalkLeftTextureC (js/PIXI.Texture.fromImage "assets/img/player-walk-left3.png"))
+(def playerWalkLeftTextureD (js/PIXI.Texture.fromImage "assets/img/player-walk-left4.png"))
+
+(def playerJumpingTextureA (js/PIXI.Texture.fromImage "assets/img/player-jump-1.png"))
+(def playerJumpingTextureA (js/PIXI.Texture.fromImage "assets/img/player-jump-2.png"))
+
+(def playerFacingFront (js/PIXI.Texture.fromImage "assets/img/player-front.png"))
+(def playerFacingBack (js/PIXI.Texture.fromImage "assets/img/player-back.png"))
 
 (def candleATexture (js/PIXI.Texture.fromImage "assets/img/candle1.png"))
 (def candleBTexture (js/PIXI.Texture.fromImage "assets/img/candle2.png"))
@@ -29,41 +42,54 @@
 (def metalTileTextureB (js/PIXI.Texture.fromImage "assets/img/tile2.png"))
 (def metalTileTextureC (js/PIXI.Texture.fromImage "assets/img/tile3.png"))
 
-(def backgroundOneTexture (js/PIXI.Texture.fromImage "assets/img/background-a.png"))
-(def backgroundTwoTexture (js/PIXI.Texture.fromImage "assets/img/background-b.png"))
-(def backgroundThreeTexture (js/PIXI.Texture.fromImage "assets/img/background-c.png"))
+(def backgroundOne (js/PIXI.Texture.fromImage "assets/img/background-a.png"))
+(def backgroundTwo (js/PIXI.Texture.fromImage "assets/img/background-b.png"))
+(def backgroundThree (js/PIXI.Texture.fromImage "assets/img/background-c.png"))
 
 (def textures
-  {::playerStanding playerStandingTexture
-   ::playerJumping playerJumpingTexture
+  { ::playerright1  playerWalkRightTextureA
+    ::playerright2  playerWalkRightTextureB
+    ::playerright3  playerWalkRightTextureC
+    ::playerright4  playerWalkRightTextureD
 
-   ::box boxTexture
-   ::goal goalTexture
-   ::block blockTexture
+    ::playerleft1  playerWalkLeftTextureA
+    ::playerleft2  playerWalkLeftTextureB
+    ::playerleft3  playerWalkLeftTextureC
+    ::playerleft4  playerWalkLeftTextureD
 
-   ::rope ropeTexture
-   ::key keyTexture
+    ::playerJump1  playerJumpingTextureA
+    ::playerJump2  playerJumpingTextureA
 
-   ::portalOne portalOneTexture
-   ::portalTwo portalTwoTexture
-   ::portalThree portalThreeTexture
+    ::playerfront  playerFacingFront
+    ::playerback   playerFacingBack
 
-   ::candleA candleATexture
-   ::candleB candleBTexture
+     ::box boxTexture
+     ::goal goalTexture
+     ::block blockTexture
 
-   ::starTileA starTileTextureA
-   ::starTileB starTileTextureB
-   ::starTileC starTileTextureC
-   ::starTileD starTileTextureD
-   ::starTileE starTileTextureE
-   ::starTileF starTileTextureF
-   ::starTilePrime starTileTexturePrime
+     ::rope ropeTexture
+     ::key keyTexture
 
-   ::metalTileA metalTileTextureA
-   ::metalTileB metalTileTextureB
-   ::metalTileC metalTileTextureC
+     ::portalOne portalOneTexture
+     ::portalTwo portalTwoTexture
+     ::portalThree portalThreeTexture
 
-   ::backgroundOne backgroundOneTexture
-   ::backgroundTwo backgroundTwoTexture
-   ::backgroundThree backgroundThreeTexture
+     ::candleA candleATexture
+     ::candleB candleBTexture
+
+     ::starTileA starTileTextureA
+     ::starTileB starTileTextureB
+     ::starTileC starTileTextureC
+     ::starTileD starTileTextureD
+     ::starTileE starTileTextureE
+     ::starTileF starTileTextureF
+     ::starTilePrime starTileTexturePrime
+
+     ::metalTileA metalTileTextureA
+     ::metalTileB metalTileTextureB
+     ::metalTileC metalTileTextureC
+
+     ::backgroundOne backgroundOne
+     ::backgroundTwo backgroundTwo
+     ::backgroundThree backgroundThree
    })

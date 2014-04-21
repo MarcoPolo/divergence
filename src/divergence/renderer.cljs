@@ -3,7 +3,7 @@
 (def container (atom (js/PIXI.DisplayObjectContainer.)))
 (def camera (atom (js/PIXI.DisplayObjectContainer.)))
 
-(def stage (js/PIXI.Stage. 0x181818))
+(def stage (js/PIXI.Stage. 0xffffff))
 (def renderer (js/PIXI.autoDetectRenderer. 800 600))
 
 (.appendChild
