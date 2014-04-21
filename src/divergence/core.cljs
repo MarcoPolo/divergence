@@ -45,7 +45,7 @@
   (doseq [e entities] (e/register-entity! e))
   (let [c->e e/component->entities]
     (s/create-ref (c->e :sprite))
-    ;(s/create-tiling-ref (c->e :tiling-sprite))
+    (s/create-tiling-ref (c->e :tiling-sprite))
     (s/create-text (c->e :text))
 
     (s/to-stage @container (c->e :stage))

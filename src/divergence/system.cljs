@@ -187,7 +187,8 @@
 
 (defn create-tiling-ref [entities]
   (doseq [e entities]
-    (swap! e assoc :ref (js/PIXI.TilingSprite. (map textures/textures (-> @e :tiling-sprite :texture)) level-width (* level-height 2)))))
+    (. js/console (log (-> @e :tiling-sprite :texture)))
+    (swap! e assoc :ref (js/PIXI.TilingSprite. (-> @e :tiling-sprite :texture) level-width (* level-height 2)))))
 
 (defn add-camera [camera container]
   (.addChild camera container))
