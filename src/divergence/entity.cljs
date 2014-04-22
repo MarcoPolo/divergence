@@ -197,7 +197,7 @@
   (entity [(c/named :bg)
            (c/entity-type :bg)
            (c/sprite [texture])
-           ;(c/tiling-sprite texture)
+           (c/tiling-sprite texture)
            (c/on-stage stage)
            c/has-actions
            (c/unique c/player-input)
