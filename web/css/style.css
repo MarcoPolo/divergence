@@ -181,6 +181,14 @@ a{
   height: 6em;
 }
 
+.wrap-imgtut {
+  float: center;
+  padding: 1em;
+  padding-top: 0;
+  width: 30em;
+  height: 20em;
+}
+
 #wrapper {
 	width:600px;
 	margin:0 auto;
@@ -226,6 +234,13 @@ a{
   padding: 2.5em;
 
   text-align: left;
+}
+
+#tutorial {
+  margin: 0;
+  padding: 0em;
+
+  text-align: center;
 }
 
 #lightbox2 {
