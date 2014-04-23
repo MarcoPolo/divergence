@@ -67,8 +67,8 @@
     ::goal goalTexture
     ::block blockTexture
 
-    ::rope (js/PIXI.Texture.fromImage "assets/img/source/rope.png")
-    ::key (js/PIXI.Texture.fromImage "assets/img/source/key.png")
+    ::rope (js/PIXI.Texture.fromImage "assets/img/rope.png")
+    ::key (js/PIXI.Texture.fromImage "assets/img/key.png")
 
     ::portalOne portalOneTexture
     ::portalTwo portalTwoTexture
@@ -84,6 +84,7 @@
     ::starTileE starTileTextureE
     ::starTileF starTileTextureF
     ::starTilePrime starTileTexturePrime
+    ::metalTileA metalTileTextureA
     ::metalTileB metalTileTextureB
     ::metalTileC metalTileTextureC
 

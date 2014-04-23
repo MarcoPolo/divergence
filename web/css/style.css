@@ -189,20 +189,44 @@ a{
   height: 20em;
 }
 
-  .audio-control {
-  }
+#audiomenu {
+  border-radius: 0.25em 0.25em 0.25em 0.25em;
+
+  position: fixed;
+  width: 500px;
+  top: 35%;
+  bottom: 35%;
+  left: 35%;
+  right: 35%;
+}
+.audio-control {
+}
   .volume-bar {
     float:left;
     }
-  img.volume-bar {
+  .mute {
+    background: rgba(0,255,0, 1);
+    opacity: 0.5;
+  }
+  .audio-control > .selected {
+    background: lightgray;
+  }
 
+  img.volume-bar {
+      width: 8em;
     }
+  div.volume-bars {
+    position: relative;
+    display: inline;
+    left: 8em;
+  }
   div.volume-bar {
-    float: left;
     width: 1em;
-    height: 2em;
+    height: 8em;
     border-radius:0.5em;
-    background: black;
+    background: white;
+
+    margin-left: 1em;
     }
     .clear{
       clear: both;
@@ -210,6 +234,14 @@ a{
       width: 0;
       }
 
+.button {
+  border: 0;
+  color: white;
+  font-weight: bold;
+  font-size: 2em;
+
+  background: #1f1f1f;
+}
 
 #wrapper {
 	width:600px;
@@ -226,7 +258,7 @@ a{
 	-webkit-box-shadow:0 0 5px #ccc;
 	text-align:left;
 }
-#lightbox {
+#lightbox{
 	position:fixed; /* keeps the lightbox window in the current viewport */
 	top:0;
 	left:0;

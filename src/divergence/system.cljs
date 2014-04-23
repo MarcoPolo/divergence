@@ -7,7 +7,7 @@
              [divergence.camera :as camera]))
 
 ;;GLOBAL VALUES-----------------------------------
-(def level-width 3200)
+(def level-width 4000)
 (def level-height 506)
 
 (def level (atom 0))
@@ -42,7 +42,7 @@
                ]]
     (if (and cond1 cond2)
       (do
-        (set! (.-textures sprite) (cljs-to-js e/climbAnimation))
+        (set! (.-textures sprite) (cljs-to-js e/jumpAnimation))
         (set! (.-playing sprite) true)
         (swap! player assoc-in [:climbing] 1)
         (swap! player assoc-in [:gravity] [0 0 0])
@@ -51,7 +51,7 @@
       (do
         (swap! player assoc-in [:climbing] 0)
         (swap! player assoc-in [:gravity] [0 0.2 0]))
-        (set! (.-textures sprite) (cljs-to-js [e/playerTexture]))
+        (set! (.-textures sprite) (cljs-to-js [e/pf]))
         (set! (.-playing sprite) true)
       )))
 
@@ -92,7 +92,7 @@
           (swap! e assoc-in [:can-jump] 1))))))
 
 (defn push [entities player]
-  (doseq [p player]
+  (doseq [p player :when (= (@p :type) :player)]
     (when (not= (@p :velocity) [0 0 0])
       (let [{[x-v y-v rot-speed] :velocity} @p
             sprite (@p :ref)]
@@ -100,7 +100,8 @@
                 y-future (move-entity @p [y-v 0 0])]
           (doseq [e entities]
             (when (phys/colliding? x-future @e)
-              (set! (.-textures sprite) (cljs-to-js e/pushAnimation))
+              (. js/console (log "step4"))
+              (set! (.-textures sprite) (cljs-to-js [e/pf]))
               (set! (.-playing sprite) true)
               (swap! e assoc-in [:velocity 0] (* (compare x-v 0) 2))
               (a/play-sound :push))))))))
@@ -236,7 +237,13 @@
    77 :item
    80 :p
    16 :travel-back ;; :shift
-   69 :run})
+
+   ;;temporary volume control
+   81 :vol-down  ;;q
+   87 :vol-up    ;;w
+   69 :mute      ;;e
+   82 :unmute    ;;r
+   })
 
 (def key-inputs (atom #{}))
 
@@ -271,6 +278,10 @@
         (js/ShowMenu)
         (js/pause)
       )
+      (when (actions :vol-down) (a/decVolume))
+      (when (actions :vol-up) (a/incVolume))
+      (when (actions :mute)  (a/mute))
+      (when (actions :unmute) (a/unmute))
       (when
         (actions :left)
         (swap! e assoc-in [:acceleration] [-3 0 0])

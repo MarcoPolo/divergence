@@ -103,7 +103,7 @@
     (s/set-width-height (c->e :collidable))
 
     (s/player-input (c->e :player-input))
-    (s/climbing (c->e :position))
+    (s/climbing (c->e :type))
     (s/execute-actions (c->e :actions))
     (s/move-background (c->e :actions))
     (s/animations (c->e :sprite))
@@ -114,7 +114,7 @@
     (s/accelerate (c->e :acceleration))
     (s/collide (c->e :collidable))
 
-    (s/push (c->e :pushable) (c->e :player-input))
+    (s/push (c->e :pushable) (c->e :type))
     (when (s/goal? (c->e :position) (c->e :type))
 
       ;; We need to remove all current entities on this stage

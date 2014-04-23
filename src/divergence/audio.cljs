@@ -77,5 +77,5 @@
 
 (defn unmuteSub [sound]
   (. sound unmute))
-(defn umute []
+(defn unmute []
   (reset! sounds (update-values @sounds unmuteSub)))

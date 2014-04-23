@@ -20,9 +20,9 @@ jQuery(document).ready(function($) {
 					'<br><br>' +
 					'<input type="image" src="assets/img/menu/menu_resume.png" id="menu_button" onclick="callSettingsResume()">' +
 					'<br><br>' +
-					'<input type="image" src="assets/img/menu/menu_audio.png" id="menu_button">' +
+					'<input type="image" src="assets/img/menu/menu_audio.png" id="menu_button" onclick="callAudioMenu()">' +
 					'<br><br>' +
-					'<input type="image" src="assets/img/menu/menu_controls.png" id="menu_button">' +
+					'<input type="image" src="assets/img/menu/menu_controls.png" id="menu_button" onclick="">' +
 					'<br><br>' +
 				'</div>' +
 			'</div>';
