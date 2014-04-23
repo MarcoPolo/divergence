@@ -115,7 +115,19 @@
     (s/collide (c->e :collidable))
 
     (s/push (c->e :pushable) (c->e :player-input))
-    (s/goal? (c->e :position) (c->e :player-input))
+    (when (s/goal? (c->e :position) (c->e :type))
+
+      ;; We need to remove all current entities on this stage
+      (doseq [things-with-positions (c->e :position)]
+        (e/destroy-entity! things-with-positions))
+
+
+
+      ;; Then we need add all the entites for the next level
+      (doseq [thing (levels/level-1 stage)]
+        (e/register-entity! thing))
+
+      )
     (s/move (c->e :velocity))
     (s/position (c->e :position))
     (s/fps-counter (c->e :fps-counter)) ;; FPS counter
@@ -141,8 +153,6 @@
 (reset! animate-ref animate)
 
 ;(reset! animate-ref (debug-slow-down))
-
-#_(setup e/entities)
 
 (setup (levels/prologue @stage))
 

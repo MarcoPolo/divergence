@@ -189,6 +189,28 @@ a{
   height: 20em;
 }
 
+  .audio-control {
+  }
+  .volume-bar {
+    float:left;
+    }
+  img.volume-bar {
+
+    }
+  div.volume-bar {
+    float: left;
+    width: 1em;
+    height: 2em;
+    border-radius:0.5em;
+    background: black;
+    }
+    .clear{
+      clear: both;
+      height: 0;
+      width: 0;
+      }
+
+
 #wrapper {
 	width:600px;
 	margin:0 auto;

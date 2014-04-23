@@ -191,7 +191,7 @@
            c/create-ref
            (c/position x y 0)
            (c/on-stage stage)
-           (c/scale 2 2)]))
+           (c/scale 0.75 0.75)]))
 
 (defn background [texture stage]
   (entity [(c/named :bg)
@@ -262,7 +262,7 @@
 
 (defn some-text [stage]
   (entity [(c/named :fps-counter)
-           (c/unique (c/text "Hello World" #js {:font "20px Courier New" :fill "white"}))
+           (c/unique (c/text "Hello World" #js {:font "20px Calibri" :fill "white"}))
            (c/position 20 10 0)
            c/fps-counter
            (c/on-stage stage)]))
@@ -308,8 +308,9 @@
   (let [unique-atom (@entity-atom->unique-entity-atom entity)
         container (:container @unique-atom)
         unique-keys (keys @unique-atom)
-        normal-keys (keys @entity)]
-    (.removeChild container (:ref @unique-atom))
+        normal-keys (keys @entity)
+        ref (entity-atom->ref entity)]
+    (.removeChild container ref)
 
     ;; Remove the item from the unique-entity->component
     (swap! entity->components dissoc entity)

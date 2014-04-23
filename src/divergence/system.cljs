@@ -169,14 +169,13 @@
      )))
 
 (defn goal? [entities player]
-  (doseq [p player
-          :let [p-name (e/entity-atom->component-val p :name)]
-          e entities
-          :let [e-name (e/entity-atom->component-val e :name)]]
-      (when (and (= p-name :player) (phys/colliding? @p @e)
-                 (has-item? @p :key) (= e-name :goal))
-        (js/alert "win")
-        (next-level))))
+  (first
+   (for [p player
+         e entities
+         :let [p-name (e/entity-atom->component-val p :name)
+               e-name (e/entity-atom->component-val e :name)]
+         :when (and (= e-name :goal) (= p-name :player) (phys/colliding? @p @e))]
+     true)))
 
 
 ;;RENDERING---------------------------------------------
@@ -187,7 +186,6 @@
 
 (defn create-tiling-ref [entities]
   (doseq [e entities]
-    (. js/console (log (-> @e :tiling-sprite :texture)))
     (swap! e assoc :ref (js/PIXI.TilingSprite. (-> @e :tiling-sprite :texture textures/textures) level-width (* level-height 2)))))
 
 (defn add-camera [camera container]
@@ -221,8 +219,6 @@
 (defn animations [entities]
   (doseq [e entities
           :let [sprite (@e :ref)]]
-    ;(. js/console (log (name (@e :name))))
-    ;(. js/console (log "ref: " (@e :ref )))
     (set! (.-animationSpeed sprite) 0.25)
     (set! (.-loop sprite) true)
     (set! (.-playing sprite) true)

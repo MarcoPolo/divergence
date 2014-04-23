@@ -4,6 +4,20 @@ var ShowAudioMenu = function(){
       $('#audiomenu').show();
     }//endif
     else {
-      var audiomenu = '';
+      var audiomenu = "<div class=''><h2>Audio</h2>"+
+                      "<div class='audio-control'>"+
+                      "<a href=''><img class='volume-bar' src='/'></a>"+
+                      "<a href=''><div class='volume-bar'></div></a>"+
+                      "<a href=''><div class='volume-bar'></div></a>"+
+                      "<a href=''><div class='volume-bar'></div></a>"+
+                      "<a href=''><div class='volume-bar'></div></a>"+
+                      "<a href=''><div class='volume-bar'></div></a>"+
+                      "<a href=''><div class='volume-bar'></div></a>"+
+                      "<div class='clear'></div>"+
+                      "<button class=''>&#8592</button>"+
+                      "</div><!--Volume Control--></div><!--Container-->";
+
+      $('body').css("overflow","hidden");
+			$('body').append(audiomenu);
     }
   };
