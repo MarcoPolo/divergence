@@ -16,7 +16,7 @@
 (def renderer renderer/renderer)
 
 (def stage (atom renderer/stage))
-
+(def current-level (atom 0))
 
 (def container renderer/container)
 (def camera renderer/camera)
@@ -47,6 +47,9 @@
     (s/create-ref (c->e :sprite))
     (s/create-tiling-ref (c->e :tiling-sprite))
     (s/create-text (c->e :text))
+
+    (a/mute) ;;sorry. sound is driving me crazy.
+
 
     (s/to-stage @container (c->e :stage))
     (s/add-camera @camera @container)
@@ -115,19 +118,23 @@
     (s/collide (c->e :collidable))
 
     (s/push (c->e :pushable) (c->e :type))
+
     (when (s/goal? (c->e :position) (c->e :type))
-
+      (s/next-level)
+      (swap! current-level inc)
       ;; We need to remove all current entities on this stage
-      (doseq [things-with-positions (c->e :position)]
-        (e/destroy-entity! things-with-positions))
+      (doseq [things-with-positions (c->e :position)] (e/destroy-entity! things-with-positions))
 
-
+      ;;prevent adding multiple containers onto stage
+      (.removeChild (.-parent @container) @container)
+      (.removeChild (.-parent @camera) @camera)
+      (reset! container (js/PIXI.DisplayObjectContainer.))
+      (reset! camera (js/PIXI.DisplayObjectContainer.))
 
       ;; Then we need add all the entites for the next level
-      (doseq [thing (levels/level-1 stage)]
-        (e/register-entity! thing))
+      ;(setup (levels/levelone stage)))
+      (setup ((levels/get-levels @current-level) @stage)))
 
-      )
     (s/move (c->e :velocity))
     (s/position (c->e :position))
     (s/fps-counter (c->e :fps-counter)) ;; FPS counter
