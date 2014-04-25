@@ -50,9 +50,14 @@
 (def metalTileTextureB :divergence.textures/metalTileB)
 (def metalTileTextureC :divergence.textures/metalTileC)
 
+(def groundTileTextureA :divergence.textures/groundTileA)
+(def groundTileTextureB :divergence.textures/groundTileB)
+(def groundTileTextureC :divergence.textures/groundTileC)
+
 (def backgroundOneTexture :divergence.textures/backgroundOne)
 (def backgroundTwoTexture :divergence.textures/backgroundTwo)
 (def backgroundThreeTexture :divergence.textures/backgroundThree)
+(def backgroundFourTexture :divergence.textures/backgroundFour)
 
 (def portalOneTexture :divergence.textures/portalOne)
 (def portalTwoTexture :divergence.textures/portalTwo)
@@ -210,6 +215,7 @@
 (def backgroundOne (partial background backgroundOneTexture))
 (def backgroundTwo (partial background backgroundTwoTexture))
 (def backgroundThree (partial background backgroundThreeTexture))
+(def backgroundFour (partial background backgroundFourTexture))
 
 (defn box [pname x y stage]
   (entity [(c/named pname)
@@ -257,6 +263,10 @@
 (def metalTileA (partial tile 1 1 [metalTileTextureA]))
 (def metalTileB (partial tile 1 1 [metalTileTextureB]))
 (def metalTileC (partial tile 1 1 [metalTileTextureC]))
+
+(def groundTileA (partial tile 1 1 [groundTileTextureA]))
+(def groundTileB (partial tile 1 1 [groundTileTextureB]))
+(def groundTileC (partial tile 1 1 [groundTileTextureC]))
 
 (def candle (partial tile 1 1 [candleATexture candleBTexture]))
 
