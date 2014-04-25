@@ -42,9 +42,9 @@
 (defn levelone [stage]
   [(e/timestream)
    (e/some-text stage)
-   (e/door-closed-block 1320 210 stage)
-   ;(e/door-open-block 1320 210 stage)
-   (e/goal 1320 210 stage)
+   (e/door-closed-block 1320 208 stage)
+   ;(e/door-open-block 1320 208 stage)
+   (e/goal 1320 208 stage)
    (e/groundTileC -100 530 :g1 stage)
    (e/groundTileB 0 530 :g2 stage)
    (e/groundTileA 100 530 :g3 stage)
