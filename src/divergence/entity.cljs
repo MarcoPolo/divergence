@@ -164,7 +164,7 @@
 (defn player [stage]
   (entity [(c/unique (c/named :player))
            (c/unique (c/sprite [pf]))
-           (c/position (/ camera/camera-width 3) (/ camera/camera-height 3) 0)
+           (c/position (/ camera/camera-width 3) -1500 0)
            (c/unique c/player-input)
            (c/unique (c/on-stage stage))
            c/has-actions
@@ -332,7 +332,9 @@
         unique-keys (keys @unique-atom)
         normal-keys (keys @entity)
         ref (entity-atom->ref entity)]
-    (.removeChild container ref)
+
+    (when (not-any? nil? @entity) (.removeChild (.-parent ref) ref))
+    ;(.removeChild container (:ref @unique-atom))
 
     ;; Remove the item from the unique-entity->component
     (swap! entity->components dissoc entity)

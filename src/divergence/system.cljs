@@ -10,7 +10,6 @@
 (def level-width 4000)
 (def level-height 506)
 
-(def level (atom 0))
 (def current-level (atom 0))
 
 
@@ -159,8 +158,7 @@
 
 ;;EVENT RESPONSES---------------------------------------------
 (defn next-level []
-  (. js/console (log "hola"))
-  (swap! level inc))
+  (swap! current-level inc))
 
 (defn has-item? [player itemName]
   (let [item (player :holding)]

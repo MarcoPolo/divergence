@@ -9,7 +9,7 @@
 (defn prologue [stage]
   [(e/timestream)
    (e/some-text stage)
-   (e/goal 1450 200 stage)
+   (e/goal 300 300 stage)
    (e/metalTileC -100 560 :t1 stage)
    ;(e/box :box -100 260 stage)
    (e/metalTileB 0 560 :t2 stage)
@@ -38,7 +38,7 @@
    ])
 
 ;;level 1 definition
-(defn level-1 [stage]
+(defn levelone [stage]
   [(e/timestream)
    (e/some-text stage)
    (e/goal 1360 200 stage)
@@ -67,19 +67,16 @@
    ])
 
 ;;level 2 definition
-(defn level-2 [stage]
+(defn leveltwo [stage]
   [(e/timestream)
    (e/player stage)
    (e/goal 100 100 stage)
+
+   (e/backgroundTwo stage)
    ])
 
-;;level hashmap
-(def levels {:prologue prologue
-             :one  level-1
-             :two  level-2
-             })
-
 (defn get-levels [number]
-  (when (= number 0) :prologue)
-  (when (= number 1) :one)
-  (when (= number 2) :two))
+   (cond
+    (= number 0) prologue
+    (= number 1) levelone
+    (= number 2) leveltwo))
