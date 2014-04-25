@@ -74,6 +74,7 @@
 
     ::rope (js/PIXI.Texture.fromImage "assets/img/rope.png")
     ::key (js/PIXI.Texture.fromImage "assets/img/key.png")
+    ::push-button (js/PIXI.Texture.fromImage "assets/img/push-button.png")
 
     ::portalOne portalOneTexture
     ::portalTwo portalTwoTexture

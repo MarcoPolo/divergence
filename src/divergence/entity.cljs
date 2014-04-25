@@ -34,6 +34,7 @@
 
 (def ropeTexture :divergence.textures/rope)
 (def keyTexture :divergence.textures/key)
+(def pushButtonTexture :divergence.textures/push-button)
 
 (def candleATexture :divergence.textures/candleA)
 (def candleBTexture :divergence.textures/candleB)
@@ -281,6 +282,17 @@
   (entity [(c/named :key)
            (c/entity-type :item)
            (c/sprite [keyTexture])
+           (c/position x y 0)
+           (c/on-stage stage)
+           (c/scale 0.5 0.5)
+           c/create-ref
+           c/gravity
+           ]))
+
+(defn push-button-block [x y stage]
+  (entity [(c/named :push-button)
+           (c/entity-type :item)
+           (c/sprite [pushButtonTexture])
            (c/position x y 0)
            (c/on-stage stage)
            (c/scale 0.5 0.5)

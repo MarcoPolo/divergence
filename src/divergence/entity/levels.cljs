@@ -53,7 +53,7 @@
    (e/groundTileA 600 530 :g8 stage)
    (e/groundTileB 700 530 :g9 stage)
    ;(e/box :box 600 140 stage)
-   ;(e/rope-block 750 0 stage)
+   (e/push-button-block 750 400 stage)
    (e/groundTileC 1000 530 :g10 stage)
    (e/groundTileA 1100 450 :g11 stage)
    (e/groundTileB 1200 370 :g12 stage)

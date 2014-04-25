@@ -154,6 +154,6 @@
 
 ;(reset! animate-ref (debug-slow-down))
 
-(setup (levels/prologue @stage))
+(setup (levels/level-1 @stage))
 
 (js/requestAnimationFrame @animate-ref)
