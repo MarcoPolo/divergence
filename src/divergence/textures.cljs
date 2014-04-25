@@ -42,9 +42,14 @@
 (def metalTileTextureB (js/PIXI.Texture.fromImage "assets/img/tile2.png"))
 (def metalTileTextureC (js/PIXI.Texture.fromImage "assets/img/tile3.png"))
 
+(def groundTileTextureA (js/PIXI.Texture.fromImage "assets/img/groundtile-a.png"))
+(def groundTileTextureB (js/PIXI.Texture.fromImage "assets/img/groundtile-b.png"))
+(def groundTileTextureC (js/PIXI.Texture.fromImage "assets/img/groundtile-c.png"))
+
 (def backgroundOne (js/PIXI.Texture.fromImage "assets/img/background-a.png"))
 (def backgroundTwo (js/PIXI.Texture.fromImage "assets/img/background-b.png"))
 (def backgroundThree (js/PIXI.Texture.fromImage "assets/img/background-c.png"))
+(def backgroundFour (js/PIXI.Texture.fromImage "assets/img/background-d.png"))
 
 (def textures
   { ::playerright1  playerWalkRightTextureA
@@ -88,7 +93,12 @@
     ::metalTileB metalTileTextureB
     ::metalTileC metalTileTextureC
 
+    ::groundTileA groundTileTextureA
+    ::groundTileB groundTileTextureB
+    ::groundTileC groundTileTextureC
+
     ::backgroundOne backgroundOne
     ::backgroundTwo backgroundTwo
     ::backgroundThree backgroundThree
+    ::backgroundFour backgroundFour
     })
