@@ -48,7 +48,7 @@
     (s/create-tiling-ref (c->e :tiling-sprite))
     (s/create-text (c->e :text))
 
-    (a/mute) ;;sorry. sound is driving me crazy.
+    ;(a/mute) ;;sorry. sound is driving me crazy.
 
 
     (s/to-stage @container (c->e :stage))
@@ -161,6 +161,6 @@
 
 ;(reset! animate-ref (debug-slow-down))
 
-(setup (levels/level-1 @stage))
+(setup (levels/prologue @stage))
 
 (js/requestAnimationFrame @animate-ref)

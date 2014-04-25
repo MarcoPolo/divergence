@@ -38,12 +38,14 @@
    ])
 
 ;;level 1 definition
+;;level1: player pushes button, door opens, and then can walk through portal
 (defn levelone [stage]
   [(e/timestream)
    (e/some-text stage)
-   (e/goal 1360 200 stage)
+   (e/door-closed-block 1320 210 stage)
+   ;(e/door-open-block 1320 210 stage)
+   (e/goal 1320 210 stage)
    (e/groundTileC -100 530 :g1 stage)
-   ;(e/box :box -100 260 stage)
    (e/groundTileB 0 530 :g2 stage)
    (e/groundTileA 100 530 :g3 stage)
    (e/groundTileB 200 530 :g4 stage)
@@ -52,16 +54,11 @@
    (e/groundTileC 500 530 :g7 stage)
    (e/groundTileA 600 530 :g8 stage)
    (e/groundTileB 700 530 :g9 stage)
-   ;(e/box :box 600 140 stage)
    (e/push-button-block 750 400 stage)
    (e/groundTileC 1000 530 :g10 stage)
    (e/groundTileA 1100 450 :g11 stage)
    (e/groundTileB 1200 370 :g12 stage)
    (e/groundTileA 1300 290 :g13 stage)
-
-   ;(e/vertical-full-block 0 -40 :b1 stage)
-   ;(e/horizontal-full-block 0 560 :b3 stage)
-   ;(e/horizontal-full-block 760 560 :b4 stage)
    (e/player stage)
    (e/backgroundFour stage)
    ])

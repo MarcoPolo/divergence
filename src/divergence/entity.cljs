@@ -35,6 +35,8 @@
 (def ropeTexture :divergence.textures/rope)
 (def keyTexture :divergence.textures/key)
 (def pushButtonTexture :divergence.textures/push-button)
+(def doorClosedTexture :divergence.textures/door-closed)
+(def doorOpenTexture :divergence.textures/door-open)
 
 (def candleATexture :divergence.textures/candleA)
 (def candleBTexture :divergence.textures/candleB)
@@ -296,6 +298,28 @@
            (c/position x y 0)
            (c/on-stage stage)
            (c/scale 0.5 0.5)
+           c/create-ref
+           c/gravity
+           ]))
+
+(defn door-closed-block [x y stage]
+  (entity [(c/named :door-closed)
+           (c/entity-type :item)
+           (c/sprite [doorClosedTexture])
+           (c/position x y 0)
+           (c/on-stage stage)
+           (c/scale 0.7 0.7)
+           c/create-ref
+           c/gravity
+           ]))
+
+(defn door-open-block [x y stage]
+  (entity [(c/named :door-open)
+           (c/entity-type :item)
+           (c/sprite [doorOpenTexture])
+           (c/position x y 0)
+           (c/on-stage stage)
+           (c/scale 0.7 0.7)
            c/create-ref
            c/gravity
            ]))
