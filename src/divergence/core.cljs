@@ -118,7 +118,7 @@
     (s/collide (c->e :collidable))
 
     (s/push (c->e :pushable) (c->e :type))
-
+    (s/pushing (c->e :pushing))
     (when (s/goal? (c->e :position) (c->e :type))
       (s/next-level)
       (swap! current-level inc)
@@ -130,6 +130,7 @@
       (.removeChild (.-parent @camera) @camera)
       (reset! container (js/PIXI.DisplayObjectContainer.))
       (reset! camera (js/PIXI.DisplayObjectContainer.))
+      (reset! timestream [[{:prev-node [0 0]}]])
 
       ;; Then we need add all the entites for the next level
       ;(setup (levels/levelone stage)))

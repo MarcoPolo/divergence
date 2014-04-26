@@ -12,7 +12,6 @@
 
 (def current-level (atom 0))
 
-
 (defn as [entity k]
   (@entity k))
 
@@ -36,13 +35,12 @@
 (defn climbing? [player entities]
   (doseq [e entities
           :let [cond1 (phys/colliding? @player @e)
-                cond2 (@e :can-climb)
-                sprite (@player :ref)
+                cond2 (= (@e :can-climb) 1)
+
+                sprite (e/entity-atom->ref player)
                ]]
     (if (and cond1 cond2)
       (do
-        (set! (.-textures sprite) (cljs-to-js e/jumpAnimation))
-        (set! (.-playing sprite) true)
         (swap! player assoc-in [:climbing] 1)
         (swap! player assoc-in [:gravity] [0 0 0])
         (swap! player assoc-in [:acceleration] [0 -10 0])
@@ -50,14 +48,14 @@
       (do
         (swap! player assoc-in [:climbing] 0)
         (swap! player assoc-in [:gravity] [0 0.2 0]))
-        (set! (.-textures sprite) (cljs-to-js [e/pf]))
-        (set! (.-playing sprite) true)
+
+        (set! (.-textures sprite) (cljs-to-js e/jumpAnimation))
       )))
 
 (defn climbing [entities]
   (doseq [e entities
-          :let [e-name (e/entity-atom->component-val e :name)]]
-    (when (= e-name :player)
+          :let [e-type (e/entity-atom->component-val e :type)]]
+    (when (= e-type :player)
         (climbing? e entities))))
 
 (defn move-entity [entity [x-speed y-speed rot-speed]]
@@ -72,8 +70,9 @@
 (defn set-width-height [entities]
   (doseq [e entities
           :let [ref (e/entity-atom->ref e)]]
-    (swap! e assoc-in [:dimensions :width] (.-width ref))
-    (swap! e assoc-in [:dimensions :height] (.-height ref))))
+        (swap! e assoc-in [:dimensions :width]  (.-width ref))
+        (swap! e assoc-in [:dimensions :height] (.-height ref)))
+    )
 
 
 (defn collide [entities]
@@ -91,19 +90,23 @@
           (swap! e assoc-in [:can-jump] 1))))))
 
 (defn push [entities player]
-  (doseq [p player :when (= (@p :type) :player)]
-    (when (not= (@p :velocity) [0 0 0])
-      (let [{[x-v y-v rot-speed] :velocity} @p
-            sprite (@p :ref)]
-        (let [x-future (move-entity @p [x-v 0 0])
-                y-future (move-entity @p [y-v 0 0])]
+  (doseq [p player :when (= (@p :type) :player)
+                   :let [actions (@p :actions)
+                         direction (atom 0)]]
+      (when actions (when (actions :left) (reset! direction -2)) (when (actions :right) (reset! direction 2)))
+      (let [x-v @direction]
+        (let [x-future (move-entity @p [x-v 0 0])]
           (doseq [e entities]
             (when (phys/colliding? x-future @e)
-              (. js/console (log "step4"))
-              (set! (.-textures sprite) (cljs-to-js [e/pf]))
-              (set! (.-playing sprite) true)
-              (swap! e assoc-in [:velocity 0] (* (compare x-v 0) 2))
-              (a/play-sound :push))))))))
+              (swap! e assoc-in [:velocity 0] x-v)
+              (swap! p assoc :pushing true)
+              (a/play-sound :push)))))))
+
+(defn pushing [entities]
+  (doseq [e entities]
+    (when (and (= (@e :type) :player) (@e :pushing))
+      ;(set! (.-textures (e/entity-atom->ref e)) (cljs-to-js [e/pf]))
+      )))
 
 (defn friction
   [entities]

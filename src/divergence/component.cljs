@@ -87,6 +87,8 @@
 
 (def climbing
   (component :climbing 0))
+(def pushing
+  (component :pushing false))
 
 (def time-based-state
   "Anything whose state (e.g. position, velocity...) changes based of time"

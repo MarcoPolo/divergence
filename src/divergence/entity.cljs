@@ -176,7 +176,9 @@
            (c/gravity [0 normal-gravity 0])
            (c/entity-type :player)
            (c/holding? :nothing)
+           (c/anchor 0 0)
            c/items
+           c/pushing
            c/collidable
 
            c/accelerates
@@ -199,6 +201,7 @@
            c/create-ref
            (c/position x y 0)
            (c/on-stage stage)
+           (c/anchor 0.5 0.5)
            (c/scale 0.75 0.75)]))
 
 (defn background [texture stage]
@@ -250,7 +253,8 @@
            (c/sprite [ropeTexture])
            (c/position x y 0)
            (c/on-stage stage)
-           (c/scale 0.5 5)
+           (c/scale 1 1)
+           (c/anchor 0 0)
            c/create-ref
            c/can-climb
            ]))

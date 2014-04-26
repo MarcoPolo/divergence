@@ -9,9 +9,13 @@
 (defn prologue [stage]
   [(e/timestream)
    (e/some-text stage)
-   (e/goal 300 300 stage)
+   (e/goal 100 350 stage)
    (e/metalTileC -100 560 :t1 stage)
-   ;(e/box :box -100 260 stage)
+
+   ;;test
+   (e/box :box 150 -1000 stage)
+   (e/rope-block 300 300 stage)
+
    (e/metalTileB 0 560 :t2 stage)
    (e/metalTileA 100 560 :t3 stage)
    (e/metalTileB 200 520 :t4 stage)
