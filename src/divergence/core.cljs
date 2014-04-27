@@ -48,7 +48,7 @@
     (s/create-tiling-ref (c->e :tiling-sprite))
     (s/create-text (c->e :text))
 
-    ;(a/mute) ;;sorry. sound is driving me crazy.
+    (a/mute) ;;sorry. sound is driving me crazy.
 
 
     (s/to-stage @container (c->e :stage))
@@ -143,7 +143,7 @@
     (divergence.timeviz/render-stage) ;; Time viz
 
     (s/update-camera container (c->e :position))
-    (s/pick-drop-item (c->e :position))
+    (s/pick-drop-item (c->e :type))
     (reset! globalID (js/requestAnimationFrame @animate-ref))))
 
 (defn debug-slow-down

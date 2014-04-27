@@ -359,8 +359,8 @@
 
 (defn pick-drop-item [entities]
   (doseq [e entities
-          :let [e-name (e/entity-atom->component-val e :name) ]]
-    (when (= e-name :player)
+          :let [e-type (e/entity-atom->component-val e :type) ]]
+    (when (= e-type :player)
       (let [p e
             actions (@p :actions)
             [x y r] (@p :position)]
@@ -369,16 +369,17 @@
                         item-name (e/entity-atom->component-val en :name)
                         collide? (phys/colliding? item @p)]]
             (when (and (= (item :type) :item) collide?)
+              (println "Point 2")
               (if (= (@p :items) 1)
                 (do (set! (.-visible (item :ref)) false) ;pick up item
                     (swap! p assoc-in [:holding] item-name)
                     (. js/console (log (name (@p :holding))))
-                    (let [pheight (.-height (@p :ref))
-                          iheight (.-height (item :ref))]
+                    (let [pheight (.-height (e/entity-atom->ref p))
+                          iheight (.-height (e/entity-atom->ref en))]
                      (swap! en assoc-in [:position] [x (+ y (- pheight iheight)) r]))
                     (a/play-sound :pickup))
-                (do (swap! p assoc-in [:holding] [:nothing]) ;drop item
-                    (set! (.-visible (item :ref)) true)
+                (do (swap! p assoc-in [:holding] [:nothing])
+                    (set! (.-visible (e/entity-atom->ref en)) true)
                     ))))))))
 
 ;;GAME CAMERA============================================
