@@ -20,7 +20,6 @@ var lightbox2 =
     "<input class='button' type='button' onclick='HideMenus(); ShowMenu();' value='&#8592'>"+
     '</div>' +
     "<div class='clr'></div>"+
-    "<button class='button' onclick='HideMenus(); ShowMenu();'>&#8592</button>"+
     '</div>';
 
 var audiomenu = "<div id='audiomenu' class='menu'>"+
