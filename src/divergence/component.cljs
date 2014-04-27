@@ -138,11 +138,3 @@
       (assoc :name :player-time-traveler)
       (update-in [:attr] assoc :traveling-back false)))
 
-
-(comment
-
-  (divergent)
-  (player-time-traveler)
-
-  (timestream)
-  )

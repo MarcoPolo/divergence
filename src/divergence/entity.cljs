@@ -305,7 +305,7 @@
            (c/on-stage stage)
            (c/scale 0.5 0.5)
            c/create-ref
-           c/gravity
+           (c/gravity [0 normal-gravity 0])
            ]))
 
 (defn push-button-block [x y stage]
@@ -316,7 +316,7 @@
            (c/on-stage stage)
            (c/scale 0.5 0.5)
            c/create-ref
-           c/gravity
+           (c/gravity [0 normal-gravity 0])
            ]))
 
 (defn door-closed-block [x y stage]

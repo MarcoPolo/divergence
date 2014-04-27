@@ -7,7 +7,7 @@
              [divergence.camera :as camera]))
 
 ;;GLOBAL VALUES-----------------------------------
-(def level-width 4000)
+(def level-width 3000)
 (def level-height 2000)
 
 (def current-level (atom 0))
@@ -188,7 +188,7 @@
 
 (defn create-tiling-ref [entities]
   (doseq [e entities]
-    (swap! e assoc :ref (js/PIXI.TilingSprite. (-> @e :tiling-sprite :texture textures/textures) level-width (* level-height 5)))))
+    (swap! e assoc :ref (js/PIXI.TilingSprite. (-> @e :tiling-sprite :texture textures/textures) (* level-width 2) (* level-height 3)))))
 
 (defn add-camera [camera container]
   (.addChild camera container))
@@ -370,9 +370,8 @@
                         item-name (e/entity-atom->component-val en :name)
                         collide? (phys/colliding? item @p)]]
             (when (and (= (item :type) :item) collide?)
-              (println "Point 2")
               (if (= (@p :items) 1)
-                (do (set! (.-visible (item :ref)) false) ;pick up item
+                (do (set! (.-visible (e/entity-atom->ref en)) false) ;pick up item
                     (swap! p assoc-in [:holding] item-name)
                     (. js/console (log (name (@p :holding))))
                     (let [pheight (.-height (e/entity-atom->ref p))
@@ -385,18 +384,18 @@
 
 ;;GAME CAMERA============================================
 (defn camera-x-check [x]
-  (if (< x level-width) true false))
+  (if (and (< x level-width) (> x 0)) true false))
 
 (defn camera-y-check [y]
-  (if (< y level-height) true false))
+  (if (and (< y level-height) (> y 0)) true false))
 
 (defn update-camera-coords [camera x y]
   (set! (.-x (.-position @camera)) (if (camera-x-check x)
                                      (* -1 (- x (+ (/ camera/camera-width 3) 50)))
-                                     (- x 0)))
+                                     (.-x (.-position @camera))))
   (set! (.-y (.-position @camera)) (if (camera-y-check y)
                                     (* -1 (- y (+ (/ camera/camera-height 3) 125)))
-                                    ()))
+                                    (.-y (.-position @camera))))
 )
 
 (defn update-camera [camera entities]
