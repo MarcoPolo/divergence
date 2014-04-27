@@ -71,11 +71,7 @@
 ;;MASTER FEATURES=================================================
 
 (defn resetGame []
-    (reset! component->entities {})
-    (reset! entity->components {})
-    (reset! entity-count 0)
-    (reset! stage (js/PIXI.Stage. 0x66FF99))
-    (setup e/entities))
+    (load-level))
 
 ;;Initial timestream
 (def timestream (atom [[{:prev-node [0 0]}]]))
@@ -93,6 +89,22 @@
 
 (defn resume []
   (js/requestAnimationFrame @animate-ref))
+
+(defn load-level []
+  (let [c->e e/component->entities]
+      ;; We need to remove all current entities on this stage
+      (doseq [things-with-positions (c->e :position)] (e/destroy-entity! things-with-positions))
+
+      ;;prevent adding multiple containers onto stage
+      (.removeChild (.-parent @container) @container)
+      (.removeChild (.-parent @camera) @camera)
+      (reset! container (js/PIXI.DisplayObjectContainer.))
+      (reset! camera (js/PIXI.DisplayObjectContainer.))
+      (reset! timestream [[{:prev-node [0 0]}]])
+
+      ;; Then we need add all the entites for the next level
+      ;(setup (levels/levelone stage)))
+      (setup ((levels/get-levels @current-level) @stage))))
 
 ;;RENDERING============================================
 
@@ -122,19 +134,7 @@
     (when (s/goal? (c->e :position) (c->e :type))
       (s/next-level)
       (swap! current-level inc)
-      ;; We need to remove all current entities on this stage
-      (doseq [things-with-positions (c->e :position)] (e/destroy-entity! things-with-positions))
-
-      ;;prevent adding multiple containers onto stage
-      (.removeChild (.-parent @container) @container)
-      (.removeChild (.-parent @camera) @camera)
-      (reset! container (js/PIXI.DisplayObjectContainer.))
-      (reset! camera (js/PIXI.DisplayObjectContainer.))
-      (reset! timestream [[{:prev-node [0 0]}]])
-
-      ;; Then we need add all the entites for the next level
-      ;(setup (levels/levelone stage)))
-      (setup ((levels/get-levels @current-level) @stage)))
+      (load-level))
 
     (s/move (c->e :velocity))
     (s/position (c->e :position))
