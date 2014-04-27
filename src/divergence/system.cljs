@@ -288,13 +288,17 @@
         (swap! e assoc-in [:acceleration] [-3 0 0])
         (swap! e assoc-in [:climbing] 0) ;when pressing left, turn gravity back on and climb mode off
         (swap! e assoc-in [:gravity] [0 0.2 0])
-        (set! (.-textures sprite) (cljs-to-js (map textures/textures e/walkAnimationLeft))))
+        (if (= (@e :can-jump) 0)
+         (set! (.-textures sprite) (cljs-to-js (map textures/textures e/jumpAnimationLeft)))
+         (set! (.-textures sprite) (cljs-to-js (map textures/textures e/walkAnimationLeft)))))
       (when
         (actions :right)
         (swap! e assoc-in [:acceleration] [3 0 0])
         (swap! e assoc-in [:climbing] 0) ;when pressing right, turn gravity back on and climb mode off
         (swap! e assoc-in [:gravity] [0 0.2 0])
-        (set! (.-textures sprite) (cljs-to-js (map textures/textures e/walkAnimationRight))))
+        (if (= (@e :can-jump) 0)
+          (set! (.-textures sprite) (cljs-to-js (map textures/textures e/jumpAnimationRight)))
+          (set! (.-textures sprite) (cljs-to-js (map textures/textures e/walkAnimationRight)))))
       (when
         (actions :down)
         (swap! e assoc-in [:acceleration] [0 1 0]))
@@ -302,11 +306,8 @@
         (and (= (@e :can-jump) 1) (actions :up))
         (when (= (e/entity-atom->component-val e :name) :player)
           (a/play-sound :jump)
-          (if (actions :right)
             (do (set! (.-textures sprite) (cljs-to-js (map textures/textures e/jumpAnimationRight)))
-                (set! (.-playing sprite) true))
-            (do (set! (.-textures sprite) (cljs-to-js (map textures/textures e/jumpAnimationLeft)))
-                (set! (.-playing sprite) true))))
+                (set! (.-playing sprite) true)))
         (swap! e assoc-in [:acceleration] [0 -4 0])
         (swap! e assoc-in [:can-jump] 0))
 
