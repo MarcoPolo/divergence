@@ -19,9 +19,13 @@ var lightbox2 =
     '<input type="image" src="assets/img/menu/menu_audio.png" class="button" onclick="callAudioMenu()">' +
     '<input type="image" src="assets/img/menu/menu_controls.png" class="button" onclick="">' +
     '</div>' +
+    "<div class='clr'></div>"+
+    "<button class='button' onclick='HideMenus(); ShowMenu();'>&#8592</button>"+
     '</div>';
 
-var audiomenu = "<div id='audiomenu' class='menu'><h2>Audio</h2>"+
+var audiomenu = "<div id='audiomenu' class='menu'>"+
+    '<img src="assets/img/menu/menu_audio_label.png"/>' +
+    '<br><br><br>' +
     "<div class='audio-control'>"+
     "<a href='javascript:mute()'><img class='volume-bar' src='assets/img/speaker.png'></a>"+
     "<div class='volume-bars'>"+
