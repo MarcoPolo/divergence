@@ -9,6 +9,9 @@
     font-style: normal;
 }
 
+/*************************
+ *General
+ *************************/
 * {
   font-family: 'Calibri';
 }
@@ -57,7 +60,7 @@ body{
 	font-family: 'Oswald', 'Myriad Pro', arial, serif;
 	background: #fbf8f4 url(../assets/img/bg.jpg) repeat top left;
 	font-weight: 400;
-	font-size: 15px;
+	font-size: 1.15em;
 	color: #936a46;
 	overflow-y: scroll;
 	overflow-x: hidden;
@@ -74,14 +77,10 @@ a{
 	text-align: center;
 }
 
-#game-container{
-	height: 600px;
-	width: 800px;
-	margin: auto;
-}
 .clr{
 	clear: both;
 }
+
 .container > header{
 	padding: 20px 30px 10px 30px;
 	margin: 0px 20px 10px 20px;
@@ -149,36 +148,51 @@ a{
 	float: none;
 	display: inline;
 }
+/*************************
+ *General Modules
+ *************************/
 .profile {
   clear: both;
   padding: 1em;
   width: 600px;
+  overflow: hidden;
   margin: 0 auto;
 }
+    .profile:hover, .profile:active {
+      background: rgba(0,0,0,0.5);
+      border-radius: 0.5em 0.5em;
+    }
+    .profile img:hover, .profile img:active {
+      box-shadow: 0 0 0 5px #008dc1;
+      margin: 1em;
+      margin-top: 0;
+    }
+    .profile > .info h1 {
+      font-size: 1.5em;
+      font-weight: bold;
+    }
+    .profile > .info p:first-child {
+      font-weight: bold;
+    }
+    .profile > .info p:last-child > span {
+      font-weight: 500;
+      font-style: italic;
+      padding-right: 1em;
+    }
+    .profile > .info p {
+      line-height: 1.5em;
+    }
 
-.profile > .info h1 {
-  font-size: 1.5em;
-  font-weight: bold;
+.wrap-img, .wrap-imgtut {
+  margin: 1em;
+  margin-top: 0;
 }
-.profile > .info p:first-child {
-  font-weight: bold;
-}
-.profile > .info p:last-child > span {
-  font-weight: 500;
-  font-style: italic;
-  padding-right: 1em;
-}
-.profile > .info p {
-  line-height: 1.5em;
-}
-
-
 .wrap-img {
   float: left;
-  padding: 1em;
   padding-top: 0;
   width: 6em;
   height: 6em;
+  border-radius: 0.5em 0.5em 0.5em 0.5em;
 }
 
 .wrap-imgtut {
@@ -188,6 +202,58 @@ a{
   width: 30em;
   height: 20em;
 }
+
+.button {
+  border: 0;
+  color: white;
+  font-weight: bold;
+  font-size: 2em;
+
+  background: #1f1f1f;
+}
+.lightbox-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+}
+.menu {
+  padding: 0;
+  margin: 0 auto;
+
+  position: absolute;
+  left: 40%;
+  top: 50%;
+
+  z-index: 1000;
+}
+  .menu img, .menu input {
+    float: left;
+    clear: left;
+  }
+  .menu input {
+    height: 1.5em;
+    width: 4.5em;
+    padding: 0.01em;
+    margin: 0.25em;
+
+    margin-left: 1.75em;
+  }
+
+/*************************
+ *Special Modules
+ *************************/
+#game-container{
+	height: 450px;
+	width: 800px;
+	margin: 0 auto;
+  margin-bottom: 2em;
+}
+  #game-container > canvas, #timestream-viz > canvas  {
+    border-radius: 0.25em 0.25em 0.25em 0.25em;
+  }
 
 #audiomenu {
   border-radius: 0.25em 0.25em 0.25em 0.25em;
@@ -201,120 +267,50 @@ a{
 }
 .audio-control {
 }
-  .volume-bar {
-    float:left;
-    }
-  .mute {
-    background: rgba(0,255,0, 1);
-    opacity: 0.5;
-  }
-  .audio-control > .selected {
-    background: lightgray;
-  }
-
-  img.volume-bar {
-      width: 8em;
-    }
-  div.volume-bars {
-    position: relative;
-    display: inline;
-    left: 8em;
-  }
-  div.volume-bar {
-    width: 1em;
-    height: 8em;
-    border-radius:0.5em;
-    background: white;
-
-    margin-left: 1em;
-    }
-    .clear{
-      clear: both;
-      height: 0;
-      width: 0;
+    .volume-bar {
+      float:left;
       }
+    .mute {
+      background: rgba(0,255,0, 1);
+      opacity: 0.5;
+    }
+    .audio-control > .selected {
+      background: lightgray;
+    }
 
-.button {
-  border: 0;
-  color: white;
-  font-weight: bold;
-  font-size: 2em;
+    img.volume-bar {
+        width: 8em;
+      }
+    div.volume-bars {
+      position: relative;
+      display: inline;
+      left: 8em;
+    }
+    div.volume-bar {
+      width: 1em;
+      height: 8em;
+      border-radius:0.5em;
+      background: white;
 
-  background: #1f1f1f;
-}
-
-#wrapper {
-	width:600px;
-	margin:0 auto;
-	border-radius:0 0 5px 5px;
-	-moz-border-radius:0 0 5px 5px;
-	-webkit-border-radius: 0 0 5px 5px;
-	background:#fff;
-	border:1px solid #ccc;
-	padding:25px;
-	border-top:none;
-	box-shadow:0 0 5px #ccc;
-	-moz-box-shadow:0 0 5px #ccc;
-	-webkit-box-shadow:0 0 5px #ccc;
-	text-align:left;
-}
-#lightbox{
-	position:fixed; /* keeps the lightbox window in the current viewport */
-	top:0;
-	left:0;
-	width:100%;
-	height:100%;
-	background:url(../assets/img/overlay.png) repeat;
-	text-align:center;
-}
-#lightbox p {
-	text-align:right;
-	color:#fff;
-	margin-right:20px;
-	font-size:12px;
-}
-#lightbox img {
-	box-shadow:0 0 25px #111;
-	-webkit-box-shadow:0 0 25px #111;
-	-moz-box-shadow:0 0 25px #111;
-	max-width:940px;
-}
-#menu_button {
-	border: 0;
-}
+      margin-left: 1em;
+      }
+      .clear{
+        clear: both;
+        height: 0;
+        width: 0;
+        }
 
 #about {
   margin: 0;
+  padding-top: 0.2em;
   padding: 2.5em;
-
   text-align: left;
 }
 
 #tutorial {
   margin: 0;
   padding: 0em;
-
-  text-align: center;
-}
-
-#lightbox2 {
-	position:fixed; /* keeps the lightbox window in the current viewport */
-	top:0;
-	left:0;
-	width:100%;
-	height:100%;
-	background:url(../assets/img/overlay.png) repeat;
-	text-align:center;
-}
-#lightbox2 p {
-	text-align:right;
-	color:#fff;
-	margin-right:20px;
-	font-size:12px;
-}
-#lightbox2 img {
-	box-shadow:0 0 25px #111;
-	-webkit-box-shadow:0 0 25px #111;
-	-moz-box-shadow:0 0 25px #111;
-	max-width:940px;
+  padding-left: 15%;
+  padding-right: 15%;
+  text-align: left;
 }

@@ -4,7 +4,7 @@
 (def camera (atom (js/PIXI.DisplayObjectContainer.)))
 
 (def stage (js/PIXI.Stage. 0xffffff))
-(def renderer (js/PIXI.autoDetectRenderer. 800 600))
+(def renderer (js/PIXI.autoDetectRenderer. 800 450))
 
 (.appendChild
  (js/document.getElementById "game-container")

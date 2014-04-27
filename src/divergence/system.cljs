@@ -8,7 +8,7 @@
 
 ;;GLOBAL VALUES-----------------------------------
 (def level-width 4000)
-(def level-height 506)
+(def level-height 2000)
 
 (def current-level (atom 0))
 
@@ -376,17 +376,22 @@
                     (a/play-sound :pickup))
                 (do (swap! p assoc-in [:holding] [:nothing]) ;drop item
                     (set! (.-visible (item :ref)) true)
-                    (a/play-sound :drop)))))))))
+                    ))))))))
 
 ;;GAME CAMERA============================================
 (defn camera-x-check [x]
   (if (< x level-width) true false))
 
+(defn camera-y-check [y]
+  (if (< y level-height) true false))
+
 (defn update-camera-coords [camera x y]
   (set! (.-x (.-position @camera)) (if (camera-x-check x)
-                                     (* -1 (- x (/ camera/camera-width 3)))
+                                     (* -1 (- x (+ (/ camera/camera-width 3) 50)))
                                      (- x 0)))
-  ;(set! (.-y (.-position @camera)) (- (@camera-coords :y) 50))
+  (set! (.-y (.-position @camera)) (if (camera-y-check y)
+                                    (* -1 (- y (+ (/ camera/camera-height 3) 125)))
+                                    ()))
 )
 
 (defn update-camera [camera entities]

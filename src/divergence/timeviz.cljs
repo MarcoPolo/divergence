@@ -3,7 +3,7 @@
 
 (enable-console-print!)
 
-(def renderer (js/PIXI.autoDetectRenderer. 800 200))
+(def renderer (js/PIXI.autoDetectRenderer. 800 150))
 
 (.appendChild
  (js/document.getElementById "timestream-viz")
