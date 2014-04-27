@@ -47,10 +47,6 @@
     (s/create-ref (c->e :sprite))
     (s/create-tiling-ref (c->e :tiling-sprite))
     (s/create-text (c->e :text))
-
-    (a/mute) ;;sorry. sound is driving me crazy.
-
-
     (s/to-stage @container (c->e :stage))
     (s/add-camera @camera @container)
     (s/on-stage @stage @camera)

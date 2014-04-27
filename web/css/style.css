@@ -298,10 +298,19 @@ a{
       width: 1em;
       height: 200px;
       border-radius:0.5em;
-      background: white;
+      background: gray;
 
       margin-left: 1em;
       }
+    div.volume-bar:hover{
+      box-shadow: 0 0 0 0 white;
+    }
+    div.current-volume, div.current-volume:hover {
+      background: white;
+    }
+    div.current-volume:hover {
+      box-shadow: 0 0 3px 1px white;
+    }
       .clear{
         clear: both;
         height: 0;

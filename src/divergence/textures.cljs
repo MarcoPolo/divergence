@@ -52,6 +52,13 @@
 (def oceanTileTextureB (js/PIXI.Texture.fromImage "assets/img/oceantile-b.png"))
 (def oceanTileTextureC (js/PIXI.Texture.fromImage "assets/img/oceantile-c.png"))
 
+(def catTextureA (js/PIXI.Texture.fromImage "assets/img/cat1.png"))
+(def catTextureB (js/PIXI.Texture.fromImage "assets/img/cat2.png"))
+(def catTextureC (js/PIXI.Texture.fromImage "assets/img/cat3.png"))
+
+(def enemyTextureA (js/PIXI.Texture.fromImage "assets/img/enemy1right.png"))
+(def enemyTextureB (js/PIXI.Texture.fromImage "assets/img/enemy1left.png"))
+
 (def backgroundOne (js/PIXI.Texture.fromImage "assets/img/background-a.png"))
 (def backgroundTwo (js/PIXI.Texture.fromImage "assets/img/background-b.png"))
 (def backgroundThree (js/PIXI.Texture.fromImage "assets/img/background-c.png"))
@@ -112,6 +119,13 @@
     ::oceanTileA oceanTileTextureA
     ::oceanTileB oceanTileTextureB
     ::oceanTileC oceanTileTextureC
+
+    ::catA catTextureA
+    ::catB catTextureB
+    ::catC catTextureC
+
+    ::enemyRight1 enemyTextureA
+    ::enemyLeft1 enemyTextureB
 
     ::backgroundOne backgroundOne
     ::backgroundTwo backgroundTwo

@@ -44,6 +44,7 @@
 			</section>
     </body>
     <script type="text/javascript">goog.require("divergence.core");</script>
+    <script src="js/audio.js"></script>
     <script>function HideMenus(){HideMenu(); HideSettingsMenu(); HideAudioMenu();}</script>
     <script>function callResetGame(){HideMenu(); divergence.core.resume(); divergence.core.resetGame()}</script>
     <script>function callResume(){HideMenu(); divergence.core.resume()}</script>
@@ -53,5 +54,5 @@
     <script>function callSaveGame(){HideMenu(); divergence.core.savegame(); divergence.core.resume()}</script>
     <script>function callLoadGame(){HideMenu(); divergence.core.loadgame(); divergence.core.resume()}</script>
     <script>function callAudioMenu(){HideSettingsMenu(); ShowAudioMenu();}</script>
-    <script src="js/audio.js"></script>
+
 </html>

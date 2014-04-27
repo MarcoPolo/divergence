@@ -171,6 +171,11 @@
            (c/friction 5)
            (c/on-stage stage)]))
 
+(defn npc [scale-x scale-y texture x y pname move-path stage]
+  (entity [(c/named pname)
+
+           ]))
+
 (defn player [stage]
   (entity [(c/unique (c/named :player))
            (c/unique (c/sprite [pf]))
