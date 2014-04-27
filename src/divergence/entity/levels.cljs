@@ -13,7 +13,7 @@
    (e/metalTileC -100 560 :t1 stage)
 
    ;;test
-   (e/box :box 150 -1000 stage)
+   (e/box :box1 150 -1000 stage)
    (e/rope-block 300 300 stage)
 
    (e/metalTileB 0 560 :t2 stage)
@@ -92,8 +92,36 @@
    (e/backgroundFour stage)
    ])
 
+;;level 3 definition
+;;level3: player pushes button, box falls down near portal so player can jump on box and then through the portal
+(defn levelthree [stage]
+  [(e/timestream)
+   (e/some-text stage)
+   (e/goal 1350 280 stage)
+   (e/box :box2 150 -1000 stage)
+   ;(e/box :box3 1300 400 stage)
+   (e/oceanTileC -100 530 :o1 stage)
+   (e/oceanTileB 0 530 :o2 stage)
+   (e/oceanTileA 100 530 :o3 stage)
+   (e/oceanTileB 200 530 :o4 stage)
+   (e/oceanTileC 300 530 :o5 stage)
+   (e/oceanTileB 400 530 :o6 stage)
+   (e/oceanTileC 500 530 :o7 stage)
+   (e/oceanTileA 600 530 :o8 stage)
+   (e/oceanTileB 700 530 :o9 stage)
+   (e/oceanTileC 500 300 :o10 stage)
+   (e/push-button-block 540 270 stage)
+   (e/oceanTileC 1000 530 :o11 stage)
+   (e/oceanTileA 1100 530 :o12 stage)
+   (e/oceanTileB 1200 530 :o13 stage)
+   (e/oceanTileA 1300 530 :o14 stage)
+   (e/player stage)
+   (e/backgroundFive stage)
+   ])
+
 (defn get-levels [number]
    (cond
     (= number 0) prologue
     (= number 1) levelone
-    (= number 2) leveltwo))
+    (= number 2) leveltwo
+    (= number 3) levelthree))
