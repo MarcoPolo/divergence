@@ -227,7 +227,7 @@
            (c/unique c/player-input)
            c/create-ref
            c/movable
-           (c/position -500 -1500 0)
+           (c/position -500 -900 0)
            (c/scale 1 1)
            ]))
 
