@@ -49,7 +49,7 @@
         (swap! player assoc-in [:climbing] 0)
         (swap! player assoc-in [:gravity] [0 0.2 0]))
 
-        (set! (.-textures sprite) (cljs-to-js e/jumpAnimation))
+        (set! (.-textures sprite) (cljs-to-js e/jumpAnimationRight))
       )))
 
 (defn climbing [entities]
@@ -188,7 +188,7 @@
 
 (defn create-tiling-ref [entities]
   (doseq [e entities]
-    (swap! e assoc :ref (js/PIXI.TilingSprite. (-> @e :tiling-sprite :texture textures/textures) level-width (* level-height 2)))))
+    (swap! e assoc :ref (js/PIXI.TilingSprite. (-> @e :tiling-sprite :texture textures/textures) level-width (* level-height 5)))))
 
 (defn add-camera [camera container]
   (.addChild camera container))
@@ -302,8 +302,11 @@
         (and (= (@e :can-jump) 1) (actions :up))
         (when (= (e/entity-atom->component-val e :name) :player)
           (a/play-sound :jump)
-          (set! (.-textures sprite) (cljs-to-js (map textures/textures e/jumpAnimation)))
-          (set! (.-playing sprite) true))
+          (if (actions :right)
+            (do (set! (.-textures sprite) (cljs-to-js (map textures/textures e/jumpAnimationRight)))
+                (set! (.-playing sprite) true))
+            (do (set! (.-textures sprite) (cljs-to-js (map textures/textures e/jumpAnimationLeft)))
+                (set! (.-playing sprite) true))))
         (swap! e assoc-in [:acceleration] [0 -4 0])
         (swap! e assoc-in [:can-jump] 0))
 

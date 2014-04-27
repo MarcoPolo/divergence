@@ -11,7 +11,9 @@
 (def playerWalkLeftTextureD (js/PIXI.Texture.fromImage "assets/img/player-walk-left4.png"))
 
 (def playerJumpingTextureA (js/PIXI.Texture.fromImage "assets/img/player-jump-1.png"))
-(def playerJumpingTextureA (js/PIXI.Texture.fromImage "assets/img/player-jump-2.png"))
+(def playerJumpingTextureB (js/PIXI.Texture.fromImage "assets/img/player-jump-2.png"))
+(def playerJumpingTextureC (js/PIXI.Texture.fromImage "assets/img/player-jump-3.png"))
+(def playerJumpingTextureD (js/PIXI.Texture.fromImage "assets/img/player-jump-4.png"))
 
 (def playerFacingFront (js/PIXI.Texture.fromImage "assets/img/player-front.png"))
 (def playerFacingBack (js/PIXI.Texture.fromImage "assets/img/player-back.png"))
@@ -63,7 +65,9 @@
     ::playerleft4  playerWalkLeftTextureD
 
     ::playerJump1  playerJumpingTextureA
-    ::playerJump2  playerJumpingTextureA
+    ::playerJump2  playerJumpingTextureB
+    ::playerJump3  playerJumpingTextureC
+    ::playerJump4  playerJumpingTextureD
 
     ::playerfront  playerFacingFront
     ::playerback   playerFacingBack

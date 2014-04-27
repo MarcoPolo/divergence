@@ -23,6 +23,8 @@
 
 (def pj1 :divergence.textures/playerJump1)
 (def pj2 :divergence.textures/playerJump2)
+(def pj3 :divergence.textures/playerJump3)
+(def pj4 :divergence.textures/playerJump4)
 
 (def pf :divergence.textures/playerfront)
 (def pb :divergence.textures/playerback)
@@ -66,7 +68,8 @@
 (def portalTwoTexture :divergence.textures/portalTwo)
 (def portalThreeTexture :divergence.textures/portalThree)
 
-(def jumpAnimation [pj1 pj2])
+(def jumpAnimationRight [pj1 pj2])
+(def jumpAnimationLeft [pj3 pj4])
 (def walkAnimationRight [pr1 pr2 pr3 pr4])
 (def walkAnimationLeft [pl1 pl2 pl3 pl4])
 
@@ -166,7 +169,7 @@
 (defn player [stage]
   (entity [(c/unique (c/named :player))
            (c/unique (c/sprite [pf]))
-           (c/position (/ camera/camera-width 3) -1500 0)
+           (c/position (/ camera/camera-width 3) -750 0)
            (c/unique c/player-input)
            (c/unique (c/on-stage stage))
            c/has-actions
@@ -214,7 +217,7 @@
            (c/unique c/player-input)
            c/create-ref
            c/movable
-           (c/position -500 0 0)
+           (c/position -500 -1500 0)
            (c/scale 1 1)
            ]))
 
