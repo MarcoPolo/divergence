@@ -42,13 +42,38 @@
    ])
 
 ;;level 1 definition
-;;level1: player pushes button, door opens, and then can walk through portal
+;;level1: player gets key, door opens, and then can walk through portal
 (defn levelone [stage]
+  [(e/timestream)
+   (e/player stage)
+   (e/some-text stage)
+   (e/door-closed-block 1320 430 stage)
+   ;(e/door-open-block 1320 430 stage)
+   (e/goal 1350 470 stage)
+   (e/starTilePrime -100 530 :s1 stage)
+   (e/starTilePrime 0 430 :s2 stage)
+   (e/starTilePrime 100 530 :s3 stage)
+   (e/starTilePrime 200 430 :s4 stage)
+   (e/starTilePrime 300 530 :s5 stage)
+   (e/starTilePrime 500 530 :s7 stage)
+   (e/starTilePrime 600 430 :s8 stage)
+   (e/starTilePrime 700 530 :s9 stage)
+   (e/key-block 630 418 stage)
+   (e/starTilePrime 1000 530 :s10 stage)
+   (e/starTilePrime 1100 530 :s11 stage)
+   (e/starTilePrime 1200 530 :s12 stage)
+   (e/starTilePrime 1400 530 :s13 stage)
+   (e/backgroundTwo stage)
+   ])
+
+;;level 2 definition
+;;level2: player pushes button, door opens, and then can walk through portal
+(defn leveltwo [stage]
   [(e/timestream)
    (e/some-text stage)
    (e/door-closed-block 1320 208 stage)
    ;(e/door-open-block 1320 208 stage)
-   (e/goal 1320 208 stage)
+   (e/goal 1350 255 stage)
    (e/groundTileC -100 530 :g1 stage)
    (e/groundTileB 0 530 :g2 stage)
    (e/groundTileA 100 530 :g3 stage)
@@ -58,22 +83,13 @@
    (e/groundTileC 500 530 :g7 stage)
    (e/groundTileA 600 530 :g8 stage)
    (e/groundTileB 700 530 :g9 stage)
-   (e/push-button-block 750 400 stage)
+   (e/push-button-block 750 500 stage)
    (e/groundTileC 1000 530 :g10 stage)
    (e/groundTileA 1100 450 :g11 stage)
    (e/groundTileB 1200 370 :g12 stage)
    (e/groundTileA 1300 290 :g13 stage)
    (e/player stage)
    (e/backgroundFour stage)
-   ])
-
-;;level 2 definition
-(defn leveltwo [stage]
-  [(e/timestream)
-   (e/player stage)
-   (e/goal 100 100 stage)
-
-   (e/backgroundTwo stage)
    ])
 
 (defn get-levels [number]
