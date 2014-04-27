@@ -57,10 +57,15 @@
 (def groundTileTextureB :divergence.textures/groundTileB)
 (def groundTileTextureC :divergence.textures/groundTileC)
 
+(def oceanTileTextureA :divergence.textures/oceanTileA)
+(def oceanTileTextureB :divergence.textures/oceanTileB)
+(def oceanTileTextureC :divergence.textures/oceanTileC)
+
 (def backgroundOneTexture :divergence.textures/backgroundOne)
 (def backgroundTwoTexture :divergence.textures/backgroundTwo)
 (def backgroundThreeTexture :divergence.textures/backgroundThree)
 (def backgroundFourTexture :divergence.textures/backgroundFour)
+(def backgroundFiveTexture :divergence.textures/backgroundFive)
 
 (def portalOneTexture :divergence.textures/portalOne)
 (def portalTwoTexture :divergence.textures/portalTwo)
@@ -222,6 +227,7 @@
 (def backgroundTwo (partial background backgroundTwoTexture))
 (def backgroundThree (partial background backgroundThreeTexture))
 (def backgroundFour (partial background backgroundFourTexture))
+(def backgroundFive (partial background backgroundFiveTexture))
 
 (defn box [pname x y stage]
   (entity [(c/named pname)
@@ -274,6 +280,10 @@
 (def groundTileA (partial tile 1 1 [groundTileTextureA]))
 (def groundTileB (partial tile 1 1 [groundTileTextureB]))
 (def groundTileC (partial tile 1 1 [groundTileTextureC]))
+
+(def oceanTileA (partial tile 1 1 [oceanTileTextureA]))
+(def oceanTileB (partial tile 1 1 [oceanTileTextureB]))
+(def oceanTileC (partial tile 1 1 [oceanTileTextureC]))
 
 (def candle (partial tile 1 1 [candleATexture candleBTexture]))
 

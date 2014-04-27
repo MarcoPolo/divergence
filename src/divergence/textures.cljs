@@ -46,10 +46,15 @@
 (def groundTileTextureB (js/PIXI.Texture.fromImage "assets/img/groundtile-b.png"))
 (def groundTileTextureC (js/PIXI.Texture.fromImage "assets/img/groundtile-c.png"))
 
+(def oceanTileTextureA (js/PIXI.Texture.fromImage "assets/img/oceantile-a.png"))
+(def oceanTileTextureB (js/PIXI.Texture.fromImage "assets/img/oceantile-b.png"))
+(def oceanTileTextureC (js/PIXI.Texture.fromImage "assets/img/oceantile-c.png"))
+
 (def backgroundOne (js/PIXI.Texture.fromImage "assets/img/background-a.png"))
 (def backgroundTwo (js/PIXI.Texture.fromImage "assets/img/background-b.png"))
 (def backgroundThree (js/PIXI.Texture.fromImage "assets/img/background-c.png"))
 (def backgroundFour (js/PIXI.Texture.fromImage "assets/img/background-d.png"))
+(def backgroundFive (js/PIXI.Texture.fromImage "assets/img/background-e.png"))
 
 (def textures
   { ::playerright1  playerWalkRightTextureA
@@ -100,8 +105,13 @@
     ::groundTileB groundTileTextureB
     ::groundTileC groundTileTextureC
 
+    ::oceanTileA oceanTileTextureA
+    ::oceanTileB oceanTileTextureB
+    ::oceanTileC oceanTileTextureC
+
     ::backgroundOne backgroundOne
     ::backgroundTwo backgroundTwo
     ::backgroundThree backgroundThree
     ::backgroundFour backgroundFour
+    ::backgroundFive backgroundFive
     })
