@@ -13,27 +13,27 @@ var lightbox =
 var lightbox2 =
     '<div id="lightbox2" class="menu">' +
     '<div id="content">' +
-    '<br><br><br><br><br>' +
     '<img src="assets/img/menu/menu_settings_text.png"/>' +
     '<input type="image" src="assets/img/menu/menu_resume.png" class="button" onclick="callSettingsResume()">' +
-    '<input type="image" src="assets/img/menu/menu_audio.png" class="button" onclick="callAudioMenu()">' +
+    '<input type="image" src="assets/img/menu/menu_audio.png" class="button" onclick="callAudioMenu(); setupAdjust();">' +
     '<input type="image" src="assets/img/menu/menu_controls.png" class="button" onclick="">' +
+    "<input class='button' type='button' onclick='HideMenus(); ShowMenu();' value='&#8592'>"+
     '</div>' +
     '</div>';
 
 var audiomenu = "<div id='audiomenu' class='menu'><h2>Audio</h2>"+
     "<div class='audio-control'>"+
-    "<a href='javascript:mute()'><img class='volume-bar' src='assets/img/speaker.png'></a>"+
+    "<a href='javascript:mute()'><div class='speaker'></div></a>"+
     "<div class='volume-bars'>"+
-    "<a href=''><div class='volume-bar'></div></a>"+
-    "<a href=''><div class='volume-bar'></div></a>"+
-    "<a href=''><div class='volume-bar'></div></a>"+
-    "<a href=''><div class='volume-bar'></div></a>"+
-    "<a href=''><div class='volume-bar'></div></a>"+
-    "<a href=''><div class='volume-bar'></div></a>"+
+    "<a href='javascript:setVolume(10)'><div class='volume-bar current-volume'></div></a>"+
+    "<a href='javascript:setVolume(30)'><div class='volume-bar current-volume'></div></a>"+
+    "<a href='javascript:setVolume(50)'><div class='volume-bar current-volume'></div></a>"+
+    "<a href='javascript:setVolume(70)'><div class='volume-bar current-volume'></div></a>"+
+    "<a href='javascript:setVolume(90)'><div class='volume-bar current-volume'></div></a>"+
+    "<a href='javascript:setVolume(100)'><div class='volume-bar current-volume'></div></a>"+
     "</div>"+
     "<div class='clr'></div>"+
-    "<button class='button' onclick='HideMenus(); ShowSettingsMenu();'>&#8592</button>"+
+    "<input class='button' type='button' onclick='HideMenus(); ShowSettingsMenu();' value='&#8592'>"+
     "</div><!--Volume Control--></div><!--Container-->";
 
 var overlay = "<div class='overlay'></div>";

@@ -64,6 +64,7 @@
 
 
 (defn setVolumeSub [value sound]
+  (println value)
   (. sound setVolume value))
 (defn setVolume [value]
   (reset! sounds (update-values @sounds setVolumeSub value)))

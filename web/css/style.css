@@ -203,14 +203,6 @@ a{
   height: 20em;
 }
 
-.button {
-  border: 0;
-  color: white;
-  font-weight: bold;
-  font-size: 2em;
-
-  background: #1f1f1f;
-}
 .lightbox-overlay {
   position: absolute;
   top: 0;
@@ -241,6 +233,18 @@ a{
 
     margin-left: auto;
   }
+  .menu input.button, .button {
+    border: 0;
+    color: white;
+    font-weight: bold;
+    font-size: 2em;
+
+    background: #1f1f1f;
+  }
+  .menu h2 {
+    font-size: 2em;
+    font-weight: bold;
+  }
 
 /*************************
  *Special Modules
@@ -259,30 +263,32 @@ a{
 
 #audiomenu {
   border-radius: 0.25em 0.25em 0.25em 0.25em;
-
-  position: fixed;
-  width: 500px;
-  top: 35%;
-  bottom: 35%;
-  left: 35%;
-  right: 35%;
+  position: absolute;
+  left: 25%;
+  top: 20%;
 }
 .audio-control {
 }
-    .volume-bar {
+    .volume-bar, .speaker {
       float:left;
       }
-    .mute {
-      background: rgba(0,255,0, 1);
-      opacity: 0.5;
-    }
     .audio-control > .selected {
       background: lightgray;
     }
+    div.speaker, div.mute {
+        border-collapse: collapse;
+        border-spacing: 0;
+        width: 200px;
+        height: 200px;
+        background-position: center;
+    }
+    div.speaker {
+        background: url('../assets/img/speaker.png');
 
-    img.volume-bar {
-        width: 8em;
       }
+    div.mute {
+        background: url('../assets/img/speaker-mute.png');
+    }
     div.volume-bars {
       position: relative;
       display: inline;
@@ -290,7 +296,7 @@ a{
     }
     div.volume-bar {
       width: 1em;
-      height: 8em;
+      height: 200px;
       border-radius:0.5em;
       background: white;
 
