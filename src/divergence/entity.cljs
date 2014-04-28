@@ -181,6 +181,8 @@
            (c/on-stage stage)
            (c/move-path move-path)
            c/create-ref
+           c/accelerates
+           c/movable
            ]))
 
 (defn enemy [scale-x scale-y texture x y pname move-path stage]
@@ -194,6 +196,8 @@
            (c/move-path move-path)
            c/create-ref
            c/collidable
+           c/accelerates
+           c/movable
            (c/gravity [0 normal-gravity 0])
            ]))
 

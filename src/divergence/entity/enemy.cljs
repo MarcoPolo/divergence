@@ -5,9 +5,9 @@
 ;;PATH DEFINITIONS--------------------------------
 ;;------------------------------------------------
 
-;;the path definitions are to follow [[ax1 ay1] [ax2 ay2] [ax3 ay3] ...]
+;;the path definitions are to follow [[vx1 vy1] [vx2 vy2] [vx3 vy3] ...]
 ;;then loop back, so they should be loopable patterns
-;;ax and ay are acceleration for x and y. This is so the enemy can move various speeds
+;;vx and vy are acceleration for x and y. This is so the enemy can move various speeds
 ;;during their route
 
 (def normal-path [])

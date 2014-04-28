@@ -180,12 +180,30 @@
 
 ;;This is where entity events should be defined for execution
 ;;in the main game loop in core.cljs
+(defn fetch-current-path [entity]
+  (let [e @entity
+        index (e :path-index)
+        path (e :path)
+        vx (nth path index)
+        vy (nth path (inc index))]
+    [vx vy]))
 
+(defn index-check [entity]
+  (let [index (@entity :path-index)
+        size (/ (count (@entity :path)) 2)]
+    (when (> (compare index size) -1)
+      (swap! entity assoc-in :path-index 0))))
 
 (defn execute-entities
   "This function is meant to execute move-paths of npcs"
   [entities]
-  ())
+  (doseq [e entities
+          :let [cond1 (= (@e :type) :npc)
+                cond2 (= (@e :type) :enemy)]
+          :when (or cond1 cond2)]
+    (index-check e)
+    (swap! e assoc-in [:velocity] (fetch-current-path e))
+    (swap! e assoc-in :path-index (+ (@e :path-index) 2))))
 
 
 ;;------------------------------------------------
@@ -267,10 +285,14 @@
 ;;------------------------------------------------
 (def code->key
   {32 :up
+   87 :up
    37 :left
+   65 :left
    38 :up
    39 :right
+   68 :right
    40 :down
+   83 :down
    77 :item
    80 :p
    16 :travel-back ;; :shift

@@ -125,6 +125,7 @@
     (s/movement-caps (c->e :velocity))
     (s/friction (c->e :acceleration))
     (s/accelerate (c->e :acceleration))
+    (s/execute-entities (c->e :type))
     (s/collide (c->e :collidable))
 
     (s/push (c->e :pushable) (c->e :type))

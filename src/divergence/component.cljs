@@ -46,6 +46,9 @@
 (defn move-path [path]
   (component :path path))
 
+(def path-index
+  (component :path-index 0))
+
 (def items
   (component :items 0))
 
