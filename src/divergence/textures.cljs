@@ -1,5 +1,8 @@
 (ns divergence.textures)
 
+;;---------------------------------------------
+;;TEXTURE DEFINITIONS--------------------------
+;;---------------------------------------------
 (def playerWalkRightTextureA (js/PIXI.Texture.fromImage "assets/img/player-walk-right1.png"))
 (def playerWalkRightTextureB (js/PIXI.Texture.fromImage "assets/img/player-walk-right2.png"))
 (def playerWalkRightTextureC (js/PIXI.Texture.fromImage "assets/img/player-walk-right3.png"))
@@ -64,6 +67,7 @@
 (def backgroundThree (js/PIXI.Texture.fromImage "assets/img/background-c.png"))
 (def backgroundFour (js/PIXI.Texture.fromImage "assets/img/background-d.png"))
 (def backgroundFive (js/PIXI.Texture.fromImage "assets/img/background-e.png"))
+
 
 (def textures
   { ::playerright1  playerWalkRightTextureA

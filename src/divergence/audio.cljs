@@ -1,9 +1,8 @@
-(ns divergence.audio
-  )
+(ns divergence.audio)
 
-;------------------------------
-;Data Definitions
-;------------------------------
+;;------------------------------
+;;Data Definitions--------------
+;;------------------------------
 (def jumpSound (js/buzz.sound. "assets/sounds/fins__jumping.wav"))
 (def pickUpSound (js/buzz.sound. "assets/sounds/adriancalzon__pickup1.mp3"))
 (def dropSound (js/buzz.sound. "assets/sounds/movingplaid_spray-can.wav"))
@@ -23,9 +22,9 @@
              :bgm1      bgm1
              }))
 
-;------------------------------
-;Audio Functions
-;------------------------------
+;;------------------------------
+;;Audio Functions---------------
+;;------------------------------
 (defn update-values [m f & args]
   (reduce (fn [r [k v]] (assoc r k (apply f v args))) {} m))
 
@@ -47,12 +46,11 @@
     )
 
 
-;------------------------------
-;Volume Functions
-;------------------------------
+;;------------------------------
+;;Volume Control Functions------
+;;------------------------------
 (defn decVolumeSub [sound]
   (. sound decreaseVolume))
-
 (defn decVolume []
   (reset! sounds (update-values @sounds decVolumeSub)))
 

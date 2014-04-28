@@ -1,6 +1,7 @@
 (ns divergence.core
   (:require [divergence.component :as c]
             [divergence.entity :as e]
+            [divergence.entity.enemies :as enemies]
             [divergence.entity.levels :as levels]
             [divergence.system :as s]
             [divergence.leveleditor :as le]
@@ -127,7 +128,6 @@
     (s/collide (c->e :collidable))
 
     (s/push (c->e :pushable) (c->e :type))
-    (s/pushing (c->e :pushing))
     (when (s/goal? (c->e :position) (c->e :type))
       (s/next-level)
       (swap! current-level inc)

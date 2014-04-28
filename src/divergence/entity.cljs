@@ -173,7 +173,28 @@
 
 (defn npc [scale-x scale-y texture x y pname move-path stage]
   (entity [(c/named pname)
+           (c/unique (c/sprite [texture]))
+           (c/entity-type :npc)
+           (c/position x y 0)
+           (c/scale scale-x scale-y)
+           (c/friction 5)
+           (c/on-stage stage)
+           (c/move-path move-path)
+           c/create-ref
+           ]))
 
+(defn enemy [scale-x scale-y texture x y pname move-path stage]
+  (entity [(c/named pname)
+           (c/unique (c/sprite [texture]))
+           (c/entity-type :enemy)
+           (c/position x y 0)
+           (c/scale scale-x scale-y)
+           (c/friction 5)
+           (c/on-stage stage)
+           (c/move-path move-path)
+           c/create-ref
+           c/collidable
+           (c/gravity [0 normal-gravity 0])
            ]))
 
 (defn player [stage]
@@ -227,7 +248,7 @@
            (c/unique c/player-input)
            c/create-ref
            c/movable
-           (c/position -500 -900 0)
+           (c/position -900 -900 0)
            (c/scale 1 1)
            ]))
 

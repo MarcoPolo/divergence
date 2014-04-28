@@ -43,6 +43,9 @@
 (defn entity-type [entity-type]
   (component :type entity-type))
 
+(defn move-path [path]
+  (component :path path))
+
 (def items
   (component :items 0))
 

@@ -6,9 +6,11 @@
              [divergence.textures :as textures]
              [divergence.camera :as camera]))
 
-;;GLOBAL VALUES-----------------------------------
-(def level-width 3000)
-(def level-height 2000)
+;;------------------------------------------------
+;;GLOBAL VALUES, FUNCTIONS------------------------
+;;------------------------------------------------
+(def level-width 5400)
+(def level-height 3600)
 
 (def current-level (atom 0))
 
@@ -17,7 +19,9 @@
 
 (def pause (atom 0))
 
-;;CONVERSIONS-----------------------------------------
+;;------------------------------------------------
+;;CONVERSIONS-------------------------------------
+;;------------------------------------------------
 (defn cljs-to-js
   "Recursively transforms ClojureScript maps into Javascript objects,
    other ClojureScript colls into JavaScript arrays, and ClojureScript
@@ -31,7 +35,11 @@
     (coll? x) (apply array (map clj->js x))
     :else x))
 
-;;PHYSICS---------------------------------------------
+;;------------------------------------------------
+;;PHYSICS-----------------------------------------
+;;------------------------------------------------
+
+;;climbing -> climbing?      "climbing finds the player then checks conditions in climbing?"
 (defn climbing? [player entities]
   (doseq [e entities
           :let [cond1 (phys/colliding? @player @e)
@@ -58,6 +66,8 @@
     (when (= e-type :player)
         (climbing? e entities))))
 
+
+;; move -> move-entity      "move-entity takes in velocity for moving, move is for core"
 (defn move-entity [entity [x-speed y-speed rot-speed]]
   (update-in entity [:position]
              #(map (partial +) [x-speed y-speed rot-speed] %)))
@@ -67,6 +77,8 @@
     (let [{v :velocity} @e]
       (swap! e move-entity v))))
 
+;;sets width and height of each ref based on pixijs Sprite object's width/height
+;;Note: ref -> sprite
 (defn set-width-height [entities]
   (doseq [e entities
           :let [ref (e/entity-atom->ref e)]]
@@ -74,7 +86,7 @@
         (swap! e assoc-in [:dimensions :height] (.-height ref)))
     )
 
-
+;;collision detection function
 (defn collide [entities]
   (let [es (map deref entities)]
     (doseq [e entities
@@ -89,6 +101,7 @@
           (swap! e assoc-in [:velocity 1] 0)
           (swap! e assoc-in [:can-jump] 1))))))
 
+;;push     based on collision detection on x-direction
 (defn push [entities player]
   (doseq [p player :when (= (@p :type) :player)
                    :let [actions (@p :actions)
@@ -102,12 +115,7 @@
               (swap! p assoc :pushing true)
               (a/play-sound :push)))))))
 
-(defn pushing [entities]
-  (doseq [e entities]
-    (when (and (= (@e :type) :player) (@e :pushing))
-      ;(set! (.-textures (e/entity-atom->ref e)) (cljs-to-js [e/pf]))
-      )))
-
+;;applies friction to entities in core
 (defn friction
   [entities]
   (doseq [e entities]
@@ -125,17 +133,23 @@
             (swap! e assoc-in [:acceleration] [(* (/ vx vx) f -1) ay ar])))
         (when (and (> vx -0.5) (< vx 0.5)) (swap! e assoc-in [:acceleration] [(* vx -1) ay ar]))))))
 
+;; acceleration -> velocity
 (defn accelerate [entities]
   (doseq [e entities
           :let [{a :acceleration} @e]]
     (swap! e update-in [:velocity] #(mapv + a %))
     ))
 
+;; applies gravity to all entities with gravity property
 (defn gravity [entities]
   (doseq [e entities
           :let [{g :gravity} @e]]
     (swap! e update-in [:acceleration] #(mapv + g %))))
 
+
+;;sets where player's "center" point is defined
+;;by default, it is the upper-left corner.
+;;values are between 0-1 where 0 is default and 1 is lower-right corner
 (defn anchor [entities]
   (doseq [e entities]
     (let [{:keys [x y]} (@e :anchor)
@@ -143,6 +157,7 @@
       (aset (.-anchor ref) "x" x)
       (aset (.-anchor ref) "y" y))))
 
+;;scales size of entity
 (defn scale [entities]
   (doseq [e entities]
     (let [{{:keys [x-scale y-scale rot-speed]} :scale} @e
@@ -150,6 +165,7 @@
       (aset (.-scale ref) "x" x-scale)
       (aset (.-scale ref) "y" y-scale))))
 
+;; sets position of entities based on their x, y properties
 (defn position [entities]
   (doseq [e entities]
     (let [{[x y rot] :position} @e
@@ -158,18 +174,36 @@
       (aset (.-position ref) "y" y)
       (aset ref "rotation" rot))))
 
+;;------------------------------------------------
+;;ENTITY EVENTS-----------------------------------
+;;------------------------------------------------
 
-;;EVENT RESPONSES---------------------------------------------
+;;This is where entity events should be defined for execution
+;;in the main game loop in core.cljs
+
+
+(defn execute-entities
+  "This function is meant to execute move-paths of npcs"
+  [entities]
+  ())
+
+
+;;------------------------------------------------
+;;EVENT RESPONSES---------------------------------
+;;------------------------------------------------
 (defn next-level []
   (swap! current-level inc))
 
-(defn has-item? [player itemName]
+(defn has-item?
+  [player itemName]
   (let [item (player :holding)]
    (if (= item itemName)
     true
     false
      )))
 
+;;goal condition - basic
+;;needs to be modified to accomodate different conditions
 (defn goal? [entities player]
   (first
    (for [p player
@@ -179,8 +213,9 @@
          :when (and (= e-name :goal) (= p-name :player) (phys/colliding? @p @e))]
      true)))
 
-
-;;RENDERING---------------------------------------------
+;;------------------------------------------------
+;;RENDERING---------------------------------------
+;;------------------------------------------------
 (defn create-ref [entities]
   (doseq [e entities]
     (swap! e assoc :ref (js/PIXI.MovieClip. (cljs-to-js (map textures/textures
@@ -188,7 +223,7 @@
 
 (defn create-tiling-ref [entities]
   (doseq [e entities]
-    (swap! e assoc :ref (js/PIXI.TilingSprite. (-> @e :tiling-sprite :texture textures/textures) (* level-width 2) (* level-height 3)))))
+    (swap! e assoc :ref (js/PIXI.TilingSprite. (-> @e :tiling-sprite :texture textures/textures) (* level-width 2) (* level-height 2)))))
 
 (defn add-camera [camera container]
   (.addChild camera container))
@@ -227,8 +262,9 @@
     ))
 
 
-
-;;KEYLISTENER AND KEY EVENTS---------------------------------------------
+;;------------------------------------------------
+;;KEYLISTENER AND KEY EVENTS----------------------
+;;------------------------------------------------
 (def code->key
   {32 :up
    37 :left
@@ -238,12 +274,6 @@
    77 :item
    80 :p
    16 :travel-back ;; :shift
-
-   ;;temporary volume control
-   81 :vol-down  ;;q
-   87 :vol-up    ;;w
-   69 :mute      ;;e
-   82 :unmute    ;;r
    })
 
 (def key-inputs (atom #{}))
@@ -279,10 +309,6 @@
         (js/ShowMenu)
         (js/pause)
       )
-      (when (actions :vol-down) (a/decVolume))
-      (when (actions :vol-up) (a/incVolume))
-      (when (actions :mute)  (a/mute))
-      (when (actions :unmute) (a/unmute))
       (when
         (actions :left)
         (swap! e assoc-in [:acceleration] [-3 0 0])
@@ -382,12 +408,14 @@
                     (set! (.-visible (e/entity-atom->ref en)) true)
                     ))))))))
 
-;;GAME CAMERA============================================
+;;------------------------------------------------
+;;GAME CAMERA-------------------------------------
+;;------------------------------------------------
 (defn camera-x-check [x]
   (if (and (< x level-width) (> x 0)) true false))
 
 (defn camera-y-check [y]
-  (if (and (< y level-height) (> y 0)) true false))
+  (if (and (< y level-height) true) true false))
 
 (defn update-camera-coords [camera x y]
   (set! (.-x (.-position @camera)) (if (camera-x-check x)
@@ -404,8 +432,9 @@
       (update-camera-coords camera (nth (@e :position) 0) (nth (@e :position) 1)))))
 
 
-
-;;SAVE/LOAD---------------------------------------------
+;;------------------------------------------------
+;;SAVE/LOAD---------------------------------------
+;;------------------------------------------------
 
 (def serial-data (atom nil))
 (def load-data (atom nil))
