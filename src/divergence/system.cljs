@@ -174,6 +174,17 @@
       (aset (.-position ref) "y" y)
       (aset ref "rotation" rot))))
 
+(defn play-time-travel [entities]
+  (doseq [e entities
+          :let [actions (:actions @e)
+                prev-actions (:prev-actions @e)]]
+    (when (and (actions :travel-back)
+               (not (prev-actions :travel-back)))
+          (a/play-sound :time)
+      )
+    (swap! e assoc :prev-actions actions)
+    ))
+
 ;;------------------------------------------------
 ;;ENTITY EVENTS-----------------------------------
 ;;------------------------------------------------
@@ -294,30 +305,31 @@
 ;;KEYLISTENER AND KEY EVENTS----------------------
 ;;------------------------------------------------
 (def code->key
-  {32 :up
-   87 :up
-   37 :left
-   65 :left
-   38 :up
-   39 :right
-   68 :right
-   40 :down
-   83 :down
-   77 :item
-   80 :p
-   16 :travel-back ;; :shift
-   })
+  (atom {
+       32 :up
+       87 :up
+       37 :left
+       65 :left
+       38 :up
+       39 :right
+       68 :right
+       40 :down
+       83 :down
+       77 :item
+       80 :p
+       16 :travel-back ;; :shift
+   }))
 
 (def key-inputs (atom #{}))
 
 (aset js/document.body "onkeydown" (fn [e]
-                                     (let [k (code->key (.-keyCode e))]
+                                     (let [k (@code->key (.-keyCode e))]
                                        (when k
                                          (.preventDefault e)
                                          (swap! key-inputs conj k)))))
 
 (aset js/document.body "onkeyup" (fn [e]
-                                     (let [k (code->key (.-keyCode e))]
+                                     (let [k (@code->key (.-keyCode e))]
                                        (when k
                                          (.preventDefault e)
                                          (swap! key-inputs disj k)))))
@@ -376,16 +388,17 @@
           )
         (swap! e assoc-in [:acceleration] [0 0 0])))))
 
-(defn play-time-travel [entities]
-  (doseq [e entities
-          :let [actions (:actions @e)
-                prev-actions (:prev-actions @e)]]
-    (when (and (actions :travel-back)
-               (not (prev-actions :travel-back)))
-          (a/play-sound :time)
-      )
-    (swap! e assoc :prev-actions actions)
-    ))
+
+(defn change-key-code
+  "Change code->key mapping"
+  [keyCode newKeyCode]
+  (let [value (@code->key keyCode)]
+    (swap! code->key dissoc keyCode)
+    (swap! code->key assoc newKeyCode value)))
+
+;;------------------------------------------------
+;;PERIPHERAL FUNCTIONS----------------------------
+;;------------------------------------------------
 
 (defn movement-caps [entities]
   (doseq [e entities]
