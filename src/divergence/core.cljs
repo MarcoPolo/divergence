@@ -57,7 +57,7 @@
     (s/position (c->e :position))
     (s/anchor (c->e :anchor))
     (s/scale (c->e :scale))
-    (a/mute)
+    ;(a/mute)
     (s/set-width-height (c->e :collidable))))
 
 

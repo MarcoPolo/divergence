@@ -491,7 +491,7 @@
                         collide? (phys/colliding? item @p)]]
             (when (and (= (item :type) :button-fall) collide?)
               (swap! e assoc-in [:button-pushed-box-fall] 1)
-              (e/box :box3 1300 400 levels/stage)
+              ;(e/box :box3 1300 400 stage)
               ;(set! (e/entity-atom->ref e/door-atom) [doorOpenTexture])
               ))))))
 
