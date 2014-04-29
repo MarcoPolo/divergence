@@ -236,8 +236,8 @@
            c/can-jump
            c/climbing
 
-           c/button-pushed
-           c/button-pushed-box-fall
+           ;c/button-pushed
+           ;c/button-pushed-box-fall
 
            (c/divergent :player)
            (c/unique (c/player-time-traveler))
@@ -366,9 +366,10 @@
            (c/scale 0.5 0.5)
            c/create-ref
            (c/gravity [0 normal-gravity 0])
+           c/button-pushed
            ]))
 
-(defn door-atom [x y stage]
+(defn door [x y stage]
   (entity [(c/named :door-oc)
            (c/entity-type :item)
            (c/sprite [doorClosedTexture])

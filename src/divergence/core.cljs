@@ -147,7 +147,7 @@
     (s/update-camera container (c->e :position))
     (s/pick-drop-item (c->e :type))
     (s/hit-button (c->e :type))
-    (s/hit-button-box-fall (c->e :type))
+    #_(s/hit-button-box-fall (c->e :type))
     (reset! globalID (js/requestAnimationFrame @animate-ref))))
 
 (defn debug-slow-down
