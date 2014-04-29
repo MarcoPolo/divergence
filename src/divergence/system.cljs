@@ -228,7 +228,15 @@
          e entities
          :let [p-name (e/entity-atom->component-val p :name)
                e-name (e/entity-atom->component-val e :name)]
-         :when (and (= e-name :goal) (= p-name :player) (phys/colliding? @p @e))]
+
+         :let [cond1 (and (= @current-level 0) (= e-name :goal) (= p-name :player) (phys/colliding? @p @e))
+               cond2 (and (= @current-level 1) (= e-name :goal) (= p-name :player) (phys/colliding? @p @e))
+               cond3 (and (= @current-level 2) (= (@p :button-pushed) 1) (= e-name :goal) (= p-name :player) (phys/colliding? @p @e))
+               cond4 (and (= @current-level 3) (= (@p :button-pushed) 1) (= e-name :goal) (= p-name :player) (phys/colliding? @p @e))
+               ;cond5 (and (= e-name :goal) (= p-name :player) (phys/colliding? @p @e))
+               ]
+          :when (or cond1 cond2 cond3 cond4)
+         ]
      true)))
 
 ;;------------------------------------------------
@@ -429,6 +437,24 @@
                 (do (swap! p assoc-in [:holding] [:nothing])
                     (set! (.-visible (e/entity-atom->ref en)) true)
                     ))))))))
+
+(defn hit-button [entities]
+  (doseq [e entities
+          :let [e-type (e/entity-atom->component-val e :type) ]]
+    (when (= e-type :player)
+      (let [p e
+            actions (@p :actions)
+            [x y r] (@p :position)]
+          (doseq [en entities
+                  :let [item @en
+                        item-name (e/entity-atom->component-val en :name)
+                        collide? (phys/colliding? item @p)]]
+            (when (and (= (item :type) :button) collide?)
+              (swap! e assoc-in [:button-pushed] 1)
+              ;(js/alert @en :button-pushed)
+              ;(js/alert @e)
+              ;(e/door-open-block 1320 208 stage)
+              ))))))
 
 ;;------------------------------------------------
 ;;GAME CAMERA-------------------------------------

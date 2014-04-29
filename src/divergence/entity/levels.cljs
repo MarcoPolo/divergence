@@ -68,8 +68,8 @@
 (defn leveltwo [stage]
   [(e/timestream)
    (e/some-text stage)
-   (e/door-closed-block 1320 208 stage)
-   ;(e/door-open-block 1320 208 stage)
+   ;(e/door-closed-block 1320 208 stage)
+   (e/door-open-block 1320 208 stage)
    (e/goal 1350 255 stage)
    (e/groundTileC -100 530 :g1 stage)
    (e/groundTileB 0 530 :g2 stage)
