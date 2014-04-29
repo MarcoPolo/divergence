@@ -1,5 +1,6 @@
 (ns divergence.entity.levels
   (:require [divergence.entity :as e]
+            [divergence.entity.enemies :as enemies]
             [divergence.component :as c]
             [divergence.renderer :as renderer]
             [divergence.camera :as camera]))
@@ -15,9 +16,9 @@
 (defn prologue [stage]
   [(e/timestream)
    (e/some-text stage)
-   (e/goal 100 350 stage)
+   (e/goal 100 350 :nothing stage)
    (e/metalTileC -100 560 :t1 stage)
-
+   (enemies/flappy 400 150 :flappy stage)
    (e/metalTileB 0 560 :t2 stage)
    (e/metalTileA 100 560 :t3 stage)
    (e/metalTileB 200 520 :t4 stage)
@@ -46,7 +47,7 @@
    (e/some-text stage)
    (e/door-closed-block 1320 430 stage)
    ;(e/door-open-block 1320 430 stage)
-   (e/goal 1350 470 stage)
+   (e/goal 1350 470 :nothing stage)
    (e/starTilePrime -100 530 :s1 stage)
    (e/starTilePrime 0 430 :s2 stage)
    (e/starTilePrime 100 530 :s3 stage)
@@ -70,7 +71,7 @@
    (e/some-text stage)
    (e/door-closed-block 1320 208 stage)
    ;(e/door-open-block 1320 208 stage)
-   (e/goal 1350 255 stage)
+   (e/goal 1350 255 :nothing stage)
    (e/groundTileC -100 530 :g1 stage)
    (e/groundTileB 0 530 :g2 stage)
    (e/groundTileA 100 530 :g3 stage)
@@ -94,7 +95,7 @@
 (defn levelthree [stage]
   [(e/timestream)
    (e/some-text stage)
-   (e/goal 1350 280 stage)
+   (e/goal 1350 280 :nothing stage)
    (e/box :box2 150 -1000 stage)
    ;(e/box :box3 1300 400 stage)
    (e/oceanTileC -100 530 :o1 stage)

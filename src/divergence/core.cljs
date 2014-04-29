@@ -1,7 +1,7 @@
 (ns divergence.core
   (:require [divergence.component :as c]
             [divergence.entity :as e]
-            [divergence.entity.enemies :as enemies]
+            ;[divergence.entity.enemies :as enemies]
             [divergence.entity.levels :as levels]
             [divergence.system :as s]
             [divergence.leveleditor :as le]
@@ -12,8 +12,9 @@
             [divergence.system.time-travel :as tt]))
 
 (enable-console-print!)
-
-;;DATA DECLARATIONS==============================================
+;;------------------------------------------------
+;;DATA DECLARATIONS
+;;------------------------------------------------
 (def renderer renderer/renderer)
 
 (def stage (atom renderer/stage))
@@ -38,8 +39,9 @@
 
 (def timestream (atom [[{:prev-node [0 0]}]]))
 
-
-;;GAME SETUP====================================================
+;;------------------------------------------------
+;;GAME SETUP
+;;------------------------------------------------
 
 (defn setup [entities]
   ;; Register all the entities in our maps
@@ -55,6 +57,7 @@
     (s/position (c->e :position))
     (s/anchor (c->e :anchor))
     (s/scale (c->e :scale))
+    (a/mute)
     (s/set-width-height (c->e :collidable))))
 
 
@@ -64,8 +67,9 @@
   (when (not (= s/level s/current-level))
    (swap! s/curent-level inc))))
 
-
-;;MASTER FEATURES=================================================
+;;------------------------------------------------
+;;MASTER FEATURES
+;;------------------------------------------------
 (defn load-level []
   (let [c->e e/component->entities]
       ;; We need to remove all current entities on this stage
@@ -103,8 +107,9 @@
   (js/requestAnimationFrame @animate-ref))
 
 
-
-;;RENDERING============================================
+;;------------------------------------------------
+;;RENDERING
+;;------------------------------------------------
 
 (defn animate []
   (let [c->e e/component->entities]
@@ -125,7 +130,7 @@
     (s/movement-caps (c->e :velocity))
     (s/friction (c->e :acceleration))
     (s/accelerate (c->e :acceleration))
-    (s/execute-entities (c->e :type))
+    (s/execute-entities (c->e :path))
     (s/collide (c->e :collidable))
 
     (s/push (c->e :pushable) (c->e :type))

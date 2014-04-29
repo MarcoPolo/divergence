@@ -73,10 +73,19 @@
 (def portalTwoTexture :divergence.textures/portalTwo)
 (def portalThreeTexture :divergence.textures/portalThree)
 
+(def catTextureA :divergence.textures/catA)
+(def catTextureB :divergence.textures/catB)
+(def catTextureC :divergence.textures/catC)
+
+(def enemyATextureRight :divergence.textures/enemyRight1)
+(def enemyATextureLeft :divergence.textures/enemyLeft1)
+
 (def jumpAnimationRight [pj1 pj2])
 (def jumpAnimationLeft [pj3 pj4])
 (def walkAnimationRight [pr1 pr2 pr3 pr4])
 (def walkAnimationLeft [pl1 pl2 pl3 pl4])
+
+(def catAnimation [catTextureA catTextureB catTextureC])
 
 ;;-------------------------------------------------
 ;;Entity Methods-----------------------------------
@@ -171,7 +180,7 @@
            (c/friction 5)
            (c/on-stage stage)]))
 
-(defn npc [scale-x scale-y texture x y pname move-path stage]
+(defn npc [scale-x scale-y texture effect x y pname move-path stage]
   (entity [(c/named pname)
            (c/unique (c/sprite [texture]))
            (c/entity-type :npc)
@@ -180,25 +189,30 @@
            (c/friction 5)
            (c/on-stage stage)
            (c/move-path move-path)
+           (c/effect effect)
+           c/path-index
            c/create-ref
            c/accelerates
            c/movable
            ]))
 
-(defn enemy [scale-x scale-y texture x y pname move-path stage]
+(defn enemy [scale-x scale-y texture move-path effect x y pname stage]
   (entity [(c/named pname)
-           (c/unique (c/sprite [texture]))
+           (c/unique (c/sprite texture))
            (c/entity-type :enemy)
            (c/position x y 0)
            (c/scale scale-x scale-y)
            (c/friction 5)
            (c/on-stage stage)
            (c/move-path move-path)
+           (c/effect effect)
+           c/path-index
            c/create-ref
            c/collidable
            c/accelerates
            c/movable
            (c/gravity [0 normal-gravity 0])
+           ;(c/divergent pname)
            ]))
 
 (defn player [stage]
@@ -218,7 +232,6 @@
            c/items
            c/pushing
            c/collidable
-
            c/accelerates
            c/can-jump
            c/climbing
@@ -232,11 +245,12 @@
       (update-in [:unique] dissoc :player-time-traveler :player-input)
       (update-in [:unique] assoc :name :non-player)))
 
-(defn goal [x y stage]
+(defn goal [x y win-condition stage]
   (entity [(c/named :goal)
            (c/entity-type :goal)
            (c/sprite [portalOneTexture portalTwoTexture portalThreeTexture])
            c/create-ref
+           (c/win-condition win-condition)
            (c/position x y 0)
            (c/on-stage stage)
            (c/anchor 0.5 0.5)
@@ -319,6 +333,8 @@
 (def oceanTileC (partial tile 1 1 [oceanTileTextureC]))
 
 (def candle (partial tile 1 1 [candleATexture candleBTexture]))
+
+(def cat (partial npc 1 1 catAnimation))
 
 (defn some-text [stage]
   (entity [(c/named :fps-counter)

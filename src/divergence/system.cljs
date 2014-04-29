@@ -180,6 +180,8 @@
 
 ;;This is where entity events should be defined for execution
 ;;in the main game loop in core.cljs
+
+;;!! needs to be adjusted so effects like gravity apply
 (defn fetch-current-path [entity]
   (let [e @entity
         index (e :path-index)
@@ -192,7 +194,8 @@
   (let [index (@entity :path-index)
         size (/ (count (@entity :path)) 2)]
     (when (> (compare index size) -1)
-      (swap! entity assoc-in :path-index 0))))
+      (swap! entity assoc :path-index 0))
+    ))
 
 (defn execute-entities
   "This function is meant to execute move-paths of npcs"
@@ -203,8 +206,13 @@
           :when (or cond1 cond2)]
     (index-check e)
     (swap! e assoc-in [:velocity] (fetch-current-path e))
-    (swap! e assoc-in :path-index (+ (@e :path-index) 2))))
+    (swap! e assoc :path-index (+ (@e :path-index) 2))))
 
+(defn execute-effects
+  "Apply effects here with map of functions in enemy"
+  [player entities]
+  (doseq [e entities]
+    ()))
 
 ;;------------------------------------------------
 ;;EVENT RESPONSES---------------------------------
@@ -214,7 +222,7 @@
 
 (defn has-item?
   [player itemName]
-  (let [item (player :holding)]
+  (let [item (e/entity-atom->component-val player :holding)]
    (if (= item itemName)
     true
     false
@@ -227,8 +235,10 @@
    (for [p player
          e entities
          :let [p-name (e/entity-atom->component-val p :name)
-               e-name (e/entity-atom->component-val e :name)]
-         :when (and (= e-name :goal) (= p-name :player) (phys/colliding? @p @e))]
+               e-name (e/entity-atom->component-val e :name)
+               win-cond (e/entity-atom->component-val e :win-condition)]
+         :when (and (= e-name :goal) (= p-name :player) (phys/colliding? @p @e)
+                    (has-item? p win-cond))]
      true)))
 
 ;;------------------------------------------------

@@ -1,3 +1,6 @@
+/*=================================================
+   Global Definitions
+ ================================================*/
 var lightbox =
     '<div id="lightbox" class="menu">' +
     '<div id="content">' +
@@ -39,13 +42,15 @@ var audiomenu = "<div id='audiomenu' class='menu'>"+
     "<input class='button' type='button' onclick='HideMenus(); ShowSettingsMenu();' value='&#8592'>"+
     "</div><!--Volume Control--></div><!--Container-->";
 
+var controls = "";
+
 var overlay = "<div class='overlay'></div>";
 
 jQuery(document).ready(function() {
 
-/**********************
- *Main Menu
- ***********************/
+/*================================================
+   Main Menu
+ ================================================*/
     ShowMenu = (function() {
         if ($('#lightbox').length > 0) { // #lightbox exists
           //show lightbox window - you could use .show('fast') for a transition
