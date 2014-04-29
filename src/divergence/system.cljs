@@ -252,7 +252,7 @@
          :let [cond1 (and (= @current-level 0) (= e-name :goal) (= p-name :player) (phys/colliding? @p @e))
                cond2 (and (= @current-level 1) (= (@p :holding) :key) (= e-name :goal) (= p-name :player) (phys/colliding? @p @e))
                cond3 (and (= @current-level 2) (= (@p :button-pushed) 1) (= e-name :goal) (= p-name :player) (phys/colliding? @p @e))
-               cond4 (and (= @current-level 3) (= (@p :button-pushed) 1) (= e-name :goal) (= p-name :player) (phys/colliding? @p @e))
+               cond4 (and (= @current-level 3) (= (@p :button-pushed-box-fall) 1) (= e-name :goal) (= p-name :player) (phys/colliding? @p @e))
                win-cond (e/entity-atom->component-val e :win-condition)
                cond5 (and (= e-name :goal) (= p-name :player) (phys/colliding? @p @e)
                     (has-item? p win-cond))
@@ -475,6 +475,23 @@
                         collide? (phys/colliding? item @p)]]
             (when (and (= (item :type) :button) collide?)
               (swap! e assoc-in [:button-pushed] 1)
+              ;(set! (e/entity-atom->ref e/door-atom) [doorOpenTexture])
+              ))))))
+
+(defn hit-button-box-fall [entities]
+  (doseq [e entities
+          :let [e-type (e/entity-atom->component-val e :type) ]]
+    (when (= e-type :player)
+      (let [p e
+            actions (@p :actions)
+            [x y r] (@p :position)]
+          (doseq [en entities
+                  :let [item @en
+                        item-name (e/entity-atom->component-val en :name)
+                        collide? (phys/colliding? item @p)]]
+            (when (and (= (item :type) :button-fall) collide?)
+              (swap! e assoc-in [:button-pushed-box-fall] 1)
+              (e/box :box3 1300 400 levels/stage)
               ;(set! (e/entity-atom->ref e/door-atom) [doorOpenTexture])
               ))))))
 

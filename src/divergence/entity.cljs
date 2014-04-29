@@ -237,6 +237,7 @@
            c/climbing
 
            c/button-pushed
+           c/button-pushed-box-fall
 
            (c/divergent :player)
            (c/unique (c/player-time-traveler))
@@ -369,13 +370,24 @@
 
 (defn door-atom [x y stage]
   (entity [(c/named :door-oc)
-           (c/entity-type :button)
+           (c/entity-type :item)
            (c/sprite [doorClosedTexture])
            (c/position x y 0)
            (c/on-stage stage)
            (c/scale 0.7 0.7)
            c/create-ref
            c/gravity
+           ]))
+
+(defn push-button-box-fall-block [x y stage]
+  (entity [(c/named :push-button-box-fall)
+           (c/entity-type :button-fall)
+           (c/sprite [pushButtonTexture])
+           (c/position x y 0)
+           (c/on-stage stage)
+           (c/scale 0.5 0.5)
+           c/create-ref
+           (c/gravity [0 normal-gravity 0])
            ]))
 
 ;;-------------------------------------------------

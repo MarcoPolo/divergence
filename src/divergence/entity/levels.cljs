@@ -106,7 +106,7 @@
    (e/oceanTileA 600 530 :o8 stage)
    (e/oceanTileB 700 530 :o9 stage)
    (e/oceanTileC 500 320 :o10 stage)
-   (e/push-button-block 540 290 stage)
+   (e/push-button-box-fall-block 540 290 stage)
    (e/oceanTileC 1000 530 :o11 stage)
    (e/oceanTileA 1100 530 :o12 stage)
    (e/oceanTileB 1200 530 :o13 stage)
