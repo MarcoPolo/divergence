@@ -68,7 +68,7 @@
 (defn leveltwo [stage]
   [(e/timestream)
    (e/some-text stage)
-   (e/door-atom 1320 208 stage)
+   (e/door 1320 208 stage)
    (e/goal 1350 255 :nothing stage)
    (e/groundTileC -100 530 :g1 stage)
    (e/groundTileB 0 530 :g2 stage)
@@ -79,7 +79,7 @@
    (e/groundTileC 500 530 :g7 stage)
    (e/groundTileA 600 530 :g8 stage)
    (e/groundTileB 700 530 :g9 stage)
-   (e/push-button-block 750 500 stage)
+   (e/push-button-block 950 500 stage)
    (e/groundTileC 1000 530 :g10 stage)
    (e/groundTileA 1100 450 :g11 stage)
    (e/groundTileB 1200 370 :g12 stage)

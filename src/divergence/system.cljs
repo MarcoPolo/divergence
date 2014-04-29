@@ -251,7 +251,7 @@
                cond1 (and (= e-name :goal) (= p-name :player) (phys/colliding? @p @e)
                     (has-item? p win-cond))
                ]
-          :when true];cond1]
+          :when cond1]
      (when ((conditions/conditions @current-level) e) true))))
 
 ;;------------------------------------------------
@@ -446,10 +446,10 @@
               (if (= (@p :items) 1)
                 (do (set! (.-visible (e/entity-atom->ref en)) false) ;pick up item
                     (swap! p assoc-in [:holding] item-name)
-                    (. js/console (log (name (@p :holding))))
                     (let [pheight (.-height (e/entity-atom->ref p))
                           iheight (.-height (e/entity-atom->ref en))]
                      (swap! en assoc-in [:position] [x (+ y (- pheight iheight)) r]))
+                    (println (e/entity-atom->component-val p :holding))
                     (a/play-sound :pickup))
                 (do (swap! p assoc-in [:holding] [:nothing])
                     (set! (.-visible (e/entity-atom->ref en)) true)
@@ -469,9 +469,9 @@
             (when (and (= (item :type) :button) collide?)
               (swap! e assoc-in [:button-pushed] true)
               (doseq [x entities
-                      :when (= (e/entity-atom->component-val x :name) :door)
+                      :when (= (e/entity-atom->component-val x :type) :door)
                       :let [sprite (e/entity-atom->ref x)]]
-                        (set! (.-textures sprite) [e/doorOpenTexture]))
+                        (set! (.-textures sprite) (cljs-to-js [e/catTextureA])))
               ))))))
 
 ;;consider generate entities functions, instead of a super specific event function

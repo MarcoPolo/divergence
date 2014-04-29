@@ -371,7 +371,7 @@
 
 (defn door [x y stage]
   (entity [(c/named :door-oc)
-           (c/entity-type :item)
+           (c/entity-type :door)
            (c/sprite [doorClosedTexture])
            (c/position x y 0)
            (c/on-stage stage)
