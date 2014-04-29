@@ -236,6 +236,8 @@
            c/can-jump
            c/climbing
 
+           c/button-pushed
+
            (c/divergent :player)
            (c/unique (c/player-time-traveler))
            ]))
@@ -356,7 +358,7 @@
 
 (defn push-button-block [x y stage]
   (entity [(c/named :push-button)
-           (c/entity-type :item)
+           (c/entity-type :button)
            (c/sprite [pushButtonTexture])
            (c/position x y 0)
            (c/on-stage stage)

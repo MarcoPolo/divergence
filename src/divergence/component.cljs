@@ -126,6 +126,9 @@
 (def pushing
   (component :pushing false))
 
+(def button-pushed
+  (component :button-pushed 0))
+
 (def time-based-state
   "Anything whose state (e.g. position, velocity...) changes based of time"
   (component :time-base-state true))
