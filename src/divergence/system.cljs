@@ -250,7 +250,7 @@
                e-name (e/entity-atom->component-val e :name)]
 
          :let [cond1 (and (= @current-level 0) (= e-name :goal) (= p-name :player) (phys/colliding? @p @e))
-               cond2 (and (= @current-level 1) (= e-name :goal) (= p-name :player) (phys/colliding? @p @e))
+               cond2 (and (= @current-level 1) (= (@p :holding) :key) (= e-name :goal) (= p-name :player) (phys/colliding? @p @e))
                cond3 (and (= @current-level 2) (= (@p :button-pushed) 1) (= e-name :goal) (= p-name :player) (phys/colliding? @p @e))
                cond4 (and (= @current-level 3) (= (@p :button-pushed) 1) (= e-name :goal) (= p-name :player) (phys/colliding? @p @e))
                win-cond (e/entity-atom->component-val e :win-condition)
@@ -475,9 +475,7 @@
                         collide? (phys/colliding? item @p)]]
             (when (and (= (item :type) :button) collide?)
               (swap! e assoc-in [:button-pushed] 1)
-              ;(js/alert @en :button-pushed)
-              ;(js/alert @e)
-              ;(e/door-open-block 1320 208 stage)
+              ;(set! (e/entity-atom->ref e/door-atom) [doorOpenTexture])
               ))))))
 
 ;;------------------------------------------------

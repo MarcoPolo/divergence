@@ -367,21 +367,10 @@
            (c/gravity [0 normal-gravity 0])
            ]))
 
-(defn door-closed-block [x y stage]
-  (entity [(c/named :door-closed)
-           (c/entity-type :item)
+(defn door-atom [x y stage]
+  (entity [(c/named :door-oc)
+           (c/entity-type :button)
            (c/sprite [doorClosedTexture])
-           (c/position x y 0)
-           (c/on-stage stage)
-           (c/scale 0.7 0.7)
-           c/create-ref
-           c/gravity
-           ]))
-
-(defn door-open-block [x y stage]
-  (entity [(c/named :door-open)
-           (c/entity-type :item)
-           (c/sprite [doorOpenTexture])
            (c/position x y 0)
            (c/on-stage stage)
            (c/scale 0.7 0.7)
