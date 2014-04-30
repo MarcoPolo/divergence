@@ -72,6 +72,9 @@
 (def path-index
   (component :path-index 0))
 
+(def path-direction
+  (component :direction false))
+
 ;;flag value
 (def items
   (component :items 0))

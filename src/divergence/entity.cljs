@@ -207,6 +207,7 @@
            (c/move-path move-path)
            (c/effect effect)
            c/path-index
+           c/path-direction
            c/create-ref
            c/collidable
            c/accelerates

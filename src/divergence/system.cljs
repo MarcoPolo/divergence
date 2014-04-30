@@ -197,16 +197,20 @@
 (defn fetch-current-path [entity]
   (let [e @entity
         index (e :path-index)
+        dir (e :direction)
         path (e :path)
         vx (nth path index)
         vy (nth path (inc index))]
-    [vx vy]))
+    (if dir
+      [vx vy]
+      [(* -1 vx) (* -1 vy)])))
 
 (defn index-check [entity]
   (let [index (@entity :path-index)
         size (/ (count (@entity :path)) 2)]
     (when (> (compare index size) -1)
-      (swap! entity assoc :path-index 0))
+      (swap! entity assoc :path-index 0)
+      (swap! entity assoc :direction (not (@entity :direction))))
     ))
 
 (defn execute-entities
@@ -223,7 +227,10 @@
 (defn execute-effects
   "Apply effects here with map of functions in enemy"
   [player entities]
-  (doseq [e entities]
+  (doseq [e entities
+          :let [cond1 (phys/colliding? @player @e)
+                cond2 (= (@e :type) :enemy)]
+          :when (and cond1 cond2)]
     ()))
 
 ;;------------------------------------------------

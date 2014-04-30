@@ -10,7 +10,7 @@
 ;;vx and vy are acceleration for x and y. This is so the enemy can move various speeds
 ;;during their route
 
-(def normal-path [1 0, 1 0, 1 1])
+(def normal-path [2 0, 2 0, 2 0, 2 0, 2 0, 2 0, 2 0, 2 0, 2 0, 2 0, 2 0, 2 0, 2 0, 2 0, 2 0, 2 0])
 
 (def bounce-path [])
 
