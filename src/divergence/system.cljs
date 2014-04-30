@@ -519,7 +519,7 @@
             (when (and (= (item :type) :button-fall) collide?)
               (doseq [e1 entities]
                 (if (= ":boxfloat1" (pr-str (@e1 :name)))
-                  (swap! e1 assoc-in [:position] [1300 400 0])
+                  (swap! e1 assoc-in [:position] [1050 430 0])
                   ))
               ))))))
 
