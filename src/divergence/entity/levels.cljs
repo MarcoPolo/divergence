@@ -91,7 +91,7 @@
    (e/groundTileA 1300 330 :g13 stage)
    (e/groundTileA 450 430 :g14 stage)
    (e/groundTileB 1000 60 :g15 stage)
-   (e/groundTileA 650 290 :g16 stage)
+   (e/groundTileA 630 300 :g16 stage)
    (e/groundTileA 850 190 :g17 stage)
    (e/player stage)
    (e/backgroundFour stage)
