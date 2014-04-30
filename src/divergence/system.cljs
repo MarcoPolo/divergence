@@ -44,22 +44,20 @@
 ;;climbing -> climbing?      "climbing finds the player then checks conditions in climbing?"
 (defn climbing? [player entities]
   (doseq [e entities
-          :let [cond1 (phys/colliding? @player @e)
-                cond2 (= (@e :can-climb) 1)
-
+          :let [cond1 (= (@e :can-climb) 1)
                 sprite (e/entity-atom->ref player)
                ]]
-    (if (and cond1 cond2)
-      (do
-        (swap! player assoc-in [:climbing] 1)
-        (swap! player assoc-in [:gravity] [0 0 0])
-        (swap! player assoc-in [:acceleration] [0 -10 0])
-        )
+    (if cond1
+      (when (phys/colliding? @player @e)
+        (do
+          (swap! player assoc-in [:climbing] 1)
+          (swap! player assoc-in [:gravity] [0 0 0])
+          (swap! player assoc-in [:acceleration] [0 -5 0])
+          (set! (.-textures sprite) (cljs-to-js e/jumpAnimationRight))
+        ))
       (do
         (swap! player assoc-in [:climbing] 0)
-        (swap! player assoc-in [:gravity] [0 0.2 0]))
-
-        (set! (.-textures sprite) (cljs-to-js e/jumpAnimationRight))
+        (swap! player assoc-in [:gravity] [0 e/normal-gravity 0]) )
       )))
 
 (defn climbing [entities]
@@ -236,13 +234,11 @@
           :let [[x-v y-v rot-speed] (@p :velocity)
                 px (move-entity @p [(* x-v 3) 0 0])
                 py (move-entity @p [0 (* y-v 3) 0])
-                cond1 (phys/colliding? px @e)
-                cond2 (phys/colliding? py @e)
                 cond3 (= (@e :type) :enemy)
                 cond4 (= (@p :type) :player)]
-          :when (and (or cond1 cond2) cond2 cond3)]
-    (println x-v y-v)
-    (enemies/effects p e))))
+          :when (and cond3 cond4)]
+    (when (or (phys/colliding? py @e) (phys/colliding? px @e))
+      (enemies/effects p e)))))
 
 ;;------------------------------------------------
 ;;EVENT RESPONSES---------------------------------
@@ -266,11 +262,12 @@
          :let [p-name (e/entity-atom->component-val p :name)
                e-name (e/entity-atom->component-val e :name)
                win-cond (e/entity-atom->component-val e :win-condition)
-               cond1 (and (= e-name :goal) (= p-name :player) (phys/colliding? @p @e)
-                    (has-item? p win-cond))
+               cond1 ((conditions/conditions @current-level) p)
+               e e
                ]
           :when cond1]
-     (when ((conditions/conditions @current-level) p) true))))
+     (when (and (= e-name :goal) (= p-name :player) (phys/colliding? @p @e)
+                    (has-item? p win-cond)) true))))
 
 ;;------------------------------------------------
 ;;RENDERING---------------------------------------
@@ -398,7 +395,7 @@
           (a/play-sound :jump)
             (do (set! (.-textures sprite) (cljs-to-js (map textures/textures e/jumpAnimationRight)))
                 (set! (.-playing sprite) true)))
-        (swap! e assoc-in [:acceleration] [0 -4 0])
+        (swap! e assoc-in [:acceleration] [0 -6.5 0])
         (swap! e assoc-in [:can-jump] 0))
 
       (when (not-any? actions [:up :left :right :down])
@@ -430,38 +427,29 @@
       (when (< vx -4) (swap! e assoc-in [:velocity] [-5 vy vr]))
       (when (and (< vy -4) (swap! e assoc-in [:velocity] [vx -4 vr]))))))
 
-(defn move-background [entities]
-  (doseq [e entities
+(defn move-background [player entities]
+  (doseq [p player :when (and (@p :velocity) (not= (@p :velocity) [0 0 0]))]
+   (doseq [e entities
           :let [actions (@e :actions)
                 [x y r] (@e :position)
-                e-name (e/entity-atom->component-val e :name)]]
-    (when actions
-      (when (and (actions :left) (= e-name :player) (not (zero? (nth (@e :velocity) 0))))
-        (doseq [e entities
-                :let [actions (@e :actions)
-                     [x y r] (@e :position)
-                ]]
-          (when  (= e-name :bg) (swap! e assoc-in [:position] [(+ x 5) y r]))))
-      (when (and (actions :right) (= e-name :player) (not (zero? (nth (@e :velocity) 0))))
-        (doseq [e entities
-                :let [actions (@e :actions)
-                     [x y r] (@e :position)
-                ]]
-          (when  (= e-name :bg) (swap! e assoc-in [:position] [(- x 5) y r])))))))
+                e-type (e/entity-atom->component-val e :type)]
+          :when (= e-type :move-bg)]
+    (cond (actions :left) (swap! e assoc-in [:position] [(+ x 10) y r])
+          (actions :right) (swap! e assoc-in [:position] [(- x 10) y r])
+          ))))
 
 (defn pick-drop-item [entities]
   (doseq [e entities
-          :let [e-type (e/entity-atom->component-val e :type) ]]
+          :let [e-type (e/entity-atom->component-val e :type)]]
     (when (= e-type :player)
       (let [p e
             actions (@p :actions)
             [x y r] (@p :position)]
           (doseq [en entities
                   :let [item @en
-                        item-name (e/entity-atom->component-val en :name)
-                        collide? (phys/colliding? item @p)]]
-            (when (and (= (item :type) :item) collide?)
-              (if (= (@p :items) 1)
+                        item-name (e/entity-atom->component-val en :name)]]
+            (when (= (item :type) :item)
+              (if (and (= (@p :items) 1) (phys/colliding? item @p))
                 (do (set! (.-visible (e/entity-atom->ref en)) false) ;pick up item
                     (swap! p assoc-in [:holding] item-name)
                     (let [pheight (.-height (e/entity-atom->ref p))
@@ -474,26 +462,25 @@
                     ))))))))
 
 
-(defn hit-button [entities]
-  (doseq [e entities
-          :let [e-type (e/entity-atom->component-val e :type) ]]
-    (when (= e-type :player)
-      (let [p e
+(defn hit-button [player entities]
+  (doseq [pl player
+          :let [p-type (e/entity-atom->component-val pl :type)]
+          :when (= p-type :player)]
+      (let [p pl
             actions (@p :actions)]
           (doseq [en entities
                   :let [item @en
-                        item-name (e/entity-atom->component-val en :name)
-                        collide? (phys/colliding? item @p)]]
-
-            (if (and (= (item :type) :button) collide?)
-              (do
-                (swap! e assoc-in [:button-pushed] true)
+                        item-name (e/entity-atom->component-val en :name)]]
+            (when (= (item :type) :button)
+              (when (phys/colliding? item @p)
+                 (do
+                (swap! en assoc-in [:button-pushed] true)
                 (swap! p assoc-in [:cleared] true)
                 (doseq [x entities
                         :when (= (e/entity-atom->component-val x :type) :door)
                         :let [sprite (e/entity-atom->ref x)]]
                           (set! (.-textures sprite) (cljs-to-js (map textures/textures [e/doorOpenTexture]))))
-               )
+                 ))
               ;(do
               ;  (swap! e assoc-in [:button-pushed] false)
               ;  (swap! p assoc-in [:cleared] false)
@@ -502,25 +489,25 @@
               ;          :let [sprite (e/entity-atom->ref x)]]
               ;            (set! (.-textures sprite) (cljs-to-js (map textures/textures [e/doorClosedTexture]))))
               ;)
-            ))))))
+            )))))
 
 ;;consider generate entities functions, instead of a super specific event function
-(defn hit-button-box-fall [entities]
-  (doseq [e entities
-          :let [e-type (e/entity-atom->component-val e :type) ]]
+(defn hit-button-box-fall [player entities]
+  (doseq [pl player
+          :let [e-type (e/entity-atom->component-val pl :type) ]]
     (when (= e-type :player)
-      (let [p e
+      (let [p pl
             actions (@p :actions)
             [x y r] (@p :position)]
           (doseq [en entities
                   :let [item @en
-                        item-name (e/entity-atom->component-val en :name)
-                        collide? (phys/colliding? item @p)]]
-            (when (and (= (item :type) :button-fall) collide?)
-              (doseq [e1 entities]
-                (if (= ":boxfloat1" (pr-str (@e1 :name)))
-                  (swap! e1 assoc-in [:position] [1050 430 0])
-                  ))
+                        item-name (e/entity-atom->component-val en :name)]]
+            (when (= (item :type) :button-fall)
+              (when (phys/colliding? item @p)
+                (doseq [e1 entities]
+                  (if (= ":boxfloat1" (pr-str (@e1 :name)))
+                    (swap! e1 assoc-in [:gravity] [ 0 e/normal-gravity 0])
+                  )))
               ))))))
 
 ;;------------------------------------------------
