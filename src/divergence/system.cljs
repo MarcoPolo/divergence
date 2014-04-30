@@ -247,12 +247,12 @@
          e entities
          :let [p-name (e/entity-atom->component-val p :name)
                e-name (e/entity-atom->component-val e :name)
-              win-cond (e/entity-atom->component-val e :win-condition)
+               win-cond (e/entity-atom->component-val e :win-condition)
                cond1 (and (= e-name :goal) (= p-name :player) (phys/colliding? @p @e)
                     (has-item? p win-cond))
                ]
           :when cond1]
-     (when ((conditions/conditions @current-level) e) true))))
+     (when ((conditions/conditions @current-level) p) true))))
 
 ;;------------------------------------------------
 ;;RENDERING---------------------------------------

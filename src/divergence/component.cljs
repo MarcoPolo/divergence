@@ -66,6 +66,8 @@
 ;;Component Defs
 ;;------------------------------------------------
 
+(def cleared (component :cleared false))
+
 ;;starting point of trajectory, currently must be divisible by 2
 (def path-index
   (component :path-index 0))

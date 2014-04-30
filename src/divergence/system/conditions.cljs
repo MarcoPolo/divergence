@@ -7,7 +7,7 @@
   true)
 
 (defn button-condition [entity]
-  (if (@entity :button-pushed)
+  (if (@entity :cleared)
     true
     false))
 

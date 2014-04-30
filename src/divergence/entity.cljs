@@ -235,7 +235,7 @@
            c/accelerates
            c/can-jump
            c/climbing
-
+           c/cleared
            ;c/button-pushed
            ;c/button-pushed-box-fall
 
