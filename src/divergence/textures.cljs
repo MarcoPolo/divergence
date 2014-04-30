@@ -24,6 +24,8 @@
 (def candleATexture (js/PIXI.Texture.fromImage "assets/img/candle1.png"))
 (def candleBTexture (js/PIXI.Texture.fromImage "assets/img/candle2.png"))
 
+(def shipTexture (js/PIXI.Texture.fromImage "assets/img/ship.png"))
+
 (def coffeeBlueTexture (js/PIXI.Texture.fromImage "assets/img/bluecoffee.png"))
 (def coffeePinkTexture (js/PIXI.Texture.fromImage "assets/img/pinkcoffee.png"))
 
@@ -61,6 +63,8 @@
 
 (def enemyTextureA (js/PIXI.Texture.fromImage "assets/img/enemy1right.png"))
 (def enemyTextureB (js/PIXI.Texture.fromImage "assets/img/enemy1left.png"))
+(def enemyTextureC (js/PIXI.Texture.fromImage "assets/img/enemy2right.png"))
+(def enemyTextureD (js/PIXI.Texture.fromImage "assets/img/enemy2left.png"))
 
 (def backgroundOne (js/PIXI.Texture.fromImage "assets/img/background-a.png"))
 (def backgroundTwo (js/PIXI.Texture.fromImage "assets/img/background-b.png"))
@@ -97,6 +101,7 @@
     ::push-button (js/PIXI.Texture.fromImage "assets/img/push-button.png")
     ::door-closed (js/PIXI.Texture.fromImage "assets/img/door-closed.png")
     ::door-open (js/PIXI.Texture.fromImage "assets/img/door-open.png")
+    ::treasure-chest (js/PIXI.Texture.fromImage "assets/img/chest.png")
 
     ::portalOne portalOneTexture
     ::portalTwo portalTwoTexture
@@ -104,6 +109,8 @@
 
     ::candleA candleATexture
     ::candleB candleBTexture
+
+    ::ship shipTexture
 
     ::starTileA starTileTextureA
     ::starTileB starTileTextureB
@@ -130,6 +137,8 @@
 
     ::enemyRight1 enemyTextureA
     ::enemyLeft1 enemyTextureB
+    ::enemyRight2 enemyTextureC
+    ::enemyLeft2 enemyTextureD
 
     ::backgroundOne backgroundOne
     ::backgroundTwo backgroundTwo

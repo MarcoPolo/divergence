@@ -39,9 +39,12 @@
 (def pushButtonTexture :divergence.textures/push-button)
 (def doorClosedTexture :divergence.textures/door-closed)
 (def doorOpenTexture :divergence.textures/door-open)
+(def treasureChestTexture :divergence.textures/treasure-chest)
 
 (def candleATexture :divergence.textures/candleA)
 (def candleBTexture :divergence.textures/candleB)
+
+(def shipTexture :divergence.textures/ship)
 
 (def starTileTextureA :divergence.textures/starTileA)
 (def starTileTextureB :divergence.textures/starTileB)
@@ -79,6 +82,8 @@
 
 (def enemyATextureRight :divergence.textures/enemyRight1)
 (def enemyATextureLeft :divergence.textures/enemyLeft1)
+(def enemyBTextureRight :divergence.textures/enemyRight2)
+(def enemyBTextureLeft :divergence.textures/enemyLeft2)
 
 (def jumpAnimationRight [pj1 pj2])
 (def jumpAnimationLeft [pj3 pj4])
@@ -355,6 +360,8 @@
 
 (def candle (partial tile 1 1 [candleATexture candleBTexture]))
 
+(def ship (partial tile 1 1 [shipTexture]))
+
 (def cat (partial npc 1 1 catAnimation))
 
 (defn some-text [stage]
@@ -407,6 +414,18 @@
            (c/scale 0.5 0.5)
            c/create-ref
            (c/gravity [0 normal-gravity 0])
+           ]))
+
+(defn treasure-chest-block [x y stage]
+  (entity [(c/named :treasure-chest)
+           (c/entity-type :button-fall)
+           (c/sprite [treasureChestTexture])
+           (c/position x y 0)
+           (c/on-stage stage)
+           (c/scale 0.6 0.6)
+           c/create-ref
+           (c/gravity [0 normal-gravity 0])
+           c/button-pushed
            ]))
 
 ;;-------------------------------------------------

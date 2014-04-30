@@ -54,6 +54,8 @@
 (def effect-map {
                  0 enemy-effect-one
                  1 enemy-effect-one
+                 2 enemy-effect-one
+                 3 enemy-effect-one
                  })
 
 (defn effects [player enemy]
@@ -65,3 +67,5 @@
 ;;organization - enemy entities should be passed their move paths here
 (def flappy (partial e/enemy 1 1 [e/enemyATextureRight] normal-path 0))
 (def flappy2 (partial e/enemy 1 1 [e/enemyATextureRight] updown-path 0))
+(def shark (partial e/enemy 0.3 0.3 [e/enemyBTextureRight] normal-path 0))
+(def shark2 (partial e/enemy 0.3 0.3 [e/enemyBTextureLeft] normal-path 0))
