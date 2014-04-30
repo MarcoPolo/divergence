@@ -16,7 +16,9 @@
 (defn prologue [stage]
   [(e/timestream)
    (e/some-text stage)
-   (e/goal 100 350 :nothing stage)
+   (e/door 200 400 stage)
+   (e/goal 200 400 :nothing stage)
+   (e/push-button-block 100 500 stage)
    (e/metalTileC -100 560 :t1 stage)
    (enemies/flappy 400 150 :flappy stage)
    (e/metalTileB 0 560 :t2 stage)

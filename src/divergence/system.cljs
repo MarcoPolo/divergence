@@ -468,6 +468,7 @@
                         collide? (phys/colliding? item @p)]]
             (when (and (= (item :type) :button) collide?)
               (swap! e assoc-in [:button-pushed] true)
+              (swap! p assoc-in [:cleared] true)
               (doseq [x entities
                       :when (= (e/entity-atom->component-val x :type) :door)
                       :let [sprite (e/entity-atom->ref x)]]
