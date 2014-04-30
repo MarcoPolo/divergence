@@ -43,7 +43,8 @@ var audiomenu = "<div id='audiomenu' class='menu'>"+
     "</div><!--Volume Control--></div><!--Container-->";
 
 var controls = "<div id='controlmenu' class='menu'>"+
-	'<img src="assets/img/menu/menu_audio_label.png"/>' +
+	'<img src="assets/img/menu/menu_controls_label.png"/>' +
+  '<br><br><br>' +
 	"<div class='control-settings'>"+
 	"<h2>Jump</h2><input class='controlbutton' type='button' value='test'><br>"+
 	"<h2>Up</h2><input class='controlbutton' type='button' value='test'><br>"+
@@ -132,7 +133,7 @@ jQuery(document).ready(function() {
         $('#audiomenu').hide();
     });
 
-	
+
 /**********************
  *Control Menu
  ***********************/
@@ -149,13 +150,13 @@ jQuery(document).ready(function() {
           openMenu();
         }
       });
-	  
+
     HideControlMenu = (function() {
         //$('#game-container').css("overflow","auto");
         closeMenu();
         $('#controlmenu').hide();
     });
-	
+
 });//end .ready
 
 function openMenu(){

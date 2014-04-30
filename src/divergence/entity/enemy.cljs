@@ -28,12 +28,15 @@
 
 (def normal-path [2 0, 2 0, 2 0, 2 0, 2 0, 2 0, 2 0, 2 0, 2 0, 2 0, 2 0, 2 0, 2 0, 2 0, 2 0, 2 0])
 
+(def updown-path [0 2, 0 2, 0 2, 0 2, 0 2, 0 2, 0 2, 0 2, 0 2, 0 2, 0 2, 0 2, 0 2, 0 2, 0 2, 0 2])
+
 (def bounce-path [])
 
 ;;map holding move paths
 (def move-paths {
                  :normal normal-path
                  :bounce bounce-path
+                 :updown updown-path
                  })
 
 ;;------------------------------------------------
@@ -50,6 +53,7 @@
 
 (def effect-map {
                  0 enemy-effect-one
+                 1 enemy-effect-one
                  })
 
 (defn effects [player enemy]
@@ -60,3 +64,4 @@
 
 ;;organization - enemy entities should be passed their move paths here
 (def flappy (partial e/enemy 1 1 [e/enemyATextureRight] normal-path 0))
+(def flappy2 (partial e/enemy 1 1 [e/enemyATextureRight] updown-path 0))

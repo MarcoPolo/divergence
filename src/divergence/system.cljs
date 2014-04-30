@@ -485,13 +485,23 @@
                         item-name (e/entity-atom->component-val en :name)
                         collide? (phys/colliding? item @p)]]
 
-            (when (and (= (item :type) :button) collide?)
-              (swap! e assoc-in [:button-pushed] true)
-              (swap! p assoc-in [:cleared] true)
-              (doseq [x entities
-                      :when (= (e/entity-atom->component-val x :type) :door)
-                      :let [sprite (e/entity-atom->ref x)]]
-                        (set! (.-textures sprite) (cljs-to-js (map textures/textures [e/doorOpenTexture]))))
+            (if (and (= (item :type) :button) collide?)
+              (do
+                (swap! e assoc-in [:button-pushed] true)
+                (swap! p assoc-in [:cleared] true)
+                (doseq [x entities
+                        :when (= (e/entity-atom->component-val x :type) :door)
+                        :let [sprite (e/entity-atom->ref x)]]
+                          (set! (.-textures sprite) (cljs-to-js (map textures/textures [e/doorOpenTexture]))))
+               )
+              ;(do
+              ;  (swap! e assoc-in [:button-pushed] false)
+              ;  (swap! p assoc-in [:cleared] false)
+              ;  (doseq [x entities
+              ;          :when (= (e/entity-atom->component-val x :type) :door)
+              ;          :let [sprite (e/entity-atom->ref x)]]
+              ;            (set! (.-textures sprite) (cljs-to-js (map textures/textures [e/doorClosedTexture]))))
+              ;)
             ))))))
 
 ;;consider generate entities functions, instead of a super specific event function
