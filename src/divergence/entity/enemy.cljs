@@ -1,5 +1,21 @@
 (ns divergence.entity.enemies
-  (:require [divergence.entity :as e]))
+  (:require [divergence.entity :as e]
+            [divergence.textures :as textures]
+            ))
+
+
+(defn cljs-to-js
+  "Recursively transforms ClojureScript maps into Javascript objects,
+   other ClojureScript colls into JavaScript arrays, and ClojureScript
+   keywords into JavaScript strings."
+  [x]
+  (cond
+    (string? x) x
+    (keyword? x) (name x)
+    (map? x) (.strobj (reduce (fn [m [k v]]
+               (assoc m (clj->js k) (clj->js v))) {} x))
+    (coll? x) (apply array (map clj->js x))
+    :else x))
 
 ;;------------------------------------------------
 ;;PATH DEFINITIONS--------------------------------
@@ -28,10 +44,16 @@
 ;;effects are only applicable to the player
 ;;function structure is being defined, not sure how to implement this yet
 
-(defn enemy-effect-one [player enemies]
-  ())
+(defn enemy-effect-one [player enemy]
+  (set! (.-textures (e/entity-atom->ref player)) (cljs-to-js (map textures/textures e/catAnimation)))
+  )
 
+(def effect-map {
+                 0 enemy-effect-one
+                 })
 
+(defn effects [player enemy]
+  ((effect-map (@enemy :effect)) player enemy))
 ;;------------------------------------------------
 ;;ENEMY DEFINITIONS-------------------------------
 ;;------------------------------------------------

@@ -4,6 +4,7 @@
              [divergence.physics :as phys]
              [divergence.system.conditions :as conditions]
              [divergence.entity :as e]
+             [divergence.entity.enemies :as enemies]
              [divergence.textures :as textures]
              [divergence.camera :as camera]))
 
@@ -82,7 +83,10 @@
 ;;Note: ref -> sprite
 (defn set-width-height [entities]
   (doseq [e entities
-          :let [ref (e/entity-atom->ref e)]]
+          :let [ref (e/entity-atom->ref e)
+                not-nil (not (nil? ref))]
+          :when not-nil
+          ]
         (swap! e assoc-in [:dimensions :width]  (.-width ref))
         (swap! e assoc-in [:dimensions :height] (.-height ref)))
     )
@@ -227,11 +231,18 @@
 (defn execute-effects
   "Apply effects here with map of functions in enemy"
   [player entities]
-  (doseq [e entities
-          :let [cond1 (phys/colliding? @player @e)
-                cond2 (= (@e :type) :enemy)]
-          :when (and cond1 cond2)]
-    ()))
+  (doseq [p player]
+    (doseq [e entities
+          :let [[x-v y-v rot-speed] (@p :velocity)
+                px (move-entity @p [(* x-v 3) 0 0])
+                py (move-entity @p [0 (* y-v 3) 0])
+                cond1 (phys/colliding? px @e)
+                cond2 (phys/colliding? py @e)
+                cond3 (= (@e :type) :enemy)
+                cond4 (= (@p :type) :player)]
+          :when (and (or cond1 cond2) cond2 cond3)]
+    (println x-v y-v)
+    (enemies/effects p e))))
 
 ;;------------------------------------------------
 ;;EVENT RESPONSES---------------------------------
@@ -480,8 +491,8 @@
               (doseq [x entities
                       :when (= (e/entity-atom->component-val x :type) :door)
                       :let [sprite (e/entity-atom->ref x)]]
-                        (set! (.-textures sprite) (cljs-to-js [e/doorOpenTexture]))))
-            )))))
+                        (set! (.-textures sprite) (cljs-to-js (map textures/textures [e/doorOpenTexture]))))
+            ))))))
 
 ;;consider generate entities functions, instead of a super specific event function
 (defn hit-button-box-fall [entities]
@@ -496,8 +507,10 @@
                         item-name (e/entity-atom->component-val en :name)
                         collide? (phys/colliding? item @p)]]
             (when (and (= (item :type) :button-fall) collide?)
-              (swap! e assoc-in [:button-pushed-box-fall] 1)
-
+              (doseq [e1 entities]
+                (if (= ":boxfloat1" (pr-str (@e1 :name)))
+                  (swap! e1 assoc-in [:position] [1300 400 0])
+                  ))
               ))))))
 
 ;;------------------------------------------------

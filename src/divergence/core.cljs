@@ -131,6 +131,7 @@
     (s/friction (c->e :acceleration))
     (s/accelerate (c->e :acceleration))
     (s/execute-entities (c->e :path))
+    (s/execute-effects (c->e :divergent) (c->e :collidable))
     (s/collide (c->e :collidable))
 
     (s/push (c->e :pushable) (c->e :type))
@@ -147,7 +148,7 @@
     (s/update-camera container (c->e :position))
     (s/pick-drop-item (c->e :type))
     (s/hit-button (c->e :type))
-    ;(s/hit-button-box-fall (c->e :type))
+    (s/hit-button-box-fall (c->e :type))
     (reset! globalID (js/requestAnimationFrame @animate-ref))))
 
 (defn debug-slow-down
