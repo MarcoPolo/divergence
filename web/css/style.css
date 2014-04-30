@@ -331,3 +331,14 @@ a{
   padding-right: 15%;
   text-align: left;
 }
+
+.control-settings h2{
+	float:left;
+}
+
+.control-settings input{
+	float:right;
+	clear: none;
+	vertical-align: middle;
+	font-size: 1.3em;
+}

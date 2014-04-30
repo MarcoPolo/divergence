@@ -19,7 +19,7 @@ var lightbox2 =
     '<img src="assets/img/menu/menu_settings_text.png"/>' +
     '<input type="image" src="assets/img/menu/menu_resume.png" class="button" onclick="callSettingsResume()">' +
     '<input type="image" src="assets/img/menu/menu_audio.png" class="button" onclick="callAudioMenu(); setupAdjust();">' +
-    '<input type="image" src="assets/img/menu/menu_controls.png" class="button" onclick="">' +
+    '<input type="image" src="assets/img/menu/menu_controls.png" class="button" onclick="callControlMenu();">' +
     "<input class='button' type='button' onclick='HideMenus(); ShowMenu();' value='&#8592'>"+
     '</div>' +
     "<div class='clr'></div>"+
@@ -42,7 +42,18 @@ var audiomenu = "<div id='audiomenu' class='menu'>"+
     "<input class='button' type='button' onclick='HideMenus(); ShowSettingsMenu();' value='&#8592'>"+
     "</div><!--Volume Control--></div><!--Container-->";
 
-var controls = "";
+var controls = "<div id='controlmenu' class='menu'>"+
+	'<img src="assets/img/menu/menu_audio_label.png"/>' +
+	"<div class='control-settings'>"+
+	"<h2>Jump</h2><input class='controlbutton' type='button' value='test'><br>"+
+	"<h2>Up</h2><input class='controlbutton' type='button' value='test'><br>"+
+	"<h2>Down</h2><input class='controlbutton' type='button' value='test'><br>"+
+	"<h2>Left</h2><input class='controlbutton' type='button' value='test'><br>"+
+	"<h2>Right</h2><input class='controlbutton' type='button' value='test'><br>"+
+	"<h2>Pickup</h2><input class='controlbutton' type='button' value='test'><br>"+
+	"</div>"+
+	"<input class='button' type='button' onclick='HideMenus(); ShowSettingsMenu(); 'value = '&#8592'>"+
+	"</div>";
 
 var overlay = "<div class='overlay'></div>";
 
@@ -121,6 +132,30 @@ jQuery(document).ready(function() {
         $('#audiomenu').hide();
     });
 
+	
+/**********************
+ *Control Menu
+ ***********************/
+    ShowControlMenu = (function(){
+        if($('#controlmenu').length > 0){
+          $('#game-container').css('overflow', 'hidden');
+          $('#controlmenu').show();
+          openMenu();
+        }//endif
+        else {
+
+          $('#game-container').css("overflow","hidden");
+          $('#game-container').append(controls);
+          openMenu();
+        }
+      });
+	  
+    HideControlMenu = (function() {
+        //$('#game-container').css("overflow","auto");
+        closeMenu();
+        $('#controlmenu').hide();
+    });
+	
 });//end .ready
 
 function openMenu(){
@@ -131,3 +166,6 @@ function closeMenu(){
   $('#game-container').find('.overlay').remove();
   $(".overlay").removeClass("lightbox-overlay");
 }
+
+
+
