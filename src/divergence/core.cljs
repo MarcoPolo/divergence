@@ -131,6 +131,7 @@
     (s/friction (c->e :acceleration))
     (s/accelerate (c->e :acceleration))
     (s/execute-entities (c->e :path))
+    (s/execute-effects (c->e :divergent) (c->e :collidable))
     (s/collide (c->e :collidable))
 
     (s/push (c->e :pushable) (c->e :type))
