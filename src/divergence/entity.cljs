@@ -297,6 +297,23 @@
            (c/scale 1 1)
            ]))
 
+(defn boxfloat [pname x y stage]
+  (entity [(c/named pname)
+           (c/entity-type :obstacle)
+           (c/sprite [boxTexture])
+           c/create-ref
+           c/accelerates
+           c/movable
+           c/has-actions
+           c/pushable
+           c/collidable
+           (c/friction 1)
+           (c/gravity [0 0 0])
+           (c/position x y 0)
+           (c/on-stage stage)
+           (c/scale 1 1)
+           ]))
+
 (def horizontal-full-block
   (partial block 4 .1))
 (def vertical-full-block

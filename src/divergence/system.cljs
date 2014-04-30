@@ -473,17 +473,18 @@
                   :let [item @en
                         item-name (e/entity-atom->component-val en :name)
                         collide? (phys/colliding? item @p)]]
+
             (when (and (= (item :type) :button) collide?)
               (swap! e assoc-in [:button-pushed] true)
               (swap! p assoc-in [:cleared] true)
               (doseq [x entities
                       :when (= (e/entity-atom->component-val x :type) :door)
                       :let [sprite (e/entity-atom->ref x)]]
-                        (set! (.-textures sprite) (cljs-to-js [e/catTextureA])))
-              ))))))
+                        (set! (.-textures sprite) (cljs-to-js [e/doorOpenTexture]))))
+            )))))
 
 ;;consider generate entities functions, instead of a super specific event function
-#_(defn hit-button-box-fall [entities]
+(defn hit-button-box-fall [entities]
   (doseq [e entities
           :let [e-type (e/entity-atom->component-val e :type) ]]
     (when (= e-type :player)
@@ -496,8 +497,7 @@
                         collide? (phys/colliding? item @p)]]
             (when (and (= (item :type) :button-fall) collide?)
               (swap! e assoc-in [:button-pushed-box-fall] 1)
-              ;(e/box :box3 1300 400 stage)
-              ;(set! (e/entity-atom->ref e/door-atom) [doorOpenTexture])
+
               ))))))
 
 ;;------------------------------------------------
