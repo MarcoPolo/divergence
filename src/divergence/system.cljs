@@ -2,6 +2,7 @@
   (:require  [cljs.reader :as reader]
              [divergence.audio :as a]
              [divergence.physics :as phys]
+             [divergence.system.conditions :as conditions]
              [divergence.entity :as e]
              [divergence.textures :as textures]
              [divergence.camera :as camera]))
@@ -239,27 +240,19 @@
     false
      )))
 
-;;goal condition - basic
-;;needs to be modified to accomodate different conditions
-;;needs to be refactored -- ideas: add component :cleared to check multiple conditions
+;;conditions are stored in conditions.cljs
 (defn goal? [entities player]
   (first
    (for [p player
          e entities
          :let [p-name (e/entity-atom->component-val p :name)
-               e-name (e/entity-atom->component-val e :name)]
-
-         :let [cond1 (and (= @current-level 0) (= e-name :goal) (= p-name :player) (phys/colliding? @p @e))
-               cond2 (and (= @current-level 1) (= (@p :holding) :key) (= e-name :goal) (= p-name :player) (phys/colliding? @p @e))
-               cond3 (and (= @current-level 2) (= (@p :button-pushed) 1) (= e-name :goal) (= p-name :player) (phys/colliding? @p @e))
-               cond4 (and (= @current-level 3) (= (@p :button-pushed-box-fall) 1) (= e-name :goal) (= p-name :player) (phys/colliding? @p @e))
+               e-name (e/entity-atom->component-val e :name)
                win-cond (e/entity-atom->component-val e :win-condition)
-               cond5 (and (= e-name :goal) (= p-name :player) (phys/colliding? @p @e)
+               cond1 (and (= e-name :goal) (= p-name :player) (phys/colliding? @p @e)
                     (has-item? p win-cond))
                ]
-          :when (or cond1 cond2 cond3 cond4 cond5)
-         ]
-     true)))
+          :when cond1]
+     (when ((conditions/conditions @current-level) p) true))))
 
 ;;------------------------------------------------
 ;;RENDERING---------------------------------------
@@ -453,32 +446,37 @@
               (if (= (@p :items) 1)
                 (do (set! (.-visible (e/entity-atom->ref en)) false) ;pick up item
                     (swap! p assoc-in [:holding] item-name)
-                    (. js/console (log (name (@p :holding))))
                     (let [pheight (.-height (e/entity-atom->ref p))
                           iheight (.-height (e/entity-atom->ref en))]
                      (swap! en assoc-in [:position] [x (+ y (- pheight iheight)) r]))
+                    (println (e/entity-atom->component-val p :holding))
                     (a/play-sound :pickup))
                 (do (swap! p assoc-in [:holding] [:nothing])
                     (set! (.-visible (e/entity-atom->ref en)) true)
                     ))))))))
+
 
 (defn hit-button [entities]
   (doseq [e entities
           :let [e-type (e/entity-atom->component-val e :type) ]]
     (when (= e-type :player)
       (let [p e
-            actions (@p :actions)
-            [x y r] (@p :position)]
+            actions (@p :actions)]
           (doseq [en entities
                   :let [item @en
                         item-name (e/entity-atom->component-val en :name)
                         collide? (phys/colliding? item @p)]]
             (when (and (= (item :type) :button) collide?)
-              (swap! e assoc-in [:button-pushed] 1)
-              ;(set! (e/entity-atom->ref e/door-atom) [doorOpenTexture])
+              (swap! e assoc-in [:button-pushed] true)
+              (swap! p assoc-in [:cleared] true)
+              (doseq [x entities
+                      :when (= (e/entity-atom->component-val x :type) :door)
+                      :let [sprite (e/entity-atom->ref x)]]
+                        (set! (.-textures sprite) (cljs-to-js [e/catTextureA])))
               ))))))
 
-(defn hit-button-box-fall [entities]
+;;consider generate entities functions, instead of a super specific event function
+#_(defn hit-button-box-fall [entities]
   (doseq [e entities
           :let [e-type (e/entity-atom->component-val e :type) ]]
     (when (= e-type :player)

@@ -66,6 +66,8 @@
 ;;Component Defs
 ;;------------------------------------------------
 
+(def cleared (component :cleared false))
+
 ;;starting point of trajectory, currently must be divisible by 2
 (def path-index
   (component :path-index 0))
@@ -123,11 +125,12 @@
 
 (def climbing
   (component :climbing 0))
+
 (def pushing
   (component :pushing false))
 
 (def button-pushed
-  (component :button-pushed 0))
+  (component :button-pushed false))
 
 (def button-pushed-box-fall
   (component :button-pushed-box-fall 0))
