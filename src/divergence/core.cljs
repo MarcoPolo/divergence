@@ -123,7 +123,7 @@
     (s/player-input (c->e :player-input))
     (s/climbing (c->e :type))
     (s/execute-actions (c->e :actions))
-    (s/move-background (c->e :actions))
+    (s/move-background (c->e :divergent) (c->e :type))
     (s/animations (c->e :sprite))
 
     (s/gravity (c->e :gravity))
@@ -147,8 +147,8 @@
 
     (s/update-camera container (c->e :position))
     (s/pick-drop-item (c->e :type))
-    (s/hit-button (c->e :type))
-    (s/hit-button-box-fall (c->e :type))
+    (s/hit-button (c->e :divergent) (c->e :type))
+    (s/hit-button-box-fall (c->e :divergent) (c->e :type))
     (reset! globalID (js/requestAnimationFrame @animate-ref))))
 
 (defn debug-slow-down
