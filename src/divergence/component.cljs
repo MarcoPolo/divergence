@@ -122,6 +122,9 @@
 (def collidable
   (component :collidable true))
 
+(def collision-trigger
+  (component :collision-trigger true))
+
 (def accelerates
   (component :acceleration [0 0 0]))
 

@@ -233,6 +233,7 @@
            (c/position (/ camera/camera-width 3) -450 0)
            (c/unique c/player-input)
            (c/unique (c/on-stage stage))
+           (c/unique c/collision-trigger)
            c/has-actions
            c/movable
            (c/friction 1)
@@ -502,6 +503,11 @@
     ;; remove mappings
     (swap! entity-atom->unique-entity-atom dissoc entity)
     (swap! unique-entity-atom->entity-atom dissoc entity)))
+
+(defn filter-entities [component-name entities]
+  (filter
+   (fn [e] (entity-atom->component-val e component-name))
+   entities))
 
 ;;-------------------------------------------------
 ;;Entity Group Definitions-------------------------
