@@ -321,6 +321,7 @@
   (entity [(c/named pname)
            (c/entity-type :obstacle)
            (c/sprite [boxTexture])
+           c/collision-trigger
            c/create-ref
            c/accelerates
            c/movable
@@ -338,6 +339,7 @@
   (entity [(c/named pname)
            (c/entity-type :obstacle)
            (c/sprite [boxTexture])
+           c/collision-trigger
            c/create-ref
            c/accelerates
            c/movable
