@@ -61,13 +61,22 @@
                 future-state (get-in @timestream future-value-path)
                 n (:name @(@e/entity-atom->unique-entity-atom e))]]
 
-    ;; TODO we need to check if there is even a time event in the future
+    (timeviz/draw-time-node [(first future-node) (+ (second future-node) (timeviz/find-time-offset @timestream (first future-node)))])
 
     ;; If a time event exists in this future state, we'll reset! the entity to that value
     ;; Otherwise we'll write the current value of the entity into the timestream
-    (timeviz/draw-time-node [(first future-node) (+ (second future-node) (timeviz/find-time-offset @timestream (first future-node)))])
     (if future-state
-      (reset! e future-state)
+      ;; There is a future state, so let's check if there are forks too
+      (if-let [forks (get-in @timestream (conj future-node :forks))]
+        (do
+          (reset! e future-state)
+          (doseq [fork forks]
+            ;; The fork represents the timeline number of the fork
+            ;; All timelines start at 0 so we need to create a divergent
+            ;; entity at [fork-timeline 0]
+            (create-divergent-entity [fork 0])))
+        ;; There are no forks, so we can just update the current entity
+        (reset! e future-state))
       ;; Now check if the person is a player of not
       (if (= :player n)
         (do
