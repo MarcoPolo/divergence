@@ -10,6 +10,7 @@
 (def magicSound (js/buzz.sound. "assets/sounds/joe93barlow__protego.mp3"))
 (def timeTravelSound (js/buzz.sound. "assets/sounds/timetravel.wav"))
 (def bgm1 (js/buzz.sound. "assets/sounds/Mellowtron.mp3"))
+(def bgm2 (js/buzz.sound. "assets/sounds/Phat Sketch.mp3"))
 
 (def sounds (atom {
              :jump      jumpSound
@@ -20,6 +21,7 @@
              :time      timeTravelSound
 
              :bgm1      bgm1
+             :bgm2      bgm2
              }))
 
 ;;------------------------------
@@ -42,9 +44,10 @@
   ))
 
 (defn startBGM [level]
-  (when (= level 0) (play-bgm :bgm1))
+  (cond
+   (= level 0) (play-bgm :bgm1)
+   :else (do (. (@sounds :bgm1) stop) (. (@sounds :bgm2) stop) (play-bgm :bgm2)))
     )
-
 
 ;;------------------------------
 ;;Volume Control Functions------
