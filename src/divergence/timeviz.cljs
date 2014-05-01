@@ -49,7 +49,7 @@
    (let [time-event (mod time-event 500)]
      (when (= 0 (mod time-event 10))
        (.beginFill graphics color 1)
-       (.drawCircle graphics (+ 20 time-event) (* 10 (+ 2 timeline)) 4)
+       (.drawCircle graphics (+ 20 time-event) (* 10 (+ 2 (mod timeline 12))) 4)
        (.endFill graphics))))
   ([node]
    (draw-time-node node 0xffffff)))
