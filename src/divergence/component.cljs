@@ -58,6 +58,9 @@
 (defn move-path [path]
   (component :path path))
 
+(defn path-loop [loop?]
+  (component :path-loop loop?))
+
 ;;effects are defined in system
 (defn effect [number]
   (component :effect number))

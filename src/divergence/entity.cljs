@@ -206,7 +206,7 @@
            c/movable
            ]))
 
-(defn enemy [scale-x scale-y texture move-path effect x y pname stage]
+(defn enemy [scale-x scale-y texture move-path effect loop? x y pname stage]
   (entity [(c/named pname)
            (c/unique (c/sprite texture))
            (c/entity-type :enemy)
@@ -216,6 +216,7 @@
            (c/on-stage stage)
            (c/move-path move-path)
            (c/effect effect)
+           (c/path-loop loop?)
            c/path-index
            c/path-direction
            c/create-ref
@@ -229,7 +230,7 @@
 (defn player [stage]
   (entity [(c/unique (c/named :player))
            (c/unique (c/sprite [pf]))
-           (c/position (/ camera/camera-width 3) -750 0)
+           (c/position (/ camera/camera-width 3) -450 0)
            (c/unique c/player-input)
            (c/unique (c/on-stage stage))
            c/has-actions

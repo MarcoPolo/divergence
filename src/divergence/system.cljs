@@ -200,12 +200,14 @@
   (let [e @entity
         index (e :path-index)
         dir (e :direction)
+        loop? (e :path-loop)
         path (e :path)
         vx (nth path index)
         vy (nth path (inc index))]
-    (if dir
+    (if (and dir loop?)
+      [(* -1 vx) (* -1 vy)]
       [vx vy]
-      [(* -1 vx) (* -1 vy)])))
+      )))
 
 (defn index-check [entity]
   (let [index (@entity :path-index)
