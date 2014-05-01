@@ -10,7 +10,7 @@
 (def magicSound (js/buzz.sound. "assets/sounds/joe93barlow__protego.mp3"))
 (def timeTravelSound (js/buzz.sound. "assets/sounds/timetravel.wav"))
 (def bgm1 (js/buzz.sound. "assets/sounds/Mellowtron.mp3"))
-(def bgm2 (js/buzz.sound. "assets/sounds/Phat Sketch.mp3"))
+(def bgm2 (js/buzz.sound. "assets/sounds/Phat Sketch.ogg"))
 
 (def sounds (atom {
              :jump      jumpSound
