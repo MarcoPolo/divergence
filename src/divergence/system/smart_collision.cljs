@@ -17,9 +17,11 @@
    some center entity"
   [center-e entities]
   (let [{[center-x center-y _] :position} center-e]
+
     (remove
      (fn [{[other-x other-y _] :position}]
-       (< closeness-threshold (distance center-x center-y other-x other-y)))
+        (< closeness-threshold (distance center-x center-y other-x other-y))
+       )
      entities)))
 
 (filter-things-close-to {:position [10 10 0]} [{:position [10 20 0]} {:position [40 500 0]}])
