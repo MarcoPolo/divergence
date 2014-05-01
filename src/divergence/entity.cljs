@@ -66,6 +66,17 @@
 (def oceanTileTextureB :divergence.textures/oceanTileB)
 (def oceanTileTextureC :divergence.textures/oceanTileC)
 
+(def chocolateTileTextureA :divergence.textures/chocolateTileA)
+(def chocolateTileTextureB :divergence.textures/chocolateTileB)
+(def chocolateTileTextureC :divergence.textures/chocolateTileC)
+(def chocolateTileTextureD :divergence.textures/chocolateTileD)
+(def chocolateTileTextureE :divergence.textures/chocolateTileE)
+(def chocolateTileTextureF :divergence.textures/chocolateTileF)
+(def chocolateTileTextureG :divergence.textures/chocolateTileG)
+(def chocolateTileTextureH :divergence.textures/chocolateTileH)
+(def chocolateTileTextureI :divergence.textures/chocolateTileI)
+(def chocolateTileTextureJ :divergence.textures/chocolateTileJ)
+
 (def backgroundOneTexture :divergence.textures/backgroundOne)
 (def backgroundTwoTexture :divergence.textures/backgroundTwo)
 (def backgroundThreeTexture :divergence.textures/backgroundThree)
@@ -83,6 +94,16 @@
 (def batTextureA :divergence.textures/batA)
 (def batTextureB :divergence.textures/batB)
 
+(def cupcakeTextureA :divergence.textures/cupcakeA)
+(def cupcakeTextureB :divergence.textures/cupcakeB)
+(def cupcakeTextureC :divergence.textures/cupcakeC)
+
+(def donutTextureA :divergence.textures/donutA)
+(def donutTextureB :divergence.textures/donutB)
+(def donutTextureC :divergence.textures/donutC)
+(def donutTextureD :divergence.textures/donutD)
+(def donutTextureE :divergence.textures/donutE)
+
 (def enemyATextureRight :divergence.textures/enemyRight1)
 (def enemyATextureLeft :divergence.textures/enemyLeft1)
 (def enemyBTextureRight :divergence.textures/enemyRight2)
@@ -96,6 +117,10 @@
 (def catAnimation [catTextureA catTextureB catTextureC])
 
 (def batAnimation [batTextureA batTextureB])
+
+(def cupcakeAnimation [cupcakeTextureA cupcakeTextureB cupcakeTextureC])
+
+(def donutAnimation [donutTextureA donutTextureB donutTextureC donutTextureD donutTextureE])
 
 ;;-------------------------------------------------
 ;;Entity Methods-----------------------------------
@@ -367,6 +392,17 @@
 (def oceanTileB (partial tile 1 1 [oceanTileTextureB]))
 (def oceanTileC (partial tile 1 1 [oceanTileTextureC]))
 
+(def chocolateTileA (partial tile 1 1 [chocolateTileTextureA]))
+(def chocolateTileB (partial tile 1 1 [chocolateTileTextureB]))
+(def chocolateTileC (partial tile 1 1 [chocolateTileTextureC]))
+(def chocolateTileD (partial tile 1 1 [chocolateTileTextureD]))
+(def chocolateTileE (partial tile 1 1 [chocolateTileTextureE]))
+(def chocolateTileF (partial tile 1 1 [chocolateTileTextureF]))
+(def chocolateTileG (partial tile 1 1 [chocolateTileTextureG]))
+(def chocolateTileH (partial tile 1 1 [chocolateTileTextureH]))
+(def chocolateTileI (partial tile 1 1 [chocolateTileTextureI]))
+(def chocolateTileJ (partial tile 1 1 [chocolateTileTextureJ]))
+
 (def candle (partial tile 1 1 [candleATexture candleBTexture]))
 
 (def ship (partial tile 1 1 [shipTexture]))
@@ -374,6 +410,10 @@
 (def cat (partial npc 1 1 catAnimation))
 
 (def bat (partial npc 1 1 batAnimation))
+
+(def cupcake (partial npc 1 1 cupcakeAnimation))
+
+(def donut (partial npc 1 1 donutAnimation))
 
 (defn some-text [stage]
   (entity [(c/named :fps-counter)

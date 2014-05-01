@@ -127,7 +127,7 @@
   [(e/timestream)
    ;(e/some-text stage)
    (e/goal 1350 280 :nothing stage)
-   (e/box :box2 380 -1000 stage)
+   (e/box :box2 380 -500 stage)
    (e/boxfloat :boxfloat1 1050 150 stage)
    (e/oceanTileC -100 530 :o1 stage)
    (e/oceanTileB 0 530 :o2 stage)
