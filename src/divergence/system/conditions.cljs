@@ -17,7 +17,7 @@
                  1 no-condition
                  2 button-condition
                  3 no-condition
-                 4 no-condition
+                 4 button-condition
                  5 no-condition
                  })
 
