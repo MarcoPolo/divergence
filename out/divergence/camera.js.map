@@ -1,0 +1,7 @@
+{"version":3,
+ "file":"/Users/Chelsea/GIT/divergence/web/out/divergence/camera.js",
+ "sources":["camera.cljs"],
+ "lineCount":7,
+ "mappings":";AAAA;;AAGA,iCAAA,jCAAKA;AACL,kCAAA,lCAAKC",
+ "names":
+ ["divergence.camera/camera-width", "divergence.camera/camera-height"]}
