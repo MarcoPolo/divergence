@@ -126,7 +126,7 @@
 (defn levelthree [stage]
   [(e/timestream)
    ;(e/some-text stage)
-   (e/goal 1350 280 :nothing stage)
+   (e/goal 1330 280 :nothing stage)
    (e/box :box2 380 -500 stage)
    (e/boxfloat :boxfloat1 1050 150 stage)
    (e/oceanTileC -100 530 :o1 stage)
