@@ -135,7 +135,7 @@
     (s/collide (c->e :collidable))
 
     (s/push (c->e :pushable) (c->e :type))
-    (when (s/goal? (c->e :position) (c->e :type))
+    (when (s/goal? (c->e :type) (c->e :divergent))
       (s/next-level)
       (swap! current-level inc)
       (load-level))

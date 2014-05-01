@@ -260,15 +260,18 @@
   (first
    (for [p player
          e entities
-         :let [p-name (e/entity-atom->component-val p :name)
+         :let [p-type (e/entity-atom->component-val p :type)
                e-name (e/entity-atom->component-val e :name)
                win-cond (e/entity-atom->component-val e :win-condition)
                cond1 ((conditions/conditions @current-level) p)
-               e e
+               cond2 (= e-name :goal)
+               cond3 (= p-type :player)
+               cond4 (has-item? p win-cond)
+               en e
                ]
-          :when cond1]
-     (when (and (= e-name :goal) (= p-name :player) (phys/colliding? @p @e)
-                    (has-item? p win-cond)) true))))
+          :when (and cond1 cond2 cond3 cond4)]
+     (when (phys/colliding? @p @en)
+       true))))
 
 ;;------------------------------------------------
 ;;RENDERING---------------------------------------
@@ -458,7 +461,7 @@
                      (swap! en assoc-in [:position] [x (+ y (- pheight iheight)) r]))
                     (println (e/entity-atom->component-val p :holding))
                     (a/play-sound :pickup))
-                (do (swap! p assoc-in [:holding] [:nothing])
+                #_(do (swap! p assoc-in [:holding] [:nothing])
                     (set! (.-visible (e/entity-atom->ref en)) true)
                     ))))))))
 
