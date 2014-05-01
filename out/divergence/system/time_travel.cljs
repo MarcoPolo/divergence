@@ -47,47 +47,48 @@
     ;; Create the divergent entity
     (create-divergent-entity current-node)))
 
-(defn fork-entity
-  "Fork the entity into another timeline, if a fork is found"
-  [timestream entities])
-
-
 (defn tick-forward
   [timestream entities]
-  (doseq [e entities
-          :let [{:keys [current-node time-name]} (:divergent @e)
-                future-node (update-in current-node [1] inc)
-                future-value-path (conj future-node :value time-name)
-                future-state (get-in @timestream future-value-path)
-                n (:name @(@e/entity-atom->unique-entity-atom e))]]
+  (let [player (first
+                (filter (comp #{:player} :name deref @e/entity-atom->unique-entity-atom) (e/filter-entities :name entities)))
+        {[player-timeline _] :current-node} (:divergent @player)]
+    (doseq [e entities
+            :let [{:keys [current-node time-name]} (:divergent @e)
+                  future-node (update-in current-node [1] inc)
+                  future-value-path (conj future-node :value time-name)
+                  future-state (get-in @timestream future-value-path)
+                  n (:name @(@e/entity-atom->unique-entity-atom e))]]
 
-    (timeviz/draw-time-node [(first future-node) (+ (second future-node) (timeviz/find-time-offset @timestream (first future-node)))])
+      (timeviz/draw-time-node [(first future-node) (+ (second future-node) (timeviz/find-time-offset @timestream (first future-node)))])
 
-    ;; If a time event exists in this future state, we'll reset! the entity to that value
-    ;; Otherwise we'll write the current value of the entity into the timestream
-    (if future-state
-      ;; There is a future state, so let's check if there are forks too
-      (if-let [forks (get-in @timestream (conj future-node :forks))]
-        (do
-          (reset! e future-state)
-          (doseq [fork forks]
-            ;; The fork represents the timeline number of the fork
-            ;; All timelines start at 0 so we need to create a divergent
-            ;; entity at [fork-timeline 0]
-            (create-divergent-entity [fork 0])))
-        ;; There are no forks, so we can just update the current entity
-        (reset! e future-state))
-      ;; Now check if the person is a player of not
-      (if (= :player n)
-        (do
-          ;; add a blank time-event if there isn't a time-event in there already
-          (swap! timestream update-in future-node (fnil identity {}))
+      ;; If a time event exists in this future state, we'll reset! the entity to that value
+      ;; Otherwise we'll write the current value of the entity into the timestream
+      (if future-state
+        ;; There is a future state, so let's check if there are forks too
+        (if-let [forks (get-in @timestream (conj future-node :forks))]
+          (do
+            (reset! e future-state)
+            (doseq [fork forks]
+              ;; The fork represents the timeline number of the fork
+              ;; All timelines start at 0 so we need to create a divergent
+              ;; entity at [fork-timeline 0]
 
-          (swap! e assoc-in [:divergent :current-node] future-node)
-          (swap! timestream assoc-in future-value-path @e))
-        (do
-          ;; We've reached the end of the timeline for a non-player, we must destroy them
-          (e/destroy-entity! e))))))
+              ;;We need to make sure we aren't forking an entity in the same timeline as the player
+              (when-not (= fork player-timeline)
+                (create-divergent-entity [fork 0]))))
+          ;; There are no forks, so we can just update the current entity
+          (reset! e future-state))
+        ;; Now check if the person is a player of not
+        (if (= :player n)
+          (do
+            ;; add a blank time-event if there isn't a time-event in there already
+            (swap! timestream update-in future-node (fnil identity {}))
+
+            (swap! e assoc-in [:divergent :current-node] future-node)
+            (swap! timestream assoc-in future-value-path @e))
+          (do
+            ;; We've reached the end of the timeline for a non-player, we must destroy them
+            (e/destroy-entity! e)))))))
 
 (defn tick-backwards
   [timestream entities]
