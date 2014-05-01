@@ -233,6 +233,7 @@
            (c/position (/ camera/camera-width 3) -450 0)
            (c/unique c/player-input)
            (c/unique (c/on-stage stage))
+           (c/unique c/collision-trigger)
            c/has-actions
            c/movable
            (c/friction 1)
@@ -374,7 +375,7 @@
 
 (defn some-text [stage]
   (entity [(c/named :fps-counter)
-           (c/unique (c/text "Hello World" #js {:font "20px Calibri" :fill "white"}))
+           (c/unique (c/text "Hello World" #js {:font "20px Courier New" :fill "white"}))
            (c/position 20 10 0)
            c/fps-counter
            (c/on-stage stage)]))
@@ -382,7 +383,7 @@
 (defn tutorial-text [text x y path loop? stage]
   (entity [(c/named :tutorial-text)
            (c/entity-type :text)
-           (c/unique (c/text text #js {:font "20px Calibri" :fill "white"}))
+           (c/unique (c/text text #js {:font "16px Calibri" :fill "white"}))
            (c/position x y 0)
            (c/on-stage stage)
            (c/move-path path)
@@ -399,7 +400,10 @@
            (c/on-stage stage)
            (c/scale 0.5 0.5)
            c/create-ref
-           (c/gravity [0 normal-gravity 0])
+           c/movable
+           ;c/accelerates
+           ;c/collidable
+           ;(c/gravity [0 normal-gravity 0])
            ]))
 
 (defn push-button-block [x y stage]
@@ -410,7 +414,10 @@
            (c/on-stage stage)
            (c/scale 0.5 0.5)
            c/create-ref
-           (c/gravity [0 normal-gravity 0])
+           c/movable
+           ;c/accelerates
+           ;c/collidable
+           ;(c/gravity [0 0.01 0])
            c/button-pushed
            ]))
 
@@ -496,6 +503,11 @@
     ;; remove mappings
     (swap! entity-atom->unique-entity-atom dissoc entity)
     (swap! unique-entity-atom->entity-atom dissoc entity)))
+
+(defn filter-entities [component-name entities]
+  (filter
+   (fn [e] (entity-atom->component-val e component-name))
+   entities))
 
 ;;-------------------------------------------------
 ;;Entity Group Definitions-------------------------
