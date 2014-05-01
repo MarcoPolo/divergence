@@ -66,6 +66,7 @@
                  1 enemy-effect-one
                  2 enemy-effect-two
                  3 enemy-effect-one
+                 4 enemy-effect-two
                  })
 
 (defn effects [player enemy]
