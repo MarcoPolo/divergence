@@ -89,5 +89,5 @@
 (def flappy3 (partial e/enemy 1 1 [e/enemyATextureRight] normal-path 2 true))
 (def flappy4 (partial e/enemy 1 1 [e/enemyATextureRight] updown-path 2 true))
 (def flappy5 (partial e/enemy 1 1 [e/enemyATextureRight] normal-path 2 false))
-(def shark (partial e/enemy 0.3 0.3 [e/enemyBTextureRight] normal-path 3 true))
-(def shark2 (partial e/enemy 0.3 0.3 [e/enemyBTextureLeft] normal-path 3 true))
+(def shark (partial e/enemy 0.3 0.3 [e/enemyBTextureLeft] normal-path 3 true))
+(def shark2 (partial e/enemy 0.3 0.3 [e/enemyBTextureRight] normal-path 3 false))
