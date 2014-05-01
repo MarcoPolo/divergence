@@ -70,8 +70,8 @@
 
 ;;organization - enemy entities should be passed their move paths here
 (def flappy (partial e/enemy 1 1 [e/enemyATextureRight] normal-path 0 true))
-(def flappy2 (partial e/enemy 1 1 [e/enemyATextureRight] updown-path 0 ))
-(def flappy3 (partial e/enemy 1 1 [e/enemyATextureRight] normal-path 2))
-(def flappy4 (partial e/enemy 1 1 [e/enemyATextureRight] updown-path 2))
-(def shark (partial e/enemy 0.3 0.3 [e/enemyBTextureRight] normal-path 0))
-(def shark2 (partial e/enemy 0.3 0.3 [e/enemyBTextureLeft] normal-path 0))
+(def flappy2 (partial e/enemy 1 1 [e/enemyATextureRight] updown-path 0 true))
+(def flappy3 (partial e/enemy 1 1 [e/enemyATextureRight] normal-path 2 true))
+(def flappy4 (partial e/enemy 1 1 [e/enemyATextureRight] updown-path 2 true))
+(def shark (partial e/enemy 0.3 0.3 [e/enemyBTextureRight] normal-path 0 true))
+(def shark2 (partial e/enemy 0.3 0.3 [e/enemyBTextureLeft] normal-path 0 true))
