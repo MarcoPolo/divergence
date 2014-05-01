@@ -318,7 +318,7 @@
 (defn animations [entities]
   (doseq [e entities
           :let [sprite (@e :ref)]]
-    (set! (.-animationSpeed sprite) 0.25)
+    (set! (.-animationSpeed sprite) 0.15)
     (set! (.-loop sprite) true)
     (set! (.-playing sprite) true)
     ))
