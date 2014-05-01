@@ -127,6 +127,7 @@
     ::door-closed (js/PIXI.Texture.fromImage "assets/img/door-closed.png")
     ::door-open (js/PIXI.Texture.fromImage "assets/img/door-open.png")
     ::treasure-chest (js/PIXI.Texture.fromImage "assets/img/chest.png")
+    ::flower (js/PIXI.Texture.fromImage "assets/img/flower1.png")
 
     ::portalOne portalOneTexture
     ::portalTwo portalTwoTexture

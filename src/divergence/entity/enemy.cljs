@@ -62,11 +62,17 @@
     (swap! player assoc-in [:position] [(- x 200) y rot]))
   )
 
+(defn enemy-effect-four [player enemy]
+  (set! (.-textures (e/entity-atom->ref player)) (cljs-to-js (map textures/textures e/catAnimation)))
+  (let [{[x y rot] :position} @player]
+    (swap! player assoc-in [:position] [(- x 200) y rot]))
+  )
+
 (def effect-map {
                  0 enemy-effect-three
                  1 enemy-effect-one
                  2 enemy-effect-two
-                 3 enemy-effect-one
+                 3 enemy-effect-four
                  4 enemy-effect-two
                  })
 
@@ -83,5 +89,5 @@
 (def flappy3 (partial e/enemy 1 1 [e/enemyATextureRight] normal-path 2 true))
 (def flappy4 (partial e/enemy 1 1 [e/enemyATextureRight] updown-path 2 true))
 (def flappy5 (partial e/enemy 1 1 [e/enemyATextureRight] normal-path 2 false))
-(def shark (partial e/enemy 0.3 0.3 [e/enemyBTextureRight] normal-path 2 true))
-(def shark2 (partial e/enemy 0.3 0.3 [e/enemyBTextureLeft] normal-path 2 true))
+(def shark (partial e/enemy 0.3 0.3 [e/enemyBTextureRight] normal-path 3 true))
+(def shark2 (partial e/enemy 0.3 0.3 [e/enemyBTextureLeft] normal-path 3 true))

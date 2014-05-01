@@ -40,6 +40,7 @@
 (def doorClosedTexture :divergence.textures/door-closed)
 (def doorOpenTexture :divergence.textures/door-open)
 (def treasureChestTexture :divergence.textures/treasure-chest)
+(def flowerTexture :divergence.textures/flower)
 
 (def candleATexture :divergence.textures/candleA)
 (def candleBTexture :divergence.textures/candleB)
@@ -506,6 +507,29 @@
            (c/scale 0.1 0.1)
            c/create-ref
            (c/gravity [0 normal-gravity 0])
+           ]))
+
+(defn cupcake-block [x y stage]
+  (entity [(c/named :cupcake-animation)
+           (c/entity-type :cupcake)
+           (c/sprite cupcakeAnimation)
+           (c/position x y 0)
+           (c/on-stage stage)
+           (c/scale 0.1 0.1)
+           c/create-ref
+           (c/gravity [0 normal-gravity 0])
+           ]))
+
+(defn flower-block [x y stage]
+  (entity [(c/named :flower)
+           (c/entity-type :button-fall)
+           (c/sprite [flowerTexture])
+           (c/position x y 0)
+           (c/on-stage stage)
+           (c/scale 0.6 0.6)
+           c/create-ref
+           (c/gravity [0 normal-gravity 0])
+           c/button-pushed
            ]))
 
 ;;-------------------------------------------------
