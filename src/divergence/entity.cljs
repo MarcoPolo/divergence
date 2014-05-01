@@ -407,13 +407,13 @@
 
 (def ship (partial tile 1 1 [shipTexture]))
 
-(def cat (partial npc 1 1 catAnimation))
+(def cat (partial tile 1 1 catAnimation))
 
-(def bat (partial npc 1 1 batAnimation))
+(def bat (partial tile 1 1 batAnimation))
 
-(def cupcake (partial npc 1 1 cupcakeAnimation))
+(def cupcake (partial tile 1 1 cupcakeAnimation))
 
-(def donut (partial npc 1 1 donutAnimation))
+(def donut (partial tile 1 1 donutAnimation))
 
 (defn some-text [stage]
   (entity [(c/named :fps-counter)
@@ -495,6 +495,17 @@
            c/create-ref
            (c/gravity [0 normal-gravity 0])
            c/button-pushed
+           ]))
+
+(defn donut-block [x y stage]
+  (entity [(c/named :donut-animation)
+           (c/entity-type :donut)
+           (c/sprite donutAnimation)
+           (c/position x y 0)
+           (c/on-stage stage)
+           (c/scale 0.1 0.1)
+           c/create-ref
+           (c/gravity [0 normal-gravity 0])
            ]))
 
 ;;-------------------------------------------------

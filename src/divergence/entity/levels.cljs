@@ -152,8 +152,37 @@
    (e/backgroundFive stage)
    ])
 
-
+;;level 4 definition
 ;;set win-condition of goal to be :unwinnable
+(defn levelfour [stage]
+  [(e/timestream)
+   ;(e/some-text stage)
+   (e/goal 1350 280 :unwinnable stage)
+   (e/box :box2 380 -500 stage)
+   (e/boxfloat :boxfloat1 1050 150 stage)
+   (e/oceanTileC -100 530 :c1 stage)
+   (e/oceanTileB 0 530 :c2 stage)
+   (e/oceanTileA 100 530 :c3 stage)
+   (e/oceanTileB 200 530 :c4 stage)
+   (e/oceanTileC 300 530 :c5 stage)
+   (e/oceanTileB 400 530 :c6 stage)
+   (e/oceanTileC 500 530 :c7 stage)
+   (e/oceanTileA 600 530 :c8 stage)
+   (e/oceanTileB 700 530 :c9 stage)
+   (e/oceanTileC 650 320 :c10 stage)
+   (e/treasure-chest-block 780 270 stage)
+   (e/oceanTileC 1000 530 :c11 stage)
+   (e/oceanTileA 1100 530 :c12 stage)
+   (e/oceanTileB 1200 530 :c13 stage)
+   (e/oceanTileA 1300 530 :c14 stage)
+   (e/oceanTileB 750 320 :c15 stage)
+   (e/donut -40 410 stage)
+   (e/ship -40 410 :ship1 stage)
+   (enemies/shark 750 170 :shark1 stage)
+   (enemies/shark2 1200 170 :shark2 stage)
+   (e/player stage)
+   (e/backgroundFive stage)
+   ])
 
 ;;level handler
 (defn get-levels [number]
@@ -161,4 +190,5 @@
     (= number 0) prologue
     (= number 1) levelone
     (= number 2) leveltwo
-    (= number 3) levelthree))
+    (= number 3) levelthree
+    (= number 4) levelfour))
