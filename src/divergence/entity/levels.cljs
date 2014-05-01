@@ -186,7 +186,7 @@
    (e/chocolateTileA 2100 560 :c23 stage)
    (e/cupcake 2200 457)
    (e/boxfloat :boxfloat1 1500 140 stage)
-   (e/flower-block 1900 497)
+   (e/flower-block 1900 497 stage)
    (e/push-button-block 1700 140 stage)
    (e/chocolateTileA 2200 560 :c24 stage)
    (e/chocolateTileA 2300 560 :c25 stage)
