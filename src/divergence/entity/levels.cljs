@@ -22,7 +22,7 @@
    (e/metalTileB 0 560 :t2 stage)
    (e/metalTileA 100 560 :t3 stage)
    (e/metalTileB 200 560 :t4 stage)
-   (e/tutorial-text "Use arrow-keys to move!" 50 400  enemies/updown-path stage)
+   (e/tutorial-text "Use arrow-keys to move!" 50 400  enemies/updown-path true stage)
    (e/metalTileC 300 560 :t5 stage)
    (e/metalTileB 400 560 :t6 stage)
    (e/metalTileC 500 560 :t7 stage)

@@ -379,13 +379,14 @@
            c/fps-counter
            (c/on-stage stage)]))
 
-(defn tutorial-text [text x y path stage]
+(defn tutorial-text [text x y path loop? stage]
   (entity [(c/named :tutorial-text)
            (c/entity-type :text)
            (c/unique (c/text text #js {:font "20px Calibri" :fill "white"}))
            (c/position x y 0)
            (c/on-stage stage)
            (c/move-path path)
+           (c/path-loop loop?)
            c/path-index
            c/movable
            c/path-direction]))
