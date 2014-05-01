@@ -110,6 +110,13 @@
       ;; Reset! the entity
       (reset! e past-state))))
 
+(defn animate-timetravel-backwards
+  []
+  (aset renderer/stage "filters" (clj->js [renderer/blur renderer/twist])))
+
+(defn clear-animations
+  []
+  (aset renderer/stage "filters" nil))
 
 (defn time-travel
   "Entry function for traveling through time forward and backwards"
@@ -127,8 +134,12 @@
     (if traveling-back?
       ;; we are traveling back in time, so lets call tick-backwards
       (do
+        (animate-timetravel-backwards)
         (tick-backwards timestream divergent-entities)
         (swap! player-entity assoc-in [:player-time-traveler :traveled-back?] true))
       ;; Else we are going forward
-      (tick-forward timestream divergent-entities))))
+      (do
+        (clear-animations)
+        (tick-forward timestream divergent-entities)))))
+
 
