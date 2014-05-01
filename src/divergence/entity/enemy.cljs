@@ -52,6 +52,8 @@
   )
 
 (defn enemy-effect-two [player enemy]
+  (let [{[x y rot] :position} @player]
+    (swap! player assoc-in [:position] [(- x 200) y rot]))
   (set! (.-textures (e/entity-atom->ref player)) (cljs-to-js (map textures/textures e/batAnimation)))
   )
 
