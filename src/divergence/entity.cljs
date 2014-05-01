@@ -80,6 +80,9 @@
 (def catTextureB :divergence.textures/catB)
 (def catTextureC :divergence.textures/catC)
 
+(def batTextureA :divergence.textures/batA)
+(def batTextureB :divergence.textures/batB)
+
 (def enemyATextureRight :divergence.textures/enemyRight1)
 (def enemyATextureLeft :divergence.textures/enemyLeft1)
 (def enemyBTextureRight :divergence.textures/enemyRight2)
@@ -91,6 +94,8 @@
 (def walkAnimationLeft [pl1 pl2 pl3 pl4])
 
 (def catAnimation [catTextureA catTextureB catTextureC])
+
+(def batAnimation [batTextureA batTextureB])
 
 ;;-------------------------------------------------
 ;;Entity Methods-----------------------------------
@@ -364,12 +369,25 @@
 
 (def cat (partial npc 1 1 catAnimation))
 
+(def bat (partial npc 1 1 batAnimation))
+
 (defn some-text [stage]
   (entity [(c/named :fps-counter)
            (c/unique (c/text "Hello World" #js {:font "20px Calibri" :fill "white"}))
            (c/position 20 10 0)
            c/fps-counter
            (c/on-stage stage)]))
+
+(defn tutorial-text [text x y path stage]
+  (entity [(c/named :tutorial-text)
+           (c/entity-type :text)
+           (c/unique (c/text text #js {:font "20px Calibri" :fill "white"}))
+           (c/position x y 0)
+           (c/on-stage stage)
+           (c/move-path path)
+           c/path-index
+           c/movable
+           c/path-direction]))
 
 (defn key-block [x y stage]
   (entity [(c/named :key)

@@ -105,6 +105,10 @@
              {:string string
               :style style}))
 
+(defn position [x y rot]
+  (component :position
+             [x y rot]))
+
 ;;Pass in a :key of what needs to be done/held to pass the goal
 (defn win-condition [condition]
   (component :win-condition condition))

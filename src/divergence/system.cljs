@@ -222,8 +222,9 @@
   [entities]
   (doseq [e entities
           :let [cond1 (= (@e :type) :npc)
-                cond2 (= (@e :type) :enemy)]
-          :when (or cond1 cond2)]
+                cond2 (= (@e :type) :enemy)
+                cond3 (= (@e :type) :text)]
+          :when (or cond1 cond2 cond3)]
     (index-check e)
     (swap! e assoc-in [:velocity] (fetch-current-path e))
     (swap! e assoc :path-index (+ (@e :path-index) 2))))

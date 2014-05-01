@@ -61,6 +61,9 @@
 (def catTextureB (js/PIXI.Texture.fromImage "assets/img/cat2.png"))
 (def catTextureC (js/PIXI.Texture.fromImage "assets/img/cat3.png"))
 
+(def batTextureA (js/PIXI.Texture.fromImage "assets/img/bat1.png"))
+(def batTextureB (js/PIXI.Texture.fromImage "assets/img/bat2.png"))
+
 (def enemyTextureA (js/PIXI.Texture.fromImage "assets/img/enemy1right.png"))
 (def enemyTextureB (js/PIXI.Texture.fromImage "assets/img/enemy1left.png"))
 (def enemyTextureC (js/PIXI.Texture.fromImage "assets/img/enemy2right.png"))
@@ -134,6 +137,9 @@
     ::catA catTextureA
     ::catB catTextureB
     ::catC catTextureC
+
+    ::batA batTextureA
+    ::batB batTextureB
 
     ::enemyRight1 enemyTextureA
     ::enemyLeft1 enemyTextureB
