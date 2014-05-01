@@ -2,14 +2,15 @@
  "file":
  "/Users/Chelsea/GIT/divergence/web/out/divergence/renderer.js",
  "sources":["renderer.cljs"],
- "lineCount":14,
+ "lineCount":17,
  "mappings":
- ";AAAA;;AAEA,AAAKA,gCAAU,AAACC,yBAAK,KAAAC;AACrB,AAAKC,6BAAO,AAACF,yBAAK,KAAAC;AAElB,AAAKE,4BAAM,KAAAC,WAAA;AACX,AAAKC,+BAAS,KAAAC,wBAAA,IAAA;AAEd,AAAKC,2BAAK,KAAAC;AACV,AAAKC,4BAAM,KAAAC;AAEX,2BAAA,1BAAMD,qCAAcE;AACpB,2BAAA,YAAA,tCAAMF;AAEN,AACC,wBAAA,xBAACG,sDACD,AAAQP",
+ ";AAAA;;AAEA,AAAKA,gCAAU,AAACC,yBAAK,KAAAC;AACrB,AAAKC,6BAAO,AAACF,yBAAK,KAAAC;AAElB,AAAKE,4BAAM,KAAAC,WAAA;AACX,AAAKC,+BAAS,KAAAC,wBAAA,IAAA;AAEd,AAAKC,2BAAK,KAAAC;AACV,AAAKC,4BAAM,KAAAC;AACX,AAAKC,2BAAK,KAAAC;AAEV,2BAAA,1BAAMH,qCAAcI;AACpB,2BAAA,YAAA,tCAAMJ;AACN,0BAAA,UAAA,nCAAME;AACN,0BAAA,UAAA,nCAAMA;AAEN,AACC,wBAAA,xBAACG,sDACD,AAAQT",
  "names":
  ["divergence.renderer/container", "cljs.core/atom",
   "js/PIXI.DisplayObjectContainer", "divergence.renderer/camera",
   "divergence.renderer/stage", "js/PIXI.Stage",
   "divergence.renderer/renderer", "js/PIXI.autoDetectRenderer",
   "divergence.renderer/blur", "js/PIXI.BlurFilter",
-  "divergence.renderer/twist", "js/PIXI.TwistFilter", "/5",
+  "divergence.renderer/twist", "js/PIXI.TwistFilter",
+  "divergence.renderer/gray", "js/PIXI.GrayFilter", "/5",
   "js/document.getElementById"]}

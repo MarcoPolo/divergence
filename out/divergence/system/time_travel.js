@@ -10,13 +10,13 @@ goog.require('divergence.timeviz');
 goog.require('divergence.entity');
 goog.require('divergence.entity');
 divergence.system.time_travel.rewind_speed = 1;
-divergence.system.time_travel.reverse_time = (function reverse_time(timestream,p__20859,rewind_time){var vec__20862 = p__20859;var timeline = cljs.core.nth.call(null,vec__20862,0,null);var time_left_in_timeline = cljs.core.nth.call(null,vec__20862,1,null);if((time_left_in_timeline > rewind_time))
+divergence.system.time_travel.reverse_time = (function reverse_time(timestream,p__21030,rewind_time){var vec__21033 = p__21030;var timeline = cljs.core.nth.call(null,vec__21033,0,null);var time_left_in_timeline = cljs.core.nth.call(null,vec__21033,1,null);if((time_left_in_timeline > rewind_time))
 {return new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [timeline,(time_left_in_timeline - rewind_time)], null);
 } else
-{var vec__20863 = cljs.core.get_in.call(null,timestream,new cljs.core.PersistentVector(null, 3, 5, cljs.core.PersistentVector.EMPTY_NODE, [timeline,0,new cljs.core.Keyword(null,"prev-node","prev-node",4421093582)], null));var prev_timeline = cljs.core.nth.call(null,vec__20863,0,null);var prev_time = cljs.core.nth.call(null,vec__20863,1,null);return reverse_time.call(null,timestream,new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [prev_timeline,prev_time], null),(rewind_time - time_left_in_timeline));
+{var vec__21034 = cljs.core.get_in.call(null,timestream,new cljs.core.PersistentVector(null, 3, 5, cljs.core.PersistentVector.EMPTY_NODE, [timeline,0,new cljs.core.Keyword(null,"prev-node","prev-node",4421093582)], null));var prev_timeline = cljs.core.nth.call(null,vec__21034,0,null);var prev_time = cljs.core.nth.call(null,vec__21034,1,null);return reverse_time.call(null,timestream,new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [prev_timeline,prev_time], null),(rewind_time - time_left_in_timeline));
 }
 });
-divergence.system.time_travel.create_divergent_entity = (function create_divergent_entity(time_event_node){var non_player = cljs.core.assoc_in.call(null,divergence.entity.non_player.call(null,divergence.renderer.stage),new cljs.core.PersistentVector(null, 3, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"normal","normal",4269125721),new cljs.core.Keyword(null,"divergent","divergent",3614789780),new cljs.core.Keyword(null,"current-node","current-node",2436467016)], null),time_event_node);var vec__20865 = divergence.entity.register_entity_BANG_.call(null,non_player);var normal_e_atom = cljs.core.nth.call(null,vec__20865,0,null);var unique_e_atom = cljs.core.nth.call(null,vec__20865,1,null);divergence.system.create_ref.call(null,new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [unique_e_atom], null));
+divergence.system.time_travel.create_divergent_entity = (function create_divergent_entity(time_event_node){var non_player = cljs.core.assoc_in.call(null,divergence.entity.non_player.call(null,divergence.renderer.stage),new cljs.core.PersistentVector(null, 3, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"normal","normal",4269125721),new cljs.core.Keyword(null,"divergent","divergent",3614789780),new cljs.core.Keyword(null,"current-node","current-node",2436467016)], null),time_event_node);var vec__21036 = divergence.entity.register_entity_BANG_.call(null,non_player);var normal_e_atom = cljs.core.nth.call(null,vec__21036,0,null);var unique_e_atom = cljs.core.nth.call(null,vec__21036,1,null);divergence.system.create_ref.call(null,new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [unique_e_atom], null));
 divergence.system.to_stage.call(null,cljs.core.deref.call(null,divergence.renderer.container),new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [unique_e_atom], null));
 divergence.system.position.call(null,new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [normal_e_atom], null));
 divergence.system.anchor.call(null,new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [normal_e_atom], null));
@@ -25,64 +25,64 @@ return divergence.system.scale.call(null,new cljs.core.PersistentVector(null, 1,
 /**
 * This will create a new timeline with the prev-node where the current-node is
 */
-divergence.system.time_travel.create_new_timeline = (function create_new_timeline(timestream,player_entity){var number_of_timelines = cljs.core.count.call(null,cljs.core.deref.call(null,timestream));var map__20867 = cljs.core.deref.call(null,player_entity).call(null,new cljs.core.Keyword(null,"divergent","divergent",3614789780));var map__20867__$1 = ((cljs.core.seq_QMARK_.call(null,map__20867))?cljs.core.apply.call(null,cljs.core.hash_map,map__20867):map__20867);var time_name = cljs.core.get.call(null,map__20867__$1,new cljs.core.Keyword(null,"time-name","time-name",1004205309));var current_node = cljs.core.get.call(null,map__20867__$1,new cljs.core.Keyword(null,"current-node","current-node",2436467016));var new_timeline_number = number_of_timelines;cljs.core.swap_BANG_.call(null,timestream,cljs.core.conj,cljs.core.PersistentVector.EMPTY);
+divergence.system.time_travel.create_new_timeline = (function create_new_timeline(timestream,player_entity){var number_of_timelines = cljs.core.count.call(null,cljs.core.deref.call(null,timestream));var map__21038 = cljs.core.deref.call(null,player_entity).call(null,new cljs.core.Keyword(null,"divergent","divergent",3614789780));var map__21038__$1 = ((cljs.core.seq_QMARK_.call(null,map__21038))?cljs.core.apply.call(null,cljs.core.hash_map,map__21038):map__21038);var time_name = cljs.core.get.call(null,map__21038__$1,new cljs.core.Keyword(null,"time-name","time-name",1004205309));var current_node = cljs.core.get.call(null,map__21038__$1,new cljs.core.Keyword(null,"current-node","current-node",2436467016));var new_timeline_number = number_of_timelines;cljs.core.swap_BANG_.call(null,timestream,cljs.core.conj,cljs.core.PersistentVector.EMPTY);
 cljs.core.swap_BANG_.call(null,timestream,cljs.core.update_in,cljs.core.conj.call(null,current_node,new cljs.core.Keyword(null,"forks","forks",1111523171)),cljs.core.fnil.call(null,cljs.core.conj,cljs.core.PersistentVector.EMPTY),new_timeline_number);
 cljs.core.swap_BANG_.call(null,player_entity,cljs.core.assoc_in,new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"divergent","divergent",3614789780),new cljs.core.Keyword(null,"current-node","current-node",2436467016)], null),new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new_timeline_number,0], null));
 cljs.core.swap_BANG_.call(null,timestream,cljs.core.assoc_in,new cljs.core.PersistentVector(null, 3, 5, cljs.core.PersistentVector.EMPTY_NODE, [new_timeline_number,0,new cljs.core.Keyword(null,"prev-node","prev-node",4421093582)], null),current_node);
 cljs.core.swap_BANG_.call(null,timestream,cljs.core.assoc_in,new cljs.core.PersistentVector(null, 4, 5, cljs.core.PersistentVector.EMPTY_NODE, [new_timeline_number,0,new cljs.core.Keyword(null,"value","value",1125876963),time_name], null),cljs.core.deref.call(null,player_entity));
 return divergence.system.time_travel.create_divergent_entity.call(null,current_node);
 });
-divergence.system.time_travel.tick_forward = (function tick_forward(timestream,entities){var player = cljs.core.first.call(null,cljs.core.filter.call(null,cljs.core.comp.call(null,new cljs.core.PersistentHashSet(null, new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"player","player",4323118675),null], null), null),new cljs.core.Keyword(null,"name","name",1017277949),cljs.core.deref,cljs.core.deref.call(null,divergence.entity.entity_atom__GT_unique_entity_atom)),divergence.entity.filter_entities.call(null,new cljs.core.Keyword(null,"name","name",1017277949),entities)));var map__20886 = new cljs.core.Keyword(null,"divergent","divergent",3614789780).cljs$core$IFn$_invoke$arity$1(cljs.core.deref.call(null,player));var map__20886__$1 = ((cljs.core.seq_QMARK_.call(null,map__20886))?cljs.core.apply.call(null,cljs.core.hash_map,map__20886):map__20886);var vec__20887 = cljs.core.get.call(null,map__20886__$1,new cljs.core.Keyword(null,"current-node","current-node",2436467016));var player_timeline = cljs.core.nth.call(null,vec__20887,0,null);var _ = cljs.core.nth.call(null,vec__20887,1,null);var seq__20888 = cljs.core.seq.call(null,entities);var chunk__20890 = null;var count__20891 = 0;var i__20892 = 0;while(true){
-if((i__20892 < count__20891))
-{var e = cljs.core._nth.call(null,chunk__20890,i__20892);var map__20894_20904 = new cljs.core.Keyword(null,"divergent","divergent",3614789780).cljs$core$IFn$_invoke$arity$1(cljs.core.deref.call(null,e));var map__20894_20905__$1 = ((cljs.core.seq_QMARK_.call(null,map__20894_20904))?cljs.core.apply.call(null,cljs.core.hash_map,map__20894_20904):map__20894_20904);var time_name_20906 = cljs.core.get.call(null,map__20894_20905__$1,new cljs.core.Keyword(null,"time-name","time-name",1004205309));var current_node_20907 = cljs.core.get.call(null,map__20894_20905__$1,new cljs.core.Keyword(null,"current-node","current-node",2436467016));var future_node_20908 = cljs.core.update_in.call(null,current_node_20907,new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [1], null),cljs.core.inc);var future_value_path_20909 = cljs.core.conj.call(null,future_node_20908,new cljs.core.Keyword(null,"value","value",1125876963),time_name_20906);var future_state_20910 = cljs.core.get_in.call(null,cljs.core.deref.call(null,timestream),future_value_path_20909);var n_20911 = new cljs.core.Keyword(null,"name","name",1017277949).cljs$core$IFn$_invoke$arity$1(cljs.core.deref.call(null,cljs.core.deref.call(null,divergence.entity.entity_atom__GT_unique_entity_atom).call(null,e)));divergence.timeviz.draw_time_node.call(null,new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [cljs.core.first.call(null,future_node_20908),(cljs.core.second.call(null,future_node_20908) + divergence.timeviz.find_time_offset.call(null,cljs.core.deref.call(null,timestream),cljs.core.first.call(null,future_node_20908)))], null));
-if(cljs.core.truth_(future_state_20910))
-{var temp__4090__auto___20912 = cljs.core.get_in.call(null,cljs.core.deref.call(null,timestream),cljs.core.conj.call(null,future_node_20908,new cljs.core.Keyword(null,"forks","forks",1111523171)));if(cljs.core.truth_(temp__4090__auto___20912))
-{var forks_20913 = temp__4090__auto___20912;cljs.core.reset_BANG_.call(null,e,future_state_20910);
-var seq__20895_20914 = cljs.core.seq.call(null,forks_20913);var chunk__20896_20915 = null;var count__20897_20916 = 0;var i__20898_20917 = 0;while(true){
-if((i__20898_20917 < count__20897_20916))
-{var fork_20918 = cljs.core._nth.call(null,chunk__20896_20915,i__20898_20917);if(cljs.core._EQ_.call(null,fork_20918,player_timeline))
+divergence.system.time_travel.tick_forward = (function tick_forward(timestream,entities){var player = cljs.core.first.call(null,cljs.core.filter.call(null,cljs.core.comp.call(null,new cljs.core.PersistentHashSet(null, new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"player","player",4323118675),null], null), null),new cljs.core.Keyword(null,"name","name",1017277949),cljs.core.deref,cljs.core.deref.call(null,divergence.entity.entity_atom__GT_unique_entity_atom)),divergence.entity.filter_entities.call(null,new cljs.core.Keyword(null,"name","name",1017277949),entities)));var map__21057 = new cljs.core.Keyword(null,"divergent","divergent",3614789780).cljs$core$IFn$_invoke$arity$1(cljs.core.deref.call(null,player));var map__21057__$1 = ((cljs.core.seq_QMARK_.call(null,map__21057))?cljs.core.apply.call(null,cljs.core.hash_map,map__21057):map__21057);var vec__21058 = cljs.core.get.call(null,map__21057__$1,new cljs.core.Keyword(null,"current-node","current-node",2436467016));var player_timeline = cljs.core.nth.call(null,vec__21058,0,null);var _ = cljs.core.nth.call(null,vec__21058,1,null);var seq__21059 = cljs.core.seq.call(null,entities);var chunk__21061 = null;var count__21062 = 0;var i__21063 = 0;while(true){
+if((i__21063 < count__21062))
+{var e = cljs.core._nth.call(null,chunk__21061,i__21063);var map__21065_21075 = new cljs.core.Keyword(null,"divergent","divergent",3614789780).cljs$core$IFn$_invoke$arity$1(cljs.core.deref.call(null,e));var map__21065_21076__$1 = ((cljs.core.seq_QMARK_.call(null,map__21065_21075))?cljs.core.apply.call(null,cljs.core.hash_map,map__21065_21075):map__21065_21075);var time_name_21077 = cljs.core.get.call(null,map__21065_21076__$1,new cljs.core.Keyword(null,"time-name","time-name",1004205309));var current_node_21078 = cljs.core.get.call(null,map__21065_21076__$1,new cljs.core.Keyword(null,"current-node","current-node",2436467016));var future_node_21079 = cljs.core.update_in.call(null,current_node_21078,new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [1], null),cljs.core.inc);var future_value_path_21080 = cljs.core.conj.call(null,future_node_21079,new cljs.core.Keyword(null,"value","value",1125876963),time_name_21077);var future_state_21081 = cljs.core.get_in.call(null,cljs.core.deref.call(null,timestream),future_value_path_21080);var n_21082 = new cljs.core.Keyword(null,"name","name",1017277949).cljs$core$IFn$_invoke$arity$1(cljs.core.deref.call(null,cljs.core.deref.call(null,divergence.entity.entity_atom__GT_unique_entity_atom).call(null,e)));divergence.timeviz.draw_time_node.call(null,new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [cljs.core.first.call(null,future_node_21079),(cljs.core.second.call(null,future_node_21079) + divergence.timeviz.find_time_offset.call(null,cljs.core.deref.call(null,timestream),cljs.core.first.call(null,future_node_21079)))], null));
+if(cljs.core.truth_(future_state_21081))
+{var temp__4090__auto___21083 = cljs.core.get_in.call(null,cljs.core.deref.call(null,timestream),cljs.core.conj.call(null,future_node_21079,new cljs.core.Keyword(null,"forks","forks",1111523171)));if(cljs.core.truth_(temp__4090__auto___21083))
+{var forks_21084 = temp__4090__auto___21083;cljs.core.reset_BANG_.call(null,e,future_state_21081);
+var seq__21066_21085 = cljs.core.seq.call(null,forks_21084);var chunk__21067_21086 = null;var count__21068_21087 = 0;var i__21069_21088 = 0;while(true){
+if((i__21069_21088 < count__21068_21087))
+{var fork_21089 = cljs.core._nth.call(null,chunk__21067_21086,i__21069_21088);if(cljs.core._EQ_.call(null,fork_21089,player_timeline))
 {} else
-{divergence.system.time_travel.create_divergent_entity.call(null,new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [fork_20918,0], null));
+{divergence.system.time_travel.create_divergent_entity.call(null,new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [fork_21089,0], null));
 }
 {
-var G__20919 = seq__20895_20914;
-var G__20920 = chunk__20896_20915;
-var G__20921 = count__20897_20916;
-var G__20922 = (i__20898_20917 + 1);
-seq__20895_20914 = G__20919;
-chunk__20896_20915 = G__20920;
-count__20897_20916 = G__20921;
-i__20898_20917 = G__20922;
+var G__21090 = seq__21066_21085;
+var G__21091 = chunk__21067_21086;
+var G__21092 = count__21068_21087;
+var G__21093 = (i__21069_21088 + 1);
+seq__21066_21085 = G__21090;
+chunk__21067_21086 = G__21091;
+count__21068_21087 = G__21092;
+i__21069_21088 = G__21093;
 continue;
 }
 } else
-{var temp__4092__auto___20923 = cljs.core.seq.call(null,seq__20895_20914);if(temp__4092__auto___20923)
-{var seq__20895_20924__$1 = temp__4092__auto___20923;if(cljs.core.chunked_seq_QMARK_.call(null,seq__20895_20924__$1))
-{var c__4150__auto___20925 = cljs.core.chunk_first.call(null,seq__20895_20924__$1);{
-var G__20926 = cljs.core.chunk_rest.call(null,seq__20895_20924__$1);
-var G__20927 = c__4150__auto___20925;
-var G__20928 = cljs.core.count.call(null,c__4150__auto___20925);
-var G__20929 = 0;
-seq__20895_20914 = G__20926;
-chunk__20896_20915 = G__20927;
-count__20897_20916 = G__20928;
-i__20898_20917 = G__20929;
+{var temp__4092__auto___21094 = cljs.core.seq.call(null,seq__21066_21085);if(temp__4092__auto___21094)
+{var seq__21066_21095__$1 = temp__4092__auto___21094;if(cljs.core.chunked_seq_QMARK_.call(null,seq__21066_21095__$1))
+{var c__4150__auto___21096 = cljs.core.chunk_first.call(null,seq__21066_21095__$1);{
+var G__21097 = cljs.core.chunk_rest.call(null,seq__21066_21095__$1);
+var G__21098 = c__4150__auto___21096;
+var G__21099 = cljs.core.count.call(null,c__4150__auto___21096);
+var G__21100 = 0;
+seq__21066_21085 = G__21097;
+chunk__21067_21086 = G__21098;
+count__21068_21087 = G__21099;
+i__21069_21088 = G__21100;
 continue;
 }
 } else
-{var fork_20930 = cljs.core.first.call(null,seq__20895_20924__$1);if(cljs.core._EQ_.call(null,fork_20930,player_timeline))
+{var fork_21101 = cljs.core.first.call(null,seq__21066_21095__$1);if(cljs.core._EQ_.call(null,fork_21101,player_timeline))
 {} else
-{divergence.system.time_travel.create_divergent_entity.call(null,new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [fork_20930,0], null));
+{divergence.system.time_travel.create_divergent_entity.call(null,new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [fork_21101,0], null));
 }
 {
-var G__20931 = cljs.core.next.call(null,seq__20895_20924__$1);
-var G__20932 = null;
-var G__20933 = 0;
-var G__20934 = 0;
-seq__20895_20914 = G__20931;
-chunk__20896_20915 = G__20932;
-count__20897_20916 = G__20933;
-i__20898_20917 = G__20934;
+var G__21102 = cljs.core.next.call(null,seq__21066_21095__$1);
+var G__21103 = null;
+var G__21104 = 0;
+var G__21105 = 0;
+seq__21066_21085 = G__21102;
+chunk__21067_21086 = G__21103;
+count__21068_21087 = G__21104;
+i__21069_21088 = G__21105;
 continue;
 }
 }
@@ -92,92 +92,92 @@ continue;
 break;
 }
 } else
-{cljs.core.reset_BANG_.call(null,e,future_state_20910);
+{cljs.core.reset_BANG_.call(null,e,future_state_21081);
 }
 } else
-{if(cljs.core._EQ_.call(null,new cljs.core.Keyword(null,"player","player",4323118675),n_20911))
-{cljs.core.swap_BANG_.call(null,timestream,cljs.core.update_in,future_node_20908,cljs.core.fnil.call(null,cljs.core.identity,cljs.core.PersistentArrayMap.EMPTY));
-cljs.core.swap_BANG_.call(null,e,cljs.core.assoc_in,new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"divergent","divergent",3614789780),new cljs.core.Keyword(null,"current-node","current-node",2436467016)], null),future_node_20908);
-cljs.core.swap_BANG_.call(null,timestream,cljs.core.assoc_in,future_value_path_20909,cljs.core.deref.call(null,e));
+{if(cljs.core._EQ_.call(null,new cljs.core.Keyword(null,"player","player",4323118675),n_21082))
+{cljs.core.swap_BANG_.call(null,timestream,cljs.core.update_in,future_node_21079,cljs.core.fnil.call(null,cljs.core.identity,cljs.core.PersistentArrayMap.EMPTY));
+cljs.core.swap_BANG_.call(null,e,cljs.core.assoc_in,new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"divergent","divergent",3614789780),new cljs.core.Keyword(null,"current-node","current-node",2436467016)], null),future_node_21079);
+cljs.core.swap_BANG_.call(null,timestream,cljs.core.assoc_in,future_value_path_21080,cljs.core.deref.call(null,e));
 } else
 {divergence.entity.destroy_entity_BANG_.call(null,e);
 }
 }
 {
-var G__20935 = seq__20888;
-var G__20936 = chunk__20890;
-var G__20937 = count__20891;
-var G__20938 = (i__20892 + 1);
-seq__20888 = G__20935;
-chunk__20890 = G__20936;
-count__20891 = G__20937;
-i__20892 = G__20938;
+var G__21106 = seq__21059;
+var G__21107 = chunk__21061;
+var G__21108 = count__21062;
+var G__21109 = (i__21063 + 1);
+seq__21059 = G__21106;
+chunk__21061 = G__21107;
+count__21062 = G__21108;
+i__21063 = G__21109;
 continue;
 }
 } else
-{var temp__4092__auto__ = cljs.core.seq.call(null,seq__20888);if(temp__4092__auto__)
-{var seq__20888__$1 = temp__4092__auto__;if(cljs.core.chunked_seq_QMARK_.call(null,seq__20888__$1))
-{var c__4150__auto__ = cljs.core.chunk_first.call(null,seq__20888__$1);{
-var G__20939 = cljs.core.chunk_rest.call(null,seq__20888__$1);
-var G__20940 = c__4150__auto__;
-var G__20941 = cljs.core.count.call(null,c__4150__auto__);
-var G__20942 = 0;
-seq__20888 = G__20939;
-chunk__20890 = G__20940;
-count__20891 = G__20941;
-i__20892 = G__20942;
+{var temp__4092__auto__ = cljs.core.seq.call(null,seq__21059);if(temp__4092__auto__)
+{var seq__21059__$1 = temp__4092__auto__;if(cljs.core.chunked_seq_QMARK_.call(null,seq__21059__$1))
+{var c__4150__auto__ = cljs.core.chunk_first.call(null,seq__21059__$1);{
+var G__21110 = cljs.core.chunk_rest.call(null,seq__21059__$1);
+var G__21111 = c__4150__auto__;
+var G__21112 = cljs.core.count.call(null,c__4150__auto__);
+var G__21113 = 0;
+seq__21059 = G__21110;
+chunk__21061 = G__21111;
+count__21062 = G__21112;
+i__21063 = G__21113;
 continue;
 }
 } else
-{var e = cljs.core.first.call(null,seq__20888__$1);var map__20899_20943 = new cljs.core.Keyword(null,"divergent","divergent",3614789780).cljs$core$IFn$_invoke$arity$1(cljs.core.deref.call(null,e));var map__20899_20944__$1 = ((cljs.core.seq_QMARK_.call(null,map__20899_20943))?cljs.core.apply.call(null,cljs.core.hash_map,map__20899_20943):map__20899_20943);var time_name_20945 = cljs.core.get.call(null,map__20899_20944__$1,new cljs.core.Keyword(null,"time-name","time-name",1004205309));var current_node_20946 = cljs.core.get.call(null,map__20899_20944__$1,new cljs.core.Keyword(null,"current-node","current-node",2436467016));var future_node_20947 = cljs.core.update_in.call(null,current_node_20946,new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [1], null),cljs.core.inc);var future_value_path_20948 = cljs.core.conj.call(null,future_node_20947,new cljs.core.Keyword(null,"value","value",1125876963),time_name_20945);var future_state_20949 = cljs.core.get_in.call(null,cljs.core.deref.call(null,timestream),future_value_path_20948);var n_20950 = new cljs.core.Keyword(null,"name","name",1017277949).cljs$core$IFn$_invoke$arity$1(cljs.core.deref.call(null,cljs.core.deref.call(null,divergence.entity.entity_atom__GT_unique_entity_atom).call(null,e)));divergence.timeviz.draw_time_node.call(null,new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [cljs.core.first.call(null,future_node_20947),(cljs.core.second.call(null,future_node_20947) + divergence.timeviz.find_time_offset.call(null,cljs.core.deref.call(null,timestream),cljs.core.first.call(null,future_node_20947)))], null));
-if(cljs.core.truth_(future_state_20949))
-{var temp__4090__auto___20951 = cljs.core.get_in.call(null,cljs.core.deref.call(null,timestream),cljs.core.conj.call(null,future_node_20947,new cljs.core.Keyword(null,"forks","forks",1111523171)));if(cljs.core.truth_(temp__4090__auto___20951))
-{var forks_20952 = temp__4090__auto___20951;cljs.core.reset_BANG_.call(null,e,future_state_20949);
-var seq__20900_20953 = cljs.core.seq.call(null,forks_20952);var chunk__20901_20954 = null;var count__20902_20955 = 0;var i__20903_20956 = 0;while(true){
-if((i__20903_20956 < count__20902_20955))
-{var fork_20957 = cljs.core._nth.call(null,chunk__20901_20954,i__20903_20956);if(cljs.core._EQ_.call(null,fork_20957,player_timeline))
+{var e = cljs.core.first.call(null,seq__21059__$1);var map__21070_21114 = new cljs.core.Keyword(null,"divergent","divergent",3614789780).cljs$core$IFn$_invoke$arity$1(cljs.core.deref.call(null,e));var map__21070_21115__$1 = ((cljs.core.seq_QMARK_.call(null,map__21070_21114))?cljs.core.apply.call(null,cljs.core.hash_map,map__21070_21114):map__21070_21114);var time_name_21116 = cljs.core.get.call(null,map__21070_21115__$1,new cljs.core.Keyword(null,"time-name","time-name",1004205309));var current_node_21117 = cljs.core.get.call(null,map__21070_21115__$1,new cljs.core.Keyword(null,"current-node","current-node",2436467016));var future_node_21118 = cljs.core.update_in.call(null,current_node_21117,new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [1], null),cljs.core.inc);var future_value_path_21119 = cljs.core.conj.call(null,future_node_21118,new cljs.core.Keyword(null,"value","value",1125876963),time_name_21116);var future_state_21120 = cljs.core.get_in.call(null,cljs.core.deref.call(null,timestream),future_value_path_21119);var n_21121 = new cljs.core.Keyword(null,"name","name",1017277949).cljs$core$IFn$_invoke$arity$1(cljs.core.deref.call(null,cljs.core.deref.call(null,divergence.entity.entity_atom__GT_unique_entity_atom).call(null,e)));divergence.timeviz.draw_time_node.call(null,new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [cljs.core.first.call(null,future_node_21118),(cljs.core.second.call(null,future_node_21118) + divergence.timeviz.find_time_offset.call(null,cljs.core.deref.call(null,timestream),cljs.core.first.call(null,future_node_21118)))], null));
+if(cljs.core.truth_(future_state_21120))
+{var temp__4090__auto___21122 = cljs.core.get_in.call(null,cljs.core.deref.call(null,timestream),cljs.core.conj.call(null,future_node_21118,new cljs.core.Keyword(null,"forks","forks",1111523171)));if(cljs.core.truth_(temp__4090__auto___21122))
+{var forks_21123 = temp__4090__auto___21122;cljs.core.reset_BANG_.call(null,e,future_state_21120);
+var seq__21071_21124 = cljs.core.seq.call(null,forks_21123);var chunk__21072_21125 = null;var count__21073_21126 = 0;var i__21074_21127 = 0;while(true){
+if((i__21074_21127 < count__21073_21126))
+{var fork_21128 = cljs.core._nth.call(null,chunk__21072_21125,i__21074_21127);if(cljs.core._EQ_.call(null,fork_21128,player_timeline))
 {} else
-{divergence.system.time_travel.create_divergent_entity.call(null,new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [fork_20957,0], null));
+{divergence.system.time_travel.create_divergent_entity.call(null,new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [fork_21128,0], null));
 }
 {
-var G__20958 = seq__20900_20953;
-var G__20959 = chunk__20901_20954;
-var G__20960 = count__20902_20955;
-var G__20961 = (i__20903_20956 + 1);
-seq__20900_20953 = G__20958;
-chunk__20901_20954 = G__20959;
-count__20902_20955 = G__20960;
-i__20903_20956 = G__20961;
+var G__21129 = seq__21071_21124;
+var G__21130 = chunk__21072_21125;
+var G__21131 = count__21073_21126;
+var G__21132 = (i__21074_21127 + 1);
+seq__21071_21124 = G__21129;
+chunk__21072_21125 = G__21130;
+count__21073_21126 = G__21131;
+i__21074_21127 = G__21132;
 continue;
 }
 } else
-{var temp__4092__auto___20962__$1 = cljs.core.seq.call(null,seq__20900_20953);if(temp__4092__auto___20962__$1)
-{var seq__20900_20963__$1 = temp__4092__auto___20962__$1;if(cljs.core.chunked_seq_QMARK_.call(null,seq__20900_20963__$1))
-{var c__4150__auto___20964 = cljs.core.chunk_first.call(null,seq__20900_20963__$1);{
-var G__20965 = cljs.core.chunk_rest.call(null,seq__20900_20963__$1);
-var G__20966 = c__4150__auto___20964;
-var G__20967 = cljs.core.count.call(null,c__4150__auto___20964);
-var G__20968 = 0;
-seq__20900_20953 = G__20965;
-chunk__20901_20954 = G__20966;
-count__20902_20955 = G__20967;
-i__20903_20956 = G__20968;
+{var temp__4092__auto___21133__$1 = cljs.core.seq.call(null,seq__21071_21124);if(temp__4092__auto___21133__$1)
+{var seq__21071_21134__$1 = temp__4092__auto___21133__$1;if(cljs.core.chunked_seq_QMARK_.call(null,seq__21071_21134__$1))
+{var c__4150__auto___21135 = cljs.core.chunk_first.call(null,seq__21071_21134__$1);{
+var G__21136 = cljs.core.chunk_rest.call(null,seq__21071_21134__$1);
+var G__21137 = c__4150__auto___21135;
+var G__21138 = cljs.core.count.call(null,c__4150__auto___21135);
+var G__21139 = 0;
+seq__21071_21124 = G__21136;
+chunk__21072_21125 = G__21137;
+count__21073_21126 = G__21138;
+i__21074_21127 = G__21139;
 continue;
 }
 } else
-{var fork_20969 = cljs.core.first.call(null,seq__20900_20963__$1);if(cljs.core._EQ_.call(null,fork_20969,player_timeline))
+{var fork_21140 = cljs.core.first.call(null,seq__21071_21134__$1);if(cljs.core._EQ_.call(null,fork_21140,player_timeline))
 {} else
-{divergence.system.time_travel.create_divergent_entity.call(null,new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [fork_20969,0], null));
+{divergence.system.time_travel.create_divergent_entity.call(null,new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [fork_21140,0], null));
 }
 {
-var G__20970 = cljs.core.next.call(null,seq__20900_20963__$1);
-var G__20971 = null;
-var G__20972 = 0;
-var G__20973 = 0;
-seq__20900_20953 = G__20970;
-chunk__20901_20954 = G__20971;
-count__20902_20955 = G__20972;
-i__20903_20956 = G__20973;
+var G__21141 = cljs.core.next.call(null,seq__21071_21134__$1);
+var G__21142 = null;
+var G__21143 = 0;
+var G__21144 = 0;
+seq__21071_21124 = G__21141;
+chunk__21072_21125 = G__21142;
+count__21073_21126 = G__21143;
+i__21074_21127 = G__21144;
 continue;
 }
 }
@@ -187,26 +187,26 @@ continue;
 break;
 }
 } else
-{cljs.core.reset_BANG_.call(null,e,future_state_20949);
+{cljs.core.reset_BANG_.call(null,e,future_state_21120);
 }
 } else
-{if(cljs.core._EQ_.call(null,new cljs.core.Keyword(null,"player","player",4323118675),n_20950))
-{cljs.core.swap_BANG_.call(null,timestream,cljs.core.update_in,future_node_20947,cljs.core.fnil.call(null,cljs.core.identity,cljs.core.PersistentArrayMap.EMPTY));
-cljs.core.swap_BANG_.call(null,e,cljs.core.assoc_in,new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"divergent","divergent",3614789780),new cljs.core.Keyword(null,"current-node","current-node",2436467016)], null),future_node_20947);
-cljs.core.swap_BANG_.call(null,timestream,cljs.core.assoc_in,future_value_path_20948,cljs.core.deref.call(null,e));
+{if(cljs.core._EQ_.call(null,new cljs.core.Keyword(null,"player","player",4323118675),n_21121))
+{cljs.core.swap_BANG_.call(null,timestream,cljs.core.update_in,future_node_21118,cljs.core.fnil.call(null,cljs.core.identity,cljs.core.PersistentArrayMap.EMPTY));
+cljs.core.swap_BANG_.call(null,e,cljs.core.assoc_in,new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"divergent","divergent",3614789780),new cljs.core.Keyword(null,"current-node","current-node",2436467016)], null),future_node_21118);
+cljs.core.swap_BANG_.call(null,timestream,cljs.core.assoc_in,future_value_path_21119,cljs.core.deref.call(null,e));
 } else
 {divergence.entity.destroy_entity_BANG_.call(null,e);
 }
 }
 {
-var G__20974 = cljs.core.next.call(null,seq__20888__$1);
-var G__20975 = null;
-var G__20976 = 0;
-var G__20977 = 0;
-seq__20888 = G__20974;
-chunk__20890 = G__20975;
-count__20891 = G__20976;
-i__20892 = G__20977;
+var G__21145 = cljs.core.next.call(null,seq__21059__$1);
+var G__21146 = null;
+var G__21147 = 0;
+var G__21148 = 0;
+seq__21059 = G__21145;
+chunk__21061 = G__21146;
+count__21062 = G__21147;
+i__21063 = G__21148;
 continue;
 }
 }
@@ -217,55 +217,55 @@ continue;
 break;
 }
 });
-divergence.system.time_travel.tick_backwards = (function tick_backwards(timestream,entities){var seq__20988 = cljs.core.seq.call(null,entities);var chunk__20990 = null;var count__20991 = 0;var i__20992 = 0;while(true){
-if((i__20992 < count__20991))
-{var e = cljs.core._nth.call(null,chunk__20990,i__20992);var map__20994_20998 = new cljs.core.Keyword(null,"divergent","divergent",3614789780).cljs$core$IFn$_invoke$arity$1(cljs.core.deref.call(null,e));var map__20994_20999__$1 = ((cljs.core.seq_QMARK_.call(null,map__20994_20998))?cljs.core.apply.call(null,cljs.core.hash_map,map__20994_20998):map__20994_20998);var time_name_21000 = cljs.core.get.call(null,map__20994_20999__$1,new cljs.core.Keyword(null,"time-name","time-name",1004205309));var current_node_21001 = cljs.core.get.call(null,map__20994_20999__$1,new cljs.core.Keyword(null,"current-node","current-node",2436467016));var unique_e_21002 = cljs.core.deref.call(null,divergence.entity.entity_atom__GT_unique_entity_atom).call(null,e);var vec__20995_21003 = current_node_21001;var current_timeline_21004 = cljs.core.nth.call(null,vec__20995_21003,0,null);var time_in_timeline_21005 = cljs.core.nth.call(null,vec__20995_21003,1,null);var past_node_21006 = divergence.system.time_travel.reverse_time.call(null,cljs.core.deref.call(null,timestream),current_node_21001,divergence.system.time_travel.rewind_speed);var past_state_21007 = cljs.core.get_in.call(null,cljs.core.deref.call(null,timestream),cljs.core.conj.call(null,past_node_21006,new cljs.core.Keyword(null,"value","value",1125876963),time_name_21000));divergence.timeviz.draw_time_node.call(null,new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [cljs.core.first.call(null,past_node_21006),(cljs.core.second.call(null,past_node_21006) + divergence.timeviz.find_time_offset.call(null,cljs.core.deref.call(null,timestream),cljs.core.first.call(null,past_node_21006)))], null),13250351);
-if(((time_in_timeline_21005 <= divergence.system.time_travel.rewind_speed)) && (cljs.core._EQ_.call(null,new cljs.core.Keyword(null,"non-player","non-player",841088339),new cljs.core.Keyword(null,"name","name",1017277949).cljs$core$IFn$_invoke$arity$1(cljs.core.deref.call(null,unique_e_21002)))))
+divergence.system.time_travel.tick_backwards = (function tick_backwards(timestream,entities){var seq__21159 = cljs.core.seq.call(null,entities);var chunk__21161 = null;var count__21162 = 0;var i__21163 = 0;while(true){
+if((i__21163 < count__21162))
+{var e = cljs.core._nth.call(null,chunk__21161,i__21163);var map__21165_21169 = new cljs.core.Keyword(null,"divergent","divergent",3614789780).cljs$core$IFn$_invoke$arity$1(cljs.core.deref.call(null,e));var map__21165_21170__$1 = ((cljs.core.seq_QMARK_.call(null,map__21165_21169))?cljs.core.apply.call(null,cljs.core.hash_map,map__21165_21169):map__21165_21169);var time_name_21171 = cljs.core.get.call(null,map__21165_21170__$1,new cljs.core.Keyword(null,"time-name","time-name",1004205309));var current_node_21172 = cljs.core.get.call(null,map__21165_21170__$1,new cljs.core.Keyword(null,"current-node","current-node",2436467016));var unique_e_21173 = cljs.core.deref.call(null,divergence.entity.entity_atom__GT_unique_entity_atom).call(null,e);var vec__21166_21174 = current_node_21172;var current_timeline_21175 = cljs.core.nth.call(null,vec__21166_21174,0,null);var time_in_timeline_21176 = cljs.core.nth.call(null,vec__21166_21174,1,null);var past_node_21177 = divergence.system.time_travel.reverse_time.call(null,cljs.core.deref.call(null,timestream),current_node_21172,divergence.system.time_travel.rewind_speed);var past_state_21178 = cljs.core.get_in.call(null,cljs.core.deref.call(null,timestream),cljs.core.conj.call(null,past_node_21177,new cljs.core.Keyword(null,"value","value",1125876963),time_name_21171));divergence.timeviz.draw_time_node.call(null,new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [cljs.core.first.call(null,past_node_21177),(cljs.core.second.call(null,past_node_21177) + divergence.timeviz.find_time_offset.call(null,cljs.core.deref.call(null,timestream),cljs.core.first.call(null,past_node_21177)))], null),13250351);
+if(((time_in_timeline_21176 <= divergence.system.time_travel.rewind_speed)) && (cljs.core._EQ_.call(null,new cljs.core.Keyword(null,"non-player","non-player",841088339),new cljs.core.Keyword(null,"name","name",1017277949).cljs$core$IFn$_invoke$arity$1(cljs.core.deref.call(null,unique_e_21173)))))
 {divergence.entity.destroy_entity_BANG_.call(null,e);
 } else
-{cljs.core.reset_BANG_.call(null,e,past_state_21007);
+{cljs.core.reset_BANG_.call(null,e,past_state_21178);
 }
 {
-var G__21008 = seq__20988;
-var G__21009 = chunk__20990;
-var G__21010 = count__20991;
-var G__21011 = (i__20992 + 1);
-seq__20988 = G__21008;
-chunk__20990 = G__21009;
-count__20991 = G__21010;
-i__20992 = G__21011;
+var G__21179 = seq__21159;
+var G__21180 = chunk__21161;
+var G__21181 = count__21162;
+var G__21182 = (i__21163 + 1);
+seq__21159 = G__21179;
+chunk__21161 = G__21180;
+count__21162 = G__21181;
+i__21163 = G__21182;
 continue;
 }
 } else
-{var temp__4092__auto__ = cljs.core.seq.call(null,seq__20988);if(temp__4092__auto__)
-{var seq__20988__$1 = temp__4092__auto__;if(cljs.core.chunked_seq_QMARK_.call(null,seq__20988__$1))
-{var c__4150__auto__ = cljs.core.chunk_first.call(null,seq__20988__$1);{
-var G__21012 = cljs.core.chunk_rest.call(null,seq__20988__$1);
-var G__21013 = c__4150__auto__;
-var G__21014 = cljs.core.count.call(null,c__4150__auto__);
-var G__21015 = 0;
-seq__20988 = G__21012;
-chunk__20990 = G__21013;
-count__20991 = G__21014;
-i__20992 = G__21015;
+{var temp__4092__auto__ = cljs.core.seq.call(null,seq__21159);if(temp__4092__auto__)
+{var seq__21159__$1 = temp__4092__auto__;if(cljs.core.chunked_seq_QMARK_.call(null,seq__21159__$1))
+{var c__4150__auto__ = cljs.core.chunk_first.call(null,seq__21159__$1);{
+var G__21183 = cljs.core.chunk_rest.call(null,seq__21159__$1);
+var G__21184 = c__4150__auto__;
+var G__21185 = cljs.core.count.call(null,c__4150__auto__);
+var G__21186 = 0;
+seq__21159 = G__21183;
+chunk__21161 = G__21184;
+count__21162 = G__21185;
+i__21163 = G__21186;
 continue;
 }
 } else
-{var e = cljs.core.first.call(null,seq__20988__$1);var map__20996_21016 = new cljs.core.Keyword(null,"divergent","divergent",3614789780).cljs$core$IFn$_invoke$arity$1(cljs.core.deref.call(null,e));var map__20996_21017__$1 = ((cljs.core.seq_QMARK_.call(null,map__20996_21016))?cljs.core.apply.call(null,cljs.core.hash_map,map__20996_21016):map__20996_21016);var time_name_21018 = cljs.core.get.call(null,map__20996_21017__$1,new cljs.core.Keyword(null,"time-name","time-name",1004205309));var current_node_21019 = cljs.core.get.call(null,map__20996_21017__$1,new cljs.core.Keyword(null,"current-node","current-node",2436467016));var unique_e_21020 = cljs.core.deref.call(null,divergence.entity.entity_atom__GT_unique_entity_atom).call(null,e);var vec__20997_21021 = current_node_21019;var current_timeline_21022 = cljs.core.nth.call(null,vec__20997_21021,0,null);var time_in_timeline_21023 = cljs.core.nth.call(null,vec__20997_21021,1,null);var past_node_21024 = divergence.system.time_travel.reverse_time.call(null,cljs.core.deref.call(null,timestream),current_node_21019,divergence.system.time_travel.rewind_speed);var past_state_21025 = cljs.core.get_in.call(null,cljs.core.deref.call(null,timestream),cljs.core.conj.call(null,past_node_21024,new cljs.core.Keyword(null,"value","value",1125876963),time_name_21018));divergence.timeviz.draw_time_node.call(null,new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [cljs.core.first.call(null,past_node_21024),(cljs.core.second.call(null,past_node_21024) + divergence.timeviz.find_time_offset.call(null,cljs.core.deref.call(null,timestream),cljs.core.first.call(null,past_node_21024)))], null),13250351);
-if(((time_in_timeline_21023 <= divergence.system.time_travel.rewind_speed)) && (cljs.core._EQ_.call(null,new cljs.core.Keyword(null,"non-player","non-player",841088339),new cljs.core.Keyword(null,"name","name",1017277949).cljs$core$IFn$_invoke$arity$1(cljs.core.deref.call(null,unique_e_21020)))))
+{var e = cljs.core.first.call(null,seq__21159__$1);var map__21167_21187 = new cljs.core.Keyword(null,"divergent","divergent",3614789780).cljs$core$IFn$_invoke$arity$1(cljs.core.deref.call(null,e));var map__21167_21188__$1 = ((cljs.core.seq_QMARK_.call(null,map__21167_21187))?cljs.core.apply.call(null,cljs.core.hash_map,map__21167_21187):map__21167_21187);var time_name_21189 = cljs.core.get.call(null,map__21167_21188__$1,new cljs.core.Keyword(null,"time-name","time-name",1004205309));var current_node_21190 = cljs.core.get.call(null,map__21167_21188__$1,new cljs.core.Keyword(null,"current-node","current-node",2436467016));var unique_e_21191 = cljs.core.deref.call(null,divergence.entity.entity_atom__GT_unique_entity_atom).call(null,e);var vec__21168_21192 = current_node_21190;var current_timeline_21193 = cljs.core.nth.call(null,vec__21168_21192,0,null);var time_in_timeline_21194 = cljs.core.nth.call(null,vec__21168_21192,1,null);var past_node_21195 = divergence.system.time_travel.reverse_time.call(null,cljs.core.deref.call(null,timestream),current_node_21190,divergence.system.time_travel.rewind_speed);var past_state_21196 = cljs.core.get_in.call(null,cljs.core.deref.call(null,timestream),cljs.core.conj.call(null,past_node_21195,new cljs.core.Keyword(null,"value","value",1125876963),time_name_21189));divergence.timeviz.draw_time_node.call(null,new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [cljs.core.first.call(null,past_node_21195),(cljs.core.second.call(null,past_node_21195) + divergence.timeviz.find_time_offset.call(null,cljs.core.deref.call(null,timestream),cljs.core.first.call(null,past_node_21195)))], null),13250351);
+if(((time_in_timeline_21194 <= divergence.system.time_travel.rewind_speed)) && (cljs.core._EQ_.call(null,new cljs.core.Keyword(null,"non-player","non-player",841088339),new cljs.core.Keyword(null,"name","name",1017277949).cljs$core$IFn$_invoke$arity$1(cljs.core.deref.call(null,unique_e_21191)))))
 {divergence.entity.destroy_entity_BANG_.call(null,e);
 } else
-{cljs.core.reset_BANG_.call(null,e,past_state_21025);
+{cljs.core.reset_BANG_.call(null,e,past_state_21196);
 }
 {
-var G__21026 = cljs.core.next.call(null,seq__20988__$1);
-var G__21027 = null;
-var G__21028 = 0;
-var G__21029 = 0;
-seq__20988 = G__21026;
-chunk__20990 = G__21027;
-count__20991 = G__21028;
-i__20992 = G__21029;
+var G__21197 = cljs.core.next.call(null,seq__21159__$1);
+var G__21198 = null;
+var G__21199 = 0;
+var G__21200 = 0;
+seq__21159 = G__21197;
+chunk__21161 = G__21198;
+count__21162 = G__21199;
+i__21163 = G__21200;
 continue;
 }
 }
@@ -276,7 +276,7 @@ continue;
 break;
 }
 });
-divergence.system.time_travel.animate_timetravel_backwards = (function animate_timetravel_backwards(){return (divergence.renderer.stage["filters"] = cljs.core.clj__GT_js.call(null,new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [divergence.renderer.blur,divergence.renderer.twist], null)));
+divergence.system.time_travel.animate_timetravel_backwards = (function animate_timetravel_backwards(){return (divergence.renderer.stage["filters"] = cljs.core.clj__GT_js.call(null,new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [divergence.renderer.blur,divergence.renderer.gray], null)));
 });
 divergence.system.time_travel.clear_animations = (function clear_animations(){return (divergence.renderer.stage["filters"] = null);
 });
