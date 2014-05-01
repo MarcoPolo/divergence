@@ -57,12 +57,34 @@
 (def oceanTileTextureB (js/PIXI.Texture.fromImage "assets/img/oceantile-b.png"))
 (def oceanTileTextureC (js/PIXI.Texture.fromImage "assets/img/oceantile-c.png"))
 
+(def chocolateTileTextureA (js/PIXI.Texture.fromImage "assets/img/chocolate1.png"))
+(def chocolateTileTextureB (js/PIXI.Texture.fromImage "assets/img/ChocolateAndrew.png"))
+(def chocolateTileTextureC (js/PIXI.Texture.fromImage "assets/img/chocolateChelsea.png"))
+(def chocolateTileTextureD (js/PIXI.Texture.fromImage "assets/img/ChocolateChris.png"))
+(def chocolateTileTextureE (js/PIXI.Texture.fromImage "assets/img/ChocolateDivergence.png"))
+(def chocolateTileTextureF (js/PIXI.Texture.fromImage "assets/img/ChocolateJennyffer.png"))
+(def chocolateTileTextureG (js/PIXI.Texture.fromImage "assets/img/ChocolateMarco.png"))
+(def chocolateTileTextureH (js/PIXI.Texture.fromImage "assets/img/ChocolateRoland.png"))
+(def chocolateTileTextureI (js/PIXI.Texture.fromImage "assets/img/ChocolateShawn.png"))
+(def chocolateTileTextureJ (js/PIXI.Texture.fromImage "assets/img/ChocolateSynergy.png"))
+(def chocolateTileTextureK (js/PIXI.Texture.fromImage "assets/img/ChocolateYa.png"))
+
 (def catTextureA (js/PIXI.Texture.fromImage "assets/img/cat1.png"))
 (def catTextureB (js/PIXI.Texture.fromImage "assets/img/cat2.png"))
 (def catTextureC (js/PIXI.Texture.fromImage "assets/img/cat3.png"))
 
 (def batTextureA (js/PIXI.Texture.fromImage "assets/img/bat1.png"))
 (def batTextureB (js/PIXI.Texture.fromImage "assets/img/bat2.png"))
+
+(def cupcakeTextureA (js/PIXI.Texture.fromImage "assets/img/cupcake1.png"))
+(def cupcakeTextureB (js/PIXI.Texture.fromImage "assets/img/cupcake2.png"))
+(def cupcakeTextureC (js/PIXI.Texture.fromImage "assets/img/cupcake3.png"))
+
+(def donutTextureA (js/PIXI.Texture.fromImage "assets/img/donut1.png"))
+(def donutTextureB (js/PIXI.Texture.fromImage "assets/img/donut2.png"))
+(def donutTextureC (js/PIXI.Texture.fromImage "assets/img/donut3.png"))
+(def donutTextureD (js/PIXI.Texture.fromImage "assets/img/donut4.png"))
+(def donutTextureE (js/PIXI.Texture.fromImage "assets/img/donut5.png"))
 
 (def enemyTextureA (js/PIXI.Texture.fromImage "assets/img/enemy1right.png"))
 (def enemyTextureB (js/PIXI.Texture.fromImage "assets/img/enemy1left.png"))
@@ -122,6 +144,7 @@
     ::starTileE starTileTextureE
     ::starTileF starTileTextureF
     ::starTilePrime starTileTexturePrime
+
     ::metalTileA metalTileTextureA
     ::metalTileB metalTileTextureB
     ::metalTileC metalTileTextureC
@@ -134,12 +157,33 @@
     ::oceanTileB oceanTileTextureB
     ::oceanTileC oceanTileTextureC
 
+    ::chocolateTileA chocolateTileTextureA
+    ::chocolateTileB chocolateTileTextureB
+    ::chocolateTileC chocolateTileTextureC
+    ::chocolateTileD chocolateTileTextureD
+    ::chocolateTileE chocolateTileTextureE
+    ::chocolateTileF chocolateTileTextureF
+    ::chocolateTileG chocolateTileTextureG
+    ::chocolateTileH chocolateTileTextureH
+    ::chocolateTileI chocolateTileTextureI
+    ::chocolateTileJ chocolateTileTextureJ
+
     ::catA catTextureA
     ::catB catTextureB
     ::catC catTextureC
 
     ::batA batTextureA
     ::batB batTextureB
+
+    ::cupcakeA cupcakeTextureA
+    ::cupcakeB cupcakeTextureB
+    ::cupcakeC cupcakeTextureC
+
+    ::donutA donutTextureA
+    ::donutB donutTextureB
+    ::donutC donutTextureC
+    ::donutD donutTextureD
+    ::donutE donutTextureE
 
     ::enemyRight1 enemyTextureA
     ::enemyLeft1 enemyTextureB
