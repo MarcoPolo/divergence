@@ -113,7 +113,7 @@
 
 (defn animate-timetravel-backwards
   []
-  (aset renderer/stage "filters" (clj->js [renderer/blur renderer/twist])))
+  (aset renderer/stage "filters" (clj->js [renderer/blur renderer/gray])))
 
 (defn clear-animations
   []
