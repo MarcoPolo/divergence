@@ -16,6 +16,7 @@
                  0 no-condition
                  1 no-condition
                  2 button-condition
+                 3 no-condition
                  })
 
 (defn conditions
