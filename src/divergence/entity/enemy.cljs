@@ -55,8 +55,12 @@
   (set! (.-textures (e/entity-atom->ref player)) (cljs-to-js (map textures/textures e/batAnimation)))
   )
 
+(defn enemy-effect-three [player enemy]
+  (let [{[x y rot] :position} @player]
+    (swap! player assoc-in [:position] [(- x 200) y rot])))
+
 (def effect-map {
-                 0 enemy-effect-one
+                 0 enemy-effect-three
                  1 enemy-effect-one
                  2 enemy-effect-two
                  3 enemy-effect-one
@@ -69,6 +73,7 @@
 ;;------------------------------------------------
 
 ;;organization - enemy entities should be passed their move paths here
+(def flappy-straight (partial e/enemy 1 1 [e/enemyATextureRight] normal-path 0 false))
 (def flappy (partial e/enemy 1 1 [e/enemyATextureRight] normal-path 0 true))
 (def flappy2 (partial e/enemy 1 1 [e/enemyATextureRight] updown-path 0 ))
 (def flappy3 (partial e/enemy 1 1 [e/enemyATextureRight] normal-path 2))

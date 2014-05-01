@@ -53,7 +53,7 @@
           (swap! player assoc-in [:climbing] 1)
           (swap! player assoc-in [:gravity] [0 0 0])
           (swap! player assoc-in [:acceleration] [0 -5 0])
-          (set! (.-textures sprite) (cljs-to-js e/jumpAnimationRight))
+          (set! (.-textures sprite) (cljs-to-js (map textures/textures e/jumpAnimationRight)))
         ))
       (do
         (swap! player assoc-in [:climbing] 0)
@@ -338,7 +338,7 @@
        68 :right
        40 :down
        83 :down
-       77 :item
+       86 :item
        80 :p
        16 :travel-back ;; :shift
    }))
