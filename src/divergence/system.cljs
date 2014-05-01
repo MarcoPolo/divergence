@@ -3,6 +3,7 @@
              [divergence.audio :as a]
              [divergence.physics :as phys]
              [divergence.system.conditions :as conditions]
+             [divergence.system.smart-collision :as smart-collision]
              [divergence.entity :as e]
              [divergence.entity.enemies :as enemies]
              [divergence.textures :as textures]
@@ -88,18 +89,19 @@
 
 ;;collision detection function
 (defn collide [entities]
-  (let [es (map deref entities)]
-    (doseq [e entities
-            :when (and (@e :velocity) (not= (@e :velocity) [0 0 0]))
-            :let [{[x-v y-v rot-speed] :velocity} @e]]
-      (let [x-future (move-entity @e [x-v 0 0])
-            y-future (move-entity @e [0 y-v 0])]
+  (doseq [e (e/filter-entities :collision-trigger entities)
+          :when (and (@e :velocity) (not= (@e :velocity) [0 0 0]))
+          :let [other-es (smart-collision/filter-things-close-to
+                          @e (map deref (remove #{e} entities)))
+                {[x-v y-v rot-speed] :velocity} @e
+                x-future (move-entity @e [x-v 0 0])
+                y-future (move-entity @e [0 y-v 0])]]
 
-        (when (< 1 (count (filter (partial phys/colliding? x-future) es)))
-          (swap! e assoc-in [:velocity 0] 0))
-        (when (< 1 (count (filter (partial phys/colliding? y-future) es)))
-          (swap! e assoc-in [:velocity 1] 0)
-          (swap! e assoc-in [:can-jump] 1))))))
+    (when (pos? (count (filter (partial phys/colliding? x-future) other-es)))
+      (swap! e assoc-in [:velocity 0] 0))
+    (when (pos? (count (filter (partial phys/colliding? y-future) other-es)))
+      (swap! e assoc-in [:velocity 1] 0)
+      (swap! e assoc-in [:can-jump] 1))))
 
 ;;push     based on collision detection on x-direction
 (defn push [entities player]
